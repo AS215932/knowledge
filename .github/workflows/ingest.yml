@@ -13,8 +13,14 @@ jobs:
   ingest:
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.KNOWLEDGE_GH_TOKEN || github.token }}
+      GH_TOKEN: ${{ secrets.KNOWLEDGE_GH_TOKEN }}
+      FALLBACK_GH_TOKEN: ${{ github.token }}
     steps:
+      - name: Select GitHub token
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "GH_TOKEN=${FALLBACK_GH_TOKEN}" >> "$GITHUB_ENV"
+          fi
       - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
         with:
@@ -32,7 +38,7 @@ jobs:
           uv run hyrule-knowledge export --check
           uv run hyrule-knowledge scan-secrets okf exports
       - name: Create refresh pull request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@v7
         with:
           branch: bot/knowledge-refresh/${{ github.run_id }}
           title: knowledge: refresh OKF catalog ${{ github.run_id }}
