@@ -583,6 +583,6 @@ Status legend: `[x]` done, `[-]` skipped, `[>]` deferred, `[!]` blocked, `[ ]` p
 - [x] 7. Add coverage reports and usefulness quality gates. `[DONE:7]`
 - [x] 8. Update exports and SQLite schema. `[DONE:8]`
 - [x] 9. Add workflows, tests, and documentation. `[DONE:9]`
-- [ ] 10. Regenerate the bundle and open one focused PR. _(bundle regenerated; PR pending)_
+- [x] 10. Regenerate the bundle and open one focused PR. `[DONE:10]` PR: https://github.com/AS215932/knowledge/pull/2
 
 <!-- pi-plan-progress:end -->
