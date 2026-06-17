@@ -34,5 +34,7 @@ jobs:
         run: uv run hyrule-knowledge eval --check
       - name: Learning ledger check
         run: uv run hyrule-knowledge ledger --check
+      - name: Learning lifecycle check
+        run: uv run hyrule-knowledge ledger lifecycle --check
       - name: Secret scan
         run: uv run hyrule-knowledge scan-secrets okf exports reports evals ledger schema

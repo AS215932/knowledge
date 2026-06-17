@@ -20,6 +20,9 @@ PromotionKind = Literal["lesson", "summary"]
 REVIEWS_DIR = Path("ledger/reviews")
 CURATED_LESSONS_DIR = Path("okf/curated/lessons")
 CURATED_SUMMARIES_DIR = Path("okf/curated/summaries")
+PROMOTION_PR_MD = Path("reports/learning-promotion-pr.md")
+LIFECYCLE_JSON = Path("reports/learning-lifecycle.json")
+LIFECYCLE_MD = Path("reports/learning-lifecycle.md")
 
 
 class LearningPromotionError(RuntimeError):
@@ -105,6 +108,59 @@ def build_review_packet(reference: str, *, paths: list[Path] | None = None, prom
     }
 
 
+def promote_learning_event_for_pr(
+    reference: str,
+    *,
+    reviewer: str,
+    promotion_kind: PromotionKind,
+    decision: PromotionDecision = "approved",
+    rationale: str = "Reviewed and accepted for curated OKF promotion.",
+    paths: list[Path] | None = None,
+    dry_run: bool = False,
+) -> PromotionResult:
+    result = promote_learning_event(
+        reference,
+        reviewer=reviewer,
+        promotion_kind=promotion_kind,
+        decision=decision,
+        rationale=rationale,
+        paths=paths,
+        dry_run=dry_run,
+    )
+    body = build_promotion_pr_body(result)
+    if not dry_run:
+        PROMOTION_PR_MD.parent.mkdir(parents=True, exist_ok=True)
+        PROMOTION_PR_MD.write_text(body, encoding="utf-8")
+    return result
+
+
+def build_promotion_pr_body(result: PromotionResult) -> str:
+    target = result.target_path.as_posix() if result.target_path else "none"
+    lines = [
+        "# Learning event promotion PR",
+        "",
+        f"* Event: `{result.event_id}`",
+        f"* Decision: `{result.decision}`",
+        f"* Promotion kind: `{result.promotion_kind}`",
+        f"* Reviewer: `{result.reviewer}`",
+        f"* Review record: `{result.review_path.as_posix()}`",
+        f"* Curated target: `{target}`",
+        "",
+        "## Checklist",
+        "",
+        "- [ ] Human reviewer identity is correct.",
+        "- [ ] Rationale explains why the event is worth promoting.",
+        "- [ ] Source refs/citations are preserved.",
+        "- [ ] No raw logs, packet captures, command output, credentials, or secrets are included.",
+        "- [ ] A0 source truth remains authoritative if conflicts are discovered.",
+        "- [ ] `uv run hyrule-knowledge validate okf` passes.",
+        "- [ ] `uv run hyrule-knowledge eval --check` passes.",
+        "- [ ] `uv run hyrule-knowledge ledger lifecycle --check` passes.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def promote_learning_event(
     reference: str,
     *,
@@ -175,6 +231,104 @@ def promote_learning_event(
         review_record=review_record,
         concept_markdown=concept_markdown,
     )
+
+
+def load_learning_reviews() -> list[dict[str, Any]]:
+    reviews: list[dict[str, Any]] = []
+    for path in sorted(REVIEWS_DIR.glob("*.json")):
+        loaded = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(loaded, dict):
+            reviews.append({"path": path.as_posix(), **loaded})
+    return reviews
+
+
+def analyze_learning_lifecycle(*, paths: list[Path] | None = None) -> dict[str, Any]:
+    events = {str(event["id"]): event for event in load_learning_events(paths)}
+    reviews = load_learning_reviews()
+    findings: list[dict[str, Any]] = []
+    reviews_by_event: dict[str, list[dict[str, Any]]] = {}
+    for review in reviews:
+        reviews_by_event.setdefault(str(review.get("event_id")), []).append(review)
+    for event_id, event in events.items():
+        if event.get("status") in {"fixture", "proposed"} and event_id not in reviews_by_event:
+            findings.append({"severity": "info", "code": "needs_review", "event_id": event_id, "message": "learning event has not been reviewed"})
+    for review in reviews:
+        event_id = str(review.get("event_id"))
+        reviewed_event = events.get(event_id)
+        if reviewed_event is None:
+            findings.append({"severity": "warning", "code": "review_event_missing", "event_id": event_id, "review_id": review.get("id"), "message": "review references a learning event that is not present"})
+            continue
+        current_hash = stable_hash("event", reviewed_event)
+        if review.get("event_hash") != current_hash:
+            findings.append({"severity": "warning", "code": "needs_re_review", "event_id": event_id, "review_id": review.get("id"), "message": "learning event changed after review"})
+        if review.get("decision") == "approved":
+            target_path = Path(str(review.get("target_path") or ""))
+            if not target_path.exists():
+                findings.append({"severity": "critical", "code": "approved_target_missing", "event_id": event_id, "review_id": review.get("id"), "message": f"approved target is missing: {target_path}"})
+            else:
+                frontmatter = _read_markdown_frontmatter(target_path)
+                if frontmatter.get("review_status") != "reviewed":
+                    findings.append({"severity": "warning", "code": "target_not_reviewed", "event_id": event_id, "review_id": review.get("id"), "message": "approved target does not have review_status=reviewed"})
+                if frontmatter.get("learning_event_id") != event_id:
+                    findings.append({"severity": "warning", "code": "target_event_mismatch", "event_id": event_id, "review_id": review.get("id"), "message": "approved target learning_event_id does not match review"})
+    for event_id, event_reviews in reviews_by_event.items():
+        approved = [review for review in event_reviews if review.get("decision") == "approved"]
+        if len(approved) > 1:
+            findings.append({"severity": "warning", "code": "duplicate_approved_promotions", "event_id": event_id, "message": "multiple approved promotions exist for one event; consider superseding older summaries"})
+    summary = {
+        "event_count": len(events),
+        "review_count": len(reviews),
+        "approved_count": sum(1 for review in reviews if review.get("decision") == "approved"),
+        "rejected_count": sum(1 for review in reviews if review.get("decision") == "rejected"),
+        "needs_review_count": sum(1 for finding in findings if finding["code"] == "needs_review"),
+        "needs_re_review_count": sum(1 for finding in findings if finding["code"] == "needs_re_review"),
+        "critical_count": sum(1 for finding in findings if finding["severity"] == "critical"),
+        "warning_count": sum(1 for finding in findings if finding["severity"] == "warning"),
+    }
+    return {"summary": summary, "findings": findings}
+
+
+def write_learning_lifecycle_reports(*, paths: list[Path] | None = None) -> dict[str, Any]:
+    report = analyze_learning_lifecycle(paths=paths)
+    LIFECYCLE_JSON.parent.mkdir(parents=True, exist_ok=True)
+    LIFECYCLE_JSON.write_text(json.dumps(report, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    lines = [
+        "# Learning lifecycle report",
+        "",
+        f"* Events: **{report['summary']['event_count']}**",
+        f"* Reviews: **{report['summary']['review_count']}**",
+        f"* Approved: **{report['summary']['approved_count']}**",
+        f"* Rejected: **{report['summary']['rejected_count']}**",
+        f"* Needs review: **{report['summary']['needs_review_count']}**",
+        f"* Needs re-review: **{report['summary']['needs_re_review_count']}**",
+        f"* Critical findings: **{report['summary']['critical_count']}**",
+        "",
+    ]
+    if report["findings"]:
+        lines.append("## Findings")
+        for finding in report["findings"]:
+            lines.append(f"* `{finding['severity']}` `{finding['code']}` `{finding.get('event_id', '')}` — {finding['message']}")
+    else:
+        lines.append("No lifecycle findings.")
+    LIFECYCLE_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return report
+
+
+def lifecycle_check(*, paths: list[Path] | None = None) -> list[str]:
+    report = analyze_learning_lifecycle(paths=paths)
+    return [f"{finding.get('event_id', '')}: {finding['message']}" for finding in report["findings"] if finding["severity"] == "critical"]
+
+
+def _read_markdown_frontmatter(path: Path) -> dict[str, Any]:
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        return {}
+    try:
+        _, raw, _ = text.split("---", 2)
+    except ValueError:
+        return {}
+    loaded = yaml.safe_load(raw) or {}
+    return loaded if isinstance(loaded, dict) else {}
 
 
 def build_promoted_concept(

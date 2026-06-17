@@ -12,7 +12,9 @@ uv run hyrule-knowledge ledger --write
 uv run hyrule-knowledge ledger --check
 uv run hyrule-knowledge ledger --list
 uv run hyrule-knowledge ledger --review <event-id-or-subject> --promotion-kind summary
-uv run hyrule-knowledge ledger --promote <event-id-or-subject> --reviewer <human> --promotion-kind summary --rationale "reviewed"
+uv run hyrule-knowledge ledger promote-pr <event-id-or-subject> --reviewer <human> --promotion-kind summary --rationale "reviewed"
+uv run hyrule-knowledge ledger lifecycle --write
+uv run hyrule-knowledge ledger lifecycle --check
 ```
 
 Events are A4 proposals/fixtures unless promoted by human review into A1

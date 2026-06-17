@@ -7,6 +7,7 @@ output, credentials, or live telemetry dumps.
 
 from __future__ import annotations
 
+import glob
 import json
 import re
 from pathlib import Path
@@ -16,6 +17,8 @@ from .contracts import stable_hash, utc_now_iso
 
 LEDGER_VERSION = "learning_ledger_v1"
 DEFAULT_FIXTURE_DIR = Path("ledger/fixtures")
+DEFAULT_PROPOSED_DIR = Path("ledger/proposed")
+DEFAULT_LEDGER_DIRS = [DEFAULT_FIXTURE_DIR, DEFAULT_PROPOSED_DIR]
 REPORT_JSON = Path("reports/learning-ledger.json")
 REPORT_JSONL = Path("reports/learning-ledger.jsonl")
 REPORT_MD = Path("reports/learning-ledger.md")
@@ -90,8 +93,28 @@ def normalize_learning_event(event: dict[str, Any]) -> dict[str, Any]:
     return normalized
 
 
+def _default_event_paths() -> list[Path]:
+    paths: list[Path] = []
+    for directory in DEFAULT_LEDGER_DIRS:
+        paths.extend(sorted(directory.glob("*.json")))
+    return paths
+
+
+def expand_event_paths(paths: list[Path]) -> list[Path]:
+    expanded: list[Path] = []
+    for path in paths:
+        text = path.as_posix()
+        if any(char in text for char in "*?[]"):
+            expanded.extend(Path(item) for item in sorted(glob.glob(text)))
+        elif path.is_dir():
+            expanded.extend(sorted(path.glob("*.json")))
+        else:
+            expanded.append(path)
+    return expanded
+
+
 def load_learning_events(paths: list[Path] | None = None) -> list[dict[str, Any]]:
-    targets = paths or sorted(DEFAULT_FIXTURE_DIR.glob("*.json"))
+    targets = expand_event_paths(paths) if paths is not None else _default_event_paths()
     events: list[dict[str, Any]] = []
     for path in targets:
         if path.is_dir():
@@ -109,6 +132,34 @@ def load_learning_events(paths: list[Path] | None = None) -> list[dict[str, Any]
             normalized.setdefault("source", {"kind": "fixture", "path": path.as_posix()})
             events.append(normalized)
     return sorted(events, key=lambda event: str(event["id"]))
+
+
+def import_learning_events(sources: list[Path], *, replace: bool = False) -> list[dict[str, Any]]:
+    source_paths = expand_event_paths(sources)
+    if not source_paths:
+        raise LearningLedgerError("no learning event files matched import input")
+    existing = {str(event["id"]): event for event in load_learning_events()}
+    DEFAULT_PROPOSED_DIR.mkdir(parents=True, exist_ok=True)
+    results: list[dict[str, Any]] = []
+    for path in source_paths:
+        imported = load_learning_events([path])
+        for event in imported:
+            event = dict(event)
+            event["status"] = "proposed" if event.get("status") == "fixture" else event.get("status", "proposed")
+            event["source"] = {"kind": "import", "path": path.as_posix()}
+            event = normalize_learning_event(event)
+            errors = validate_learning_event(event)
+            if errors:
+                raise LearningLedgerError(f"cannot import {path}: " + "; ".join(errors))
+            event_id = str(event["id"])
+            target = DEFAULT_PROPOSED_DIR / f"{event_id}.json"
+            if event_id in existing and not replace:
+                results.append({"id": event_id, "source_path": path.as_posix(), "target_path": target.as_posix(), "status": "skipped", "reason": "duplicate"})
+                continue
+            target.write_text(json.dumps(event, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+            existing[event_id] = event
+            results.append({"id": event_id, "source_path": path.as_posix(), "target_path": target.as_posix(), "status": "imported"})
+    return results
 
 
 def validate_learning_event(event: dict[str, Any]) -> list[str]:

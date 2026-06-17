@@ -1,0 +1,14 @@
+id: learning-lifecycle-002-import-reject-unsafe
+task: Reject an unsafe imported learning-event artifact fixture
+suite: learning_lifecycle
+role: human_review
+inputs:
+  mode: import_reject
+  path: evals/fixtures/learning-events/unsafe-engineering-event.json
+expected:
+  valid: false
+  finding_contains: forbidden
+forbidden: {}
+must_pass: true
+metrics:
+  import_fixture: true

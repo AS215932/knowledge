@@ -26,12 +26,24 @@ from .enrich import enrich_target
 from .evals import eval_check, load_eval_cases, write_eval_reports
 from .exporter import exports_match, write_exports
 from .github_source import collect_snapshot
-from .learning_ledger import LearningLedgerError, ledger_check, write_learning_ledger_reports
+from .learning_ledger import (
+    LearningLedgerError,
+    import_learning_events,
+    ledger_check,
+    write_learning_ledger_reports,
+)
 from .models import Concept, RepoSnapshot, SourceRef
 from .observe import collect_safe_health
 from .okf_writer import reset_generated, write_concepts, write_indexes
 from .policy import policy_decision_for
-from .promotion import LearningPromotionError, build_review_packet, promote_learning_event
+from .promotion import (
+    LearningPromotionError,
+    build_review_packet,
+    lifecycle_check,
+    promote_learning_event,
+    promote_learning_event_for_pr,
+    write_learning_lifecycle_reports,
+)
 from .quality import quality_check, write_quality_reports
 from .retrieval import KnowledgeRetriever
 from .store import KnowledgeStore, KnowledgeStoreError
@@ -623,7 +635,62 @@ def cmd_find_stale(args: argparse.Namespace) -> int:
 
 
 def cmd_ledger(args: argparse.Namespace) -> int:
-    paths = [Path(path) for path in args.paths] if args.paths else None
+    ledger_args = list(args.ledger_args or [])
+    command = ledger_args[0] if ledger_args and ledger_args[0] in {"import", "promote-pr", "lifecycle"} else None
+    positional = ledger_args[1:] if command else ledger_args
+    paths = [Path(path) for path in positional] if positional else None
+    if command == "import":
+        if not positional:
+            print("ledger import requires at least one file, directory, or glob", file=sys.stderr)
+            return 1
+        try:
+            results = import_learning_events([Path(path) for path in positional], replace=args.replace)
+            write_learning_ledger_reports()
+            write_learning_lifecycle_reports()
+            config = load_config(Path(args.config))
+            write_exports(config.bundle_root, config.exports_dir, run_id=run_id())
+            print_json({"results": results})
+        except (LearningLedgerError, LearningPromotionError) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        return 0
+    if command == "lifecycle":
+        if args.write:
+            report = write_learning_lifecycle_reports(paths=paths)
+            print_json(report)
+            return 1 if report["summary"].get("critical_count", 0) else 0
+        failures = lifecycle_check(paths=paths)
+        for failure in failures:
+            print(failure, file=sys.stderr)
+        if failures:
+            print(f"learning lifecycle check failed: {len(failures)} critical finding(s)", file=sys.stderr)
+            return 1
+        print("learning lifecycle check passed")
+        return 0
+    if command == "promote-pr":
+        if not positional:
+            print("ledger promote-pr requires an event id or subject", file=sys.stderr)
+            return 1
+        try:
+            result = promote_learning_event_for_pr(
+                positional[0],
+                reviewer=args.reviewer or "",
+                promotion_kind=args.promotion_kind,
+                decision=args.decision,
+                rationale=args.rationale,
+                paths=None,
+                dry_run=args.dry_run,
+            )
+            if result.wrote:
+                ensure_curated_indexes()
+                write_learning_lifecycle_reports()
+                config = load_config(Path(args.config))
+                write_exports(config.bundle_root, config.exports_dir, run_id=run_id())
+            print_json(result.as_json())
+        except (LearningLedgerError, LearningPromotionError) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        return 0
     if args.list:
         events, findings = write_learning_ledger_reports(paths)
         print_json({"events": [{"id": event["id"], "event_type": event["event_type"], "producer": event["producer"], "subject": event["subject"], "status": event["status"]} for event in events], "findings": findings})
@@ -648,6 +715,7 @@ def cmd_ledger(args: argparse.Namespace) -> int:
             )
             if result.wrote:
                 ensure_curated_indexes()
+                write_learning_lifecycle_reports()
                 config = load_config(Path(args.config))
                 write_exports(config.bundle_root, config.exports_dir, run_id=run_id())
             print_json(result.as_json())
@@ -657,6 +725,7 @@ def cmd_ledger(args: argparse.Namespace) -> int:
         return 0
     if args.write:
         _, findings = write_learning_ledger_reports(paths)
+        write_learning_lifecycle_reports(paths=paths)
         for finding in findings:
             print(f"{finding['event_id']}: {finding['message']}", file=sys.stderr)
         if findings:
@@ -823,7 +892,7 @@ def build_parser() -> argparse.ArgumentParser:
     eval_parser.set_defaults(func=cmd_eval)
 
     ledger = subparsers.add_parser("ledger")
-    ledger.add_argument("paths", nargs="*")
+    ledger.add_argument("ledger_args", nargs="*", help="optional paths, or subcommands: import, promote-pr, lifecycle")
     ledger.add_argument("--write", action="store_true", help="write ledger validation reports")
     ledger.add_argument("--check", action="store_true", help="validate ledger fixtures")
     ledger.add_argument("--list", action="store_true", help="list learning events with validation findings")
@@ -834,6 +903,7 @@ def build_parser() -> argparse.ArgumentParser:
     ledger.add_argument("--decision", choices=["approved", "rejected"], default="approved")
     ledger.add_argument("--rationale", default="Reviewed and accepted for curated OKF promotion.")
     ledger.add_argument("--dry-run", action="store_true")
+    ledger.add_argument("--replace", action="store_true", help="replace existing proposed event on ledger import")
     ledger.set_defaults(func=cmd_ledger)
 
     mcp = subparsers.add_parser("mcp")

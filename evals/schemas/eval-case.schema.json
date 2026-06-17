@@ -22,7 +22,8 @@
         "policy",
         "engineering_loop",
         "noc_shadow",
-        "learning_promotion"
+        "learning_promotion",
+        "learning_lifecycle"
       ]
     },
     "task": {

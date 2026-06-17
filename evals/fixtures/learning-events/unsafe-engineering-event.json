@@ -1,0 +1,17 @@
+{
+  "event_type": "engineering_loop_run_summary",
+  "event_time": "2026-06-17T00:00:00Z",
+  "producer": "engineering_loop",
+  "subject": "engineering_loop:import-fixture-unsafe",
+  "summary": "Unsafe import fixture containing forbidden raw output marker.",
+  "status": "proposed",
+  "authority_tier": "A4",
+  "data_classes": ["sanitized_trace_summary", "raw_log"],
+  "citations": [
+    {"concept_id": "generated/services/engineering-loop"}
+  ],
+  "metrics": {},
+  "lessons": [],
+  "promotion": {"review_required": true},
+  "metadata": {"stdout": "raw command output"}
+}

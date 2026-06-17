@@ -46,6 +46,7 @@ uv run hyrule-knowledge query "POST /v1/vm/create schema" --json
 uv run hyrule-knowledge context-pack --task "Engineer change to POST /v1/vm/create" --role engineering_loop
 uv run hyrule-knowledge eval --check
 uv run hyrule-knowledge ledger --check
+uv run hyrule-knowledge ledger lifecycle --check
 uv run hyrule-knowledge ledger --review noc_shadow:fixture-shadow-eval-summary --promotion-kind summary
 uv run hyrule-knowledge scan-secrets okf exports reports evals ledger schema
 ```
@@ -59,6 +60,7 @@ uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge export --check
 uv run hyrule-knowledge eval --check
 uv run hyrule-knowledge ledger --check
+uv run hyrule-knowledge ledger lifecycle --check
 uv run hyrule-knowledge scan-secrets okf exports reports evals ledger schema
 ```
 
@@ -104,8 +106,10 @@ uv run hyrule-knowledge endpoint-schema POST /v1/vm/create
 uv run hyrule-knowledge deployment-pins hyrule-cloud
 uv run hyrule-knowledge policy-decision --actor engineering_loop --action knowledge.search
 uv run hyrule-knowledge ledger --write
+uv run hyrule-knowledge ledger import /path/to/*.learning-event.json
 uv run hyrule-knowledge ledger --list
 uv run hyrule-knowledge ledger --review engineering_loop:fixture-run-summary --promotion-kind summary
-uv run hyrule-knowledge ledger --promote engineering_loop:fixture-run-summary --reviewer svag --promotion-kind summary --rationale "reviewed"
+uv run hyrule-knowledge ledger promote-pr engineering_loop:fixture-run-summary --reviewer svag --promotion-kind summary --rationale "reviewed"
+uv run hyrule-knowledge ledger lifecycle --write
 uv run hyrule-knowledge mcp --transport stdio
 ```

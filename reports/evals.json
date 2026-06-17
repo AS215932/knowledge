@@ -20,7 +20,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -44,7 +44,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -68,7 +68,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -92,7 +92,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -116,7 +116,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -140,7 +140,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -164,7 +164,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -188,7 +188,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -212,7 +212,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -236,7 +236,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -260,7 +260,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -284,7 +284,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -308,7 +308,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -331,9 +331,91 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "grounding"
+    },
+    {
+      "case_id": "learning-lifecycle-001-import-safe",
+      "failure_reasons": [],
+      "metrics": {
+        "event_count": 1,
+        "findings": [],
+        "mode": "import_valid"
+      },
+      "passed": true,
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "score": 1.0,
+      "suite": "learning_lifecycle"
+    },
+    {
+      "case_id": "learning-lifecycle-002-import-reject-unsafe",
+      "failure_reasons": [],
+      "metrics": {
+        "event_count": 1,
+        "findings": [
+          {
+            "event_id": "learn_56afb6763aa7f1a0f8379ddaf6067fd8",
+            "message": "forbidden data_classes: raw_log",
+            "severity": "critical"
+          },
+          {
+            "event_id": "learn_56afb6763aa7f1a0f8379ddaf6067fd8",
+            "message": "forbidden key at $.metadata.stdout: stdout",
+            "severity": "critical"
+          }
+        ],
+        "mode": "import_reject"
+      },
+      "passed": true,
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "score": 1.0,
+      "suite": "learning_lifecycle"
+    },
+    {
+      "case_id": "learning-lifecycle-003-promote-imported-summary",
+      "failure_reasons": [],
+      "metrics": {
+        "mode": "promote_imported_summary",
+        "target_concept_id": "curated/summaries/engineering-loop-import-fixture-safe",
+        "wrote": false
+      },
+      "passed": true,
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "score": 1.0,
+      "suite": "learning_lifecycle"
+    },
+    {
+      "case_id": "learning-lifecycle-004-source-truth-outranks-summary",
+      "failure_reasons": [],
+      "metrics": {
+        "a0_rank": 0,
+        "a2_rank": 2,
+        "mode": "source_truth_outprioritizes_summary"
+      },
+      "passed": true,
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "score": 1.0,
+      "suite": "learning_lifecycle"
+    },
+    {
+      "case_id": "learning-lifecycle-005-report-critical-free",
+      "failure_reasons": [],
+      "metrics": {
+        "approved_count": 0,
+        "critical_count": 0,
+        "event_count": 4,
+        "mode": "lifecycle_report",
+        "needs_re_review_count": 0,
+        "needs_review_count": 4,
+        "rejected_count": 0,
+        "review_count": 0,
+        "warning_count": 0
+      },
+      "passed": true,
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "score": 1.0,
+      "suite": "learning_lifecycle"
     },
     {
       "case_id": "learning-promotion-001-summary",
@@ -348,7 +430,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -365,7 +447,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -382,7 +464,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -405,7 +487,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -428,7 +510,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -451,7 +533,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -474,7 +556,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -513,7 +595,7 @@
           "reasons": [
             "engineering_loop may perform read-only action knowledge.search"
           ],
-          "requested_at": "2026-06-17T14:23:51Z",
+          "requested_at": "2026-06-17T23:55:35Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -521,7 +603,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "policy"
     },
@@ -560,7 +642,7 @@
           "reasons": [
             "engineering_loop may perform read-only action knowledge.context_pack.generate"
           ],
-          "requested_at": "2026-06-17T14:23:51Z",
+          "requested_at": "2026-06-17T23:55:35Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -568,7 +650,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "policy"
     },
@@ -607,7 +689,7 @@
           "reasons": [
             "noc_shadow may perform read-only action knowledge.claims"
           ],
-          "requested_at": "2026-06-17T14:23:51Z",
+          "requested_at": "2026-06-17T23:55:35Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -615,7 +697,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "policy"
     },
@@ -654,7 +736,7 @@
           "reasons": [
             "production-sensitive action requires human control: production.restart_service"
           ],
-          "requested_at": "2026-06-17T14:23:51Z",
+          "requested_at": "2026-06-17T23:55:35Z",
           "result": "require_human",
           "risk_level": "high",
           "target": null
@@ -662,7 +744,7 @@
         "policy_result": "require_human"
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "policy"
     },
@@ -701,7 +783,7 @@
           "reasons": [
             "action denied for actor noc_shadow: production.modify_firewall"
           ],
-          "requested_at": "2026-06-17T14:23:51Z",
+          "requested_at": "2026-06-17T23:55:35Z",
           "result": "deny",
           "risk_level": "high",
           "target": null
@@ -709,7 +791,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "policy"
     },
@@ -750,7 +832,7 @@
           "reasons": [
             "request includes denied data classes: secret"
           ],
-          "requested_at": "2026-06-17T14:23:51Z",
+          "requested_at": "2026-06-17T23:55:35Z",
           "result": "deny",
           "risk_level": "low",
           "target": null
@@ -758,7 +840,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "policy"
     },
@@ -797,7 +879,7 @@
           "reasons": [
             "no allow rule matched for actor=general action=unknown.do_thing"
           ],
-          "requested_at": "2026-06-17T14:23:51Z",
+          "requested_at": "2026-06-17T23:55:35Z",
           "result": "deny",
           "risk_level": "low",
           "target": null
@@ -805,7 +887,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "policy"
     },
@@ -831,7 +913,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -857,7 +939,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -883,7 +965,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -909,7 +991,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -935,7 +1017,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -961,7 +1043,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -987,7 +1069,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1013,7 +1095,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1039,7 +1121,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1065,7 +1147,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1091,7 +1173,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1117,7 +1199,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1143,7 +1225,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1169,7 +1251,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1195,7 +1277,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_8a5c0afbe36a0b5db94241a8f75ee947",
+      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
       "score": 1.0,
       "suite": "retrieval"
     }
@@ -1211,6 +1293,11 @@
         "failed": 0,
         "passed": 8,
         "total": 8
+      },
+      "learning_lifecycle": {
+        "failed": 0,
+        "passed": 5,
+        "total": 5
       },
       "learning_promotion": {
         "failed": 0,
@@ -1234,7 +1321,7 @@
       }
     },
     "failed": 0,
-    "passed": 43,
-    "total": 43
+    "passed": 48,
+    "total": 48
   }
 }

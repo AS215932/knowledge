@@ -24,7 +24,7 @@ This is a private OKF knowledge repository for Servify / Hyrule / AS215932. It c
 - Preserve provenance fields: `truth_owner`, `authority`, `source_refs`, `last_verified_at`, `confidence`, and `dispute_policy`.
 - Never commit secrets. Do not include token values, private keys, wallet data, `.env` files, vault files, raw logs, cookies, or authorization headers.
 - Keep live learning traces/telemetry out of git except for explicit schemas and deterministic sanitized fixtures under `ledger/fixtures/`.
-- Promote learning events only via human review (`hyrule-knowledge ledger --review` then `--promote --reviewer ...`). A2 summaries must live under `okf/curated/summaries/`; reviewed lessons live under `okf/curated/lessons/`.
+- Import learning artifacts with `hyrule-knowledge ledger import ...`; promote only via human review (`ledger --review` then `ledger promote-pr ... --reviewer ...` or `--promote`). A2 summaries must live under `okf/curated/summaries/`; reviewed lessons live under `okf/curated/lessons/`.
 - Policy decisions must use `knowledge-policy.yml` and `hyrule_knowledge.policy`; do not add an OPA runtime dependency in this tranche.
 
 ## Validation before handoff
@@ -40,6 +40,7 @@ uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge export --check
 uv run hyrule-knowledge eval --check
 uv run hyrule-knowledge ledger --check
+uv run hyrule-knowledge ledger lifecycle --check
 uv run hyrule-knowledge scan-secrets okf exports reports evals ledger schema
 ```
 
@@ -51,4 +52,4 @@ uv run hyrule-knowledge scan-secrets okf exports reports evals ledger schema
 4. Use `exports/knowledge.sqlite` for local querying when available.
 5. Prefer typed claims and cited source evidence over generated prose.
 6. Generate task context with `hyrule-knowledge context-pack --role engineering_loop` or `--role noc_shadow` rather than ad-hoc memory.
-7. Check `reports/coverage.md`, `reports/quality.json`, `reports/evals.md`, and `reports/learning-ledger.md` before assuming coverage is complete.
+7. Check `reports/coverage.md`, `reports/quality.json`, `reports/evals.md`, `reports/learning-ledger.md`, and `reports/learning-lifecycle.md` before assuming coverage is complete.

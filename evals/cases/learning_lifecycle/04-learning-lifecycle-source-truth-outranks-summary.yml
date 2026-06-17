@@ -1,0 +1,11 @@
+id: learning-lifecycle-004-source-truth-outranks-summary
+task: Verify A0 source truth outranks A2 reviewed summaries
+suite: learning_lifecycle
+role: human_review
+inputs:
+  mode: source_truth_outprioritizes_summary
+expected:
+  a0_outranks_a2: true
+forbidden: {}
+must_pass: true
+metrics: {}
