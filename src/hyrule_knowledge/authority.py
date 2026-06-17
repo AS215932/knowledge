@@ -65,6 +65,13 @@ def authority_from_concept(concept: dict[str, Any]) -> AuthorityTier:
         return AuthorityTier.A3
     if concept_id.startswith("generated/enriched/") or concept_type in {"Reference", "Hypothesis"}:
         return AuthorityTier.A4
+    if concept_type in {"Learning Summary", "Trace Summary", "Promotion Summary"} and review_status in {
+        "reviewed",
+        "approved",
+        "accepted",
+        "canonical",
+    }:
+        return AuthorityTier.A2
     if truth_owner == "repo" and source_refs:
         return AuthorityTier.A0
     if truth_owner == "derived" and source_refs and authority == "canonical":

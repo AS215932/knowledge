@@ -181,6 +181,28 @@ CREATE INDEX IF NOT EXISTS idx_learning_events_producer ON learning_events(produ
 CREATE INDEX IF NOT EXISTS idx_learning_events_subject ON learning_events(subject);
 CREATE INDEX IF NOT EXISTS idx_learning_events_status ON learning_events(status);
 
+CREATE TABLE IF NOT EXISTS learning_reviews (
+  id TEXT PRIMARY KEY,
+  event_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  decision TEXT NOT NULL,
+  promotion_kind TEXT NOT NULL,
+  reviewer TEXT NOT NULL,
+  reviewed_at TEXT NOT NULL,
+  rationale TEXT NOT NULL,
+  target_concept_id TEXT,
+  target_path TEXT,
+  authority_tier_after_promotion TEXT,
+  event_hash TEXT NOT NULL,
+  validation_errors_json TEXT NOT NULL DEFAULT '[]',
+  source_refs_json TEXT NOT NULL DEFAULT '[]',
+  body_json TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_learning_reviews_event ON learning_reviews(event_id);
+CREATE INDEX IF NOT EXISTS idx_learning_reviews_decision ON learning_reviews(decision);
+CREATE INDEX IF NOT EXISTS idx_learning_reviews_target ON learning_reviews(target_concept_id);
+
 CREATE TABLE IF NOT EXISTS enrichment_runs (
   run_id TEXT PRIMARY KEY,
   concept_id TEXT,

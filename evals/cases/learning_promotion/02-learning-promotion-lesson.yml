@@ -1,0 +1,16 @@
+id: learning-promotion-002-lesson
+task: Promote an Engineering Loop learning event into a curated lesson preview
+suite: learning_promotion
+role: human_review
+inputs:
+  event: engineering_loop:fixture-context-pack-consumption
+  promotion_kind: lesson
+  reviewer: eval-reviewer
+expected:
+  blocker_free: true
+  authority_tier: A1
+  target_prefix: curated/lessons/
+forbidden: {}
+must_pass: true
+metrics:
+  dry_run_only: true

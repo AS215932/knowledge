@@ -1,0 +1,16 @@
+id: learning-promotion-001-summary
+task: Promote a NOC shadow learning event into an A2 summary preview
+suite: learning_promotion
+role: human_review
+inputs:
+  event: noc_shadow:fixture-shadow-eval-summary
+  promotion_kind: summary
+  reviewer: eval-reviewer
+expected:
+  blocker_free: true
+  authority_tier: A2
+  target_prefix: curated/summaries/
+forbidden: {}
+must_pass: true
+metrics:
+  dry_run_only: true

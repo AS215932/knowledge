@@ -26,11 +26,12 @@ from .enrich import enrich_target
 from .evals import eval_check, load_eval_cases, write_eval_reports
 from .exporter import exports_match, write_exports
 from .github_source import collect_snapshot
-from .learning_ledger import ledger_check, write_learning_ledger_reports
+from .learning_ledger import LearningLedgerError, ledger_check, write_learning_ledger_reports
 from .models import Concept, RepoSnapshot, SourceRef
 from .observe import collect_safe_health
 from .okf_writer import reset_generated, write_concepts, write_indexes
 from .policy import policy_decision_for
+from .promotion import LearningPromotionError, build_review_packet, promote_learning_event
 from .quality import quality_check, write_quality_reports
 from .retrieval import KnowledgeRetriever
 from .store import KnowledgeStore, KnowledgeStoreError
@@ -63,6 +64,7 @@ def ensure_curated_indexes() -> None:
         "policies": "OKF-owned policy and escalation rules.",
         "postmortems": "Incident retrospectives.",
         "strategy": "Business and long-range context.",
+        "summaries": "Human-reviewed learning and trace summaries.",
     }
     root_lines = ["# Curated knowledge", ""]
     for name, description in sections.items():
@@ -622,6 +624,37 @@ def cmd_find_stale(args: argparse.Namespace) -> int:
 
 def cmd_ledger(args: argparse.Namespace) -> int:
     paths = [Path(path) for path in args.paths] if args.paths else None
+    if args.list:
+        events, findings = write_learning_ledger_reports(paths)
+        print_json({"events": [{"id": event["id"], "event_type": event["event_type"], "producer": event["producer"], "subject": event["subject"], "status": event["status"]} for event in events], "findings": findings})
+        return 1 if findings else 0
+    if args.review:
+        try:
+            print_json(build_review_packet(args.review, paths=paths, promotion_kind=args.promotion_kind))
+        except (LearningLedgerError, LearningPromotionError) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        return 0
+    if args.promote:
+        try:
+            result = promote_learning_event(
+                args.promote,
+                reviewer=args.reviewer or "",
+                promotion_kind=args.promotion_kind,
+                decision=args.decision,
+                rationale=args.rationale,
+                paths=paths,
+                dry_run=args.dry_run,
+            )
+            if result.wrote:
+                ensure_curated_indexes()
+                config = load_config(Path(args.config))
+                write_exports(config.bundle_root, config.exports_dir, run_id=run_id())
+            print_json(result.as_json())
+        except (LearningLedgerError, LearningPromotionError) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        return 0
     if args.write:
         _, findings = write_learning_ledger_reports(paths)
         for finding in findings:
@@ -791,8 +824,16 @@ def build_parser() -> argparse.ArgumentParser:
 
     ledger = subparsers.add_parser("ledger")
     ledger.add_argument("paths", nargs="*")
-    ledger.add_argument("--write", action="store_true")
-    ledger.add_argument("--check", action="store_true")
+    ledger.add_argument("--write", action="store_true", help="write ledger validation reports")
+    ledger.add_argument("--check", action="store_true", help="validate ledger fixtures")
+    ledger.add_argument("--list", action="store_true", help="list learning events with validation findings")
+    ledger.add_argument("--review", help="print a human review packet for a learning event id/subject")
+    ledger.add_argument("--promote", help="promote a learning event id/subject into curated OKF")
+    ledger.add_argument("--reviewer", help="human reviewer identity for --promote")
+    ledger.add_argument("--promotion-kind", choices=["lesson", "summary"], default="summary")
+    ledger.add_argument("--decision", choices=["approved", "rejected"], default="approved")
+    ledger.add_argument("--rationale", default="Reviewed and accepted for curated OKF promotion.")
+    ledger.add_argument("--dry-run", action="store_true")
     ledger.set_defaults(func=cmd_ledger)
 
     mcp = subparsers.add_parser("mcp")

@@ -154,9 +154,10 @@ def write_exports(
     claim_rows = [claim.as_json() for claim in compile_claims(concepts, edge_rows, extracted_at=_claim_extracted_at(concepts))]
     context_pack_rows = read_jsonl(Path("reports/context-packs.jsonl"))
     policy_decision_rows = read_jsonl(Path("reports/policy-decisions.jsonl"))
-    eval_case_rows = read_jsonl(Path("exports/eval-cases.jsonl")) or read_jsonl(Path("reports/eval-cases.jsonl"))
+    eval_case_rows = read_jsonl(Path("reports/eval-cases.jsonl")) or read_jsonl(Path("exports/eval-cases.jsonl"))
     eval_result_rows = read_jsonl(Path("reports/evals.jsonl"))
     learning_event_rows = load_learning_events()
+    learning_review_rows = _learning_review_rows()
 
     write_jsonl(exports_dir / "concepts.jsonl", concepts_public)
     write_jsonl(exports_dir / "sources.jsonl", source_rows)
@@ -170,6 +171,7 @@ def write_exports(
     write_jsonl(exports_dir / "eval-cases.jsonl", eval_case_rows)
     write_jsonl(exports_dir / "eval-results.jsonl", eval_result_rows)
     write_jsonl(exports_dir / "learning-events.jsonl", learning_event_rows)
+    write_jsonl(exports_dir / "learning-reviews.jsonl", learning_review_rows)
     manifest = {
         "concept_count": len(concepts),
         "edge_count": len(edge_rows),
@@ -183,6 +185,7 @@ def write_exports(
         "eval_case_count": len(eval_case_rows),
         "eval_result_count": len(eval_result_rows),
         "learning_event_count": len(learning_event_rows),
+        "learning_review_count": len(learning_review_rows),
         "learning_ledger_version": "learning_ledger_v1",
         "retrieval_version": "retrieval_v1",
         "policy_version": "knowledge_policy_v1",
@@ -205,8 +208,18 @@ def write_exports(
         eval_case_rows,
         eval_result_rows,
         learning_event_rows,
+        learning_review_rows,
         manifest,
     )
+
+
+def _learning_review_rows() -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for path in sorted(Path("ledger/reviews").glob("*.json")):
+        loaded = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(loaded, dict):
+            rows.append({"path": path.as_posix(), **loaded})
+    return rows
 
 
 def _claim_extracted_at(concepts: list[dict[str, Any]]) -> str:
@@ -229,6 +242,7 @@ def write_sqlite(
     eval_case_rows: list[dict[str, Any]],
     eval_result_rows: list[dict[str, Any]],
     learning_event_rows: list[dict[str, Any]],
+    learning_review_rows: list[dict[str, Any]],
     manifest: dict[str, Any],
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -443,6 +457,34 @@ def write_sqlite(
                     json.dumps(event.get("promotion", {}), sort_keys=True),
                     json.dumps(event.get("metadata", {}), sort_keys=True),
                     json.dumps(event, sort_keys=True),
+                ),
+            )
+        for review in learning_review_rows:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO learning_reviews (
+                  id, event_id, event_type, decision, promotion_kind, reviewer,
+                  reviewed_at, rationale, target_concept_id, target_path,
+                  authority_tier_after_promotion, event_hash, validation_errors_json,
+                  source_refs_json, body_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    review.get("id"),
+                    review.get("event_id"),
+                    review.get("event_type"),
+                    review.get("decision"),
+                    review.get("promotion_kind"),
+                    review.get("reviewer"),
+                    review.get("reviewed_at"),
+                    review.get("rationale"),
+                    review.get("target_concept_id"),
+                    review.get("target_path"),
+                    review.get("authority_tier_after_promotion"),
+                    review.get("event_hash"),
+                    json.dumps(review.get("validation_errors", []), sort_keys=True),
+                    json.dumps(review.get("source_refs", []), sort_keys=True),
+                    json.dumps(review, sort_keys=True),
                 ),
             )
         conn.execute(
