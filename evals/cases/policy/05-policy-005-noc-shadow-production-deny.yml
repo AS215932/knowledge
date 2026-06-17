@@ -1,0 +1,15 @@
+id: policy-005-noc-shadow-production-deny
+suite: policy
+task: Deny NOC shadow production mutation
+role: noc_shadow
+inputs:
+  actor: noc_shadow
+  action: production.modify_firewall
+  environment: production
+  risk_level: high
+  tool_tier: 5
+expected:
+  policy_result: deny
+forbidden: {}
+must_pass: true
+metrics: {}

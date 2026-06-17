@@ -1,0 +1,17 @@
+id: retrieval-008-noc-agent-deployment
+suite: retrieval
+task: Find NOC Agent deployment on noc
+role: engineering_loop
+inputs:
+  query: noc-agent deployment noc
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/deployments/noc-agent-on-noc
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

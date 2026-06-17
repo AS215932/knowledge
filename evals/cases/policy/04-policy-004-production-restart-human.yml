@@ -1,0 +1,15 @@
+id: policy-004-production-restart-human
+suite: policy
+task: Require human for production restart
+role: engineering_loop
+inputs:
+  actor: engineering_loop
+  action: production.restart_service
+  environment: production
+  risk_level: high
+  tool_tier: 5
+expected:
+  policy_result: require_human
+forbidden: {}
+must_pass: true
+metrics: {}

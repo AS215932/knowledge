@@ -11,8 +11,12 @@ dependencies = [
     "PyYAML>=6.0.2",
 ]
 
+[project.optional-dependencies]
+mcp = ["mcp>=1.27.0"]
+
 [project.scripts]
 hyrule-knowledge = "hyrule_knowledge.cli:main"
+hyrule-knowledge-mcp = "hyrule_knowledge.mcp_server:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hyrule_knowledge"]

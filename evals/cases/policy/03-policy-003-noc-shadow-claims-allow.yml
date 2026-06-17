@@ -1,0 +1,12 @@
+id: policy-003-noc-shadow-claims-allow
+suite: policy
+task: Allow NOC shadow claim reads
+role: noc_shadow
+inputs:
+  actor: noc_shadow
+  action: knowledge.claims
+expected:
+  policy_result: allow
+forbidden: {}
+must_pass: true
+metrics: {}

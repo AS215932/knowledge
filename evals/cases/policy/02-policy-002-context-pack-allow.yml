@@ -1,0 +1,12 @@
+id: policy-002-context-pack-allow
+suite: policy
+task: Allow Engineering Loop context-pack generation
+role: engineering_loop
+inputs:
+  actor: engineering_loop
+  action: knowledge.context_pack.generate
+expected:
+  policy_result: allow
+forbidden: {}
+must_pass: true
+metrics: {}

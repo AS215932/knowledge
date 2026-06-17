@@ -1,0 +1,17 @@
+id: retrieval-015-system-map
+suite: retrieval
+task: Find AS215932 architecture map
+role: engineering_loop
+inputs:
+  query: curated/architecture/as215932-system-map AS215932 system map architecture
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/projects/network-operations
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

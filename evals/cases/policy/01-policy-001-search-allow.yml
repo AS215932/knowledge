@@ -1,0 +1,12 @@
+id: policy-001-search-allow
+suite: policy
+task: Allow Engineering Loop read-only search
+role: engineering_loop
+inputs:
+  actor: engineering_loop
+  action: knowledge.search
+expected:
+  policy_result: allow
+forbidden: {}
+must_pass: true
+metrics: {}

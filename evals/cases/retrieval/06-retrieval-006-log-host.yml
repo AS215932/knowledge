@@ -1,0 +1,17 @@
+id: retrieval-006-log-host
+suite: retrieval
+task: Find the log host without colliding with reserved filename
+role: engineering_loop
+inputs:
+  query: log host infrastructure
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/infrastructure/hosts/host-log
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

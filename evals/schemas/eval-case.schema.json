@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS215932 Knowledge Eval Case",
+  "type": "object",
+  "required": [
+    "id",
+    "suite",
+    "task",
+    "inputs",
+    "expected"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "suite": {
+      "type": "string",
+      "enum": [
+        "retrieval",
+        "grounding",
+        "policy",
+        "engineering_loop",
+        "noc_shadow"
+      ]
+    },
+    "task": {
+      "type": "string"
+    },
+    "role": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "expected": {
+      "type": "object"
+    },
+    "forbidden": {
+      "type": "object"
+    },
+    "must_pass": {
+      "type": "boolean"
+    },
+    "metrics": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

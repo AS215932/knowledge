@@ -3,20 +3,36 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from .authority import AuthorityTier
 from .builder import build_all, source_ref
 from .config import SourceConfig, load_config
+from .context_pack import (
+    build_context_pack,
+    deployment_pins,
+    diff_intended_observed,
+    endpoint_schema,
+    find_conflicts,
+    find_stale,
+    intended_state,
+    observed_state,
+)
 from .enrich import enrich_target
+from .evals import eval_check, load_eval_cases, write_eval_reports
 from .exporter import exports_match, write_exports
 from .github_source import collect_snapshot
 from .models import Concept, RepoSnapshot, SourceRef
 from .observe import collect_safe_health
 from .okf_writer import reset_generated, write_concepts, write_indexes
+from .policy import policy_decision_for
 from .quality import quality_check, write_quality_reports
+from .retrieval import KnowledgeRetriever
+from .store import KnowledgeStore, KnowledgeStoreError
 from .validator import scan_paths, validate_okf
 
 
@@ -26,6 +42,15 @@ def utc_now() -> str:
 
 def run_id() -> str:
     return os.environ.get("GITHUB_RUN_ID") or f"local-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}"
+
+
+def print_json(data: object) -> None:
+    print(json.dumps(data, sort_keys=True, indent=2, ensure_ascii=False))
+
+
+def open_store(config_path: str) -> KnowledgeStore:
+    config = load_config(Path(config_path))
+    return KnowledgeStore(config.exports_dir / "knowledge.sqlite")
 
 
 def ensure_curated_indexes() -> None:
@@ -400,6 +425,230 @@ def cmd_scan_secrets(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_resolve(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            result = KnowledgeRetriever(store).resolve(args.reference, authority_min=AuthorityTier(args.authority_min))
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json(result)
+    return 0
+
+
+def cmd_query(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            candidates = KnowledgeRetriever(store).query(
+                args.query,
+                authority_min=AuthorityTier(args.authority_min),
+                freshness=args.freshness,
+                limit=args.limit,
+                concept_type=args.type,
+                repo=args.repo,
+            )
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    rows = [candidate.as_json() for candidate in candidates]
+    if args.json:
+        print_json({"query": args.query, "candidates": rows})
+    else:
+        for row in rows:
+            print(f"{row['concept_id']}\t{row['authority_tier']}\t{row['reason']}\t{row['title']}")
+    return 0
+
+
+def cmd_claims(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            rows = store.claims(
+                subject=args.subject,
+                predicate=args.predicate,
+                object_value=args.object,
+                concept_id=args.concept_id,
+                authority_min=AuthorityTier(args.authority_min),
+                freshness=args.freshness,
+                limit=args.limit,
+            )
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json({"claims": rows})
+    return 0
+
+
+def cmd_neighborhood(args: argparse.Namespace) -> int:
+    try:
+        edge_types = set(args.edge_type or []) or None
+        with open_store(args.config) as store:
+            rows = KnowledgeRetriever(store).neighborhood(
+                args.concept_id,
+                depth=args.depth,
+                edge_types=edge_types,
+                authority_min=AuthorityTier(args.authority_min),
+            )
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json({"concept_id": args.concept_id, "neighbors": rows})
+    return 0
+
+
+def cmd_context_pack(args: argparse.Namespace) -> int:
+    task = Path(args.task_file).read_text(encoding="utf-8") if args.task_file else args.task
+    if not task:
+        print("context-pack requires --task or --task-file", file=sys.stderr)
+        return 1
+    try:
+        with open_store(args.config) as store:
+            pack = build_context_pack(
+                task=task,
+                role=args.role,
+                store=store,
+                risk_level=args.risk_level,
+                token_budget=args.budget_tokens,
+                authority_min=AuthorityTier(args.authority_min),
+            )
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    data = pack.as_json()
+    if args.write:
+        out = Path(args.write)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(data, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+        reports = Path("reports/context-packs.jsonl")
+        reports.parent.mkdir(parents=True, exist_ok=True)
+        reports.write_text(json.dumps(data, sort_keys=True) + "\n", encoding="utf-8")
+    print_json(data)
+    return 0
+
+
+def cmd_intended_state(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            result = intended_state(store, args.scope)
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json(result)
+    return 0
+
+
+def cmd_observed_state(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            result = observed_state(store, args.scope, window_hours=args.window_hours)
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json(result)
+    return 0
+
+
+def cmd_diff_intended_observed(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            result = diff_intended_observed(store, args.scope)
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json(result)
+    return 0
+
+
+def cmd_deployment_pins(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            result = deployment_pins(store, args.service)
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json(result)
+    return 0
+
+
+def cmd_endpoint_schema(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            result = endpoint_schema(store, args.method, args.route)
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json(result)
+    return 0
+
+
+def cmd_policy_decision(args: argparse.Namespace) -> int:
+    decision = policy_decision_for(
+        actor=args.actor,
+        action=args.action,
+        target=args.target,
+        environment=args.environment,
+        risk_level=args.risk_level,
+        tool_tier=args.tool_tier,
+        data_classes=args.data_class or [],
+    )
+    reports = Path("reports/policy-decisions.jsonl")
+    reports.parent.mkdir(parents=True, exist_ok=True)
+    reports.write_text(json.dumps(decision.as_json(), sort_keys=True) + "\n", encoding="utf-8")
+    print_json(decision.as_json())
+    return 0
+
+
+def cmd_find_conflicts(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            rows = find_conflicts(store, scope=args.scope)
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json({"conflicts": rows})
+    return 0
+
+
+def cmd_find_stale(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            rows = find_stale(store, scope=args.scope)
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print_json({"stale": rows})
+    return 0
+
+
+def cmd_eval(args: argparse.Namespace) -> int:
+    try:
+        with open_store(args.config) as store:
+            if args.write:
+                results = write_eval_reports(store=store, suite=args.suite)
+                config = load_config(Path(args.config))
+                cases = [case.as_json() for case in load_eval_cases()]
+                Path("reports/eval-cases.jsonl").write_text("".join(json.dumps(case, sort_keys=True) + "\n" for case in cases), encoding="utf-8")
+                write_exports(config.bundle_root, config.exports_dir, run_id=run_id())
+                print(f"eval reports written: {sum(1 for result in results if result.passed)}/{len(results)} passed")
+                return 0
+    except KnowledgeStoreError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    failures = eval_check()
+    for failure in failures:
+        print(failure, file=sys.stderr)
+    if failures:
+        print(f"eval check failed: {len(failures)} failure(s)", file=sys.stderr)
+        return 1
+    print("eval check passed")
+    return 0
+
+
+def cmd_mcp(args: argparse.Namespace) -> int:
+    from .mcp_server import main as mcp_main
+
+    return mcp_main(["--transport", args.transport, "--db", str(load_config(Path(args.config)).exports_dir / "knowledge.sqlite")])
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="hyrule-knowledge")
     parser.add_argument("--config", default="knowledge.config.yml")
@@ -429,6 +678,98 @@ def build_parser() -> argparse.ArgumentParser:
     observe = subparsers.add_parser("observe")
     observe.add_argument("--profile", default="safe-health")
     observe.set_defaults(func=cmd_observe)
+
+    resolve = subparsers.add_parser("resolve")
+    resolve.add_argument("reference")
+    resolve.add_argument("--authority-min", default="A5", choices=["A0", "A1", "A2", "A3", "A4", "A5"])
+    resolve.set_defaults(func=cmd_resolve)
+
+    query = subparsers.add_parser("query")
+    query.add_argument("query")
+    query.add_argument("--authority-min", default="A5", choices=["A0", "A1", "A2", "A3", "A4", "A5"])
+    query.add_argument("--freshness", default="current", choices=["current", "include_expired"])
+    query.add_argument("--limit", type=int, default=10)
+    query.add_argument("--type")
+    query.add_argument("--repo")
+    query.add_argument("--json", action="store_true")
+    query.set_defaults(func=cmd_query)
+
+    claims = subparsers.add_parser("claims")
+    claims.add_argument("--subject")
+    claims.add_argument("--predicate")
+    claims.add_argument("--object")
+    claims.add_argument("--concept-id")
+    claims.add_argument("--authority-min", default="A5", choices=["A0", "A1", "A2", "A3", "A4", "A5"])
+    claims.add_argument("--freshness", default="current", choices=["current", "include_expired"])
+    claims.add_argument("--limit", type=int, default=50)
+    claims.set_defaults(func=cmd_claims)
+
+    neighborhood = subparsers.add_parser("neighborhood")
+    neighborhood.add_argument("concept_id")
+    neighborhood.add_argument("--depth", type=int, default=1)
+    neighborhood.add_argument("--edge-type", action="append")
+    neighborhood.add_argument("--authority-min", default="A5", choices=["A0", "A1", "A2", "A3", "A4", "A5"])
+    neighborhood.set_defaults(func=cmd_neighborhood)
+
+    context_pack = subparsers.add_parser("context-pack")
+    context_pack.add_argument("--task")
+    context_pack.add_argument("--task-file")
+    context_pack.add_argument("--role", default="engineering_loop", choices=["engineering_loop", "noc_shadow", "general"])
+    context_pack.add_argument("--risk-level", default="low", choices=["low", "medium", "high", "critical"])
+    context_pack.add_argument("--budget-tokens", type=int, default=6000)
+    context_pack.add_argument("--authority-min", default="A4", choices=["A0", "A1", "A2", "A3", "A4", "A5"])
+    context_pack.add_argument("--write")
+    context_pack.set_defaults(func=cmd_context_pack)
+
+    intended = subparsers.add_parser("intended-state")
+    intended.add_argument("scope")
+    intended.set_defaults(func=cmd_intended_state)
+
+    observed_state_parser = subparsers.add_parser("observed-state")
+    observed_state_parser.add_argument("scope")
+    observed_state_parser.add_argument("--window-hours", type=int, default=24)
+    observed_state_parser.set_defaults(func=cmd_observed_state)
+
+    diff = subparsers.add_parser("diff-intended-observed")
+    diff.add_argument("scope")
+    diff.set_defaults(func=cmd_diff_intended_observed)
+
+    pins = subparsers.add_parser("deployment-pins")
+    pins.add_argument("service")
+    pins.set_defaults(func=cmd_deployment_pins)
+
+    endpoint = subparsers.add_parser("endpoint-schema")
+    endpoint.add_argument("method")
+    endpoint.add_argument("route")
+    endpoint.set_defaults(func=cmd_endpoint_schema)
+
+    policy = subparsers.add_parser("policy-decision")
+    policy.add_argument("--actor", default="engineering_loop")
+    policy.add_argument("--action", required=True)
+    policy.add_argument("--target")
+    policy.add_argument("--environment", default="local")
+    policy.add_argument("--risk-level", default="low")
+    policy.add_argument("--tool-tier", type=int, default=0)
+    policy.add_argument("--data-class", action="append")
+    policy.set_defaults(func=cmd_policy_decision)
+
+    conflicts = subparsers.add_parser("find-conflicts")
+    conflicts.add_argument("--scope")
+    conflicts.set_defaults(func=cmd_find_conflicts)
+
+    stale = subparsers.add_parser("find-stale")
+    stale.add_argument("--scope")
+    stale.set_defaults(func=cmd_find_stale)
+
+    eval_parser = subparsers.add_parser("eval")
+    eval_parser.add_argument("--suite")
+    eval_parser.add_argument("--write", action="store_true")
+    eval_parser.add_argument("--check", action="store_true")
+    eval_parser.set_defaults(func=cmd_eval)
+
+    mcp = subparsers.add_parser("mcp")
+    mcp.add_argument("--transport", default="stdio", choices=["stdio"])
+    mcp.set_defaults(func=cmd_mcp)
 
     export = subparsers.add_parser("export")
     export.add_argument("--check", action="store_true")

@@ -1,0 +1,21 @@
+id: grounding-006-web-context
+suite: grounding
+task: Ground Hyrule Web context
+role: engineering_loop
+inputs:
+  query: Review Hyrule Web routing and deployment context
+  context_pack: true
+  authority_min: A4
+  risk_level: low
+expected:
+  refs_any:
+  - generated/services/hyrule-web
+  sections:
+  - target_repo_source_truth
+  - related_services_and_hosts
+  policy_result: allow
+forbidden: {}
+must_pass: true
+metrics:
+  citations_required: true
+  vector_scores_null: true

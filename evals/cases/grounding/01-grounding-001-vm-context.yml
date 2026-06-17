@@ -1,0 +1,22 @@
+id: grounding-001-vm-context
+suite: grounding
+task: Ground a VM create implementation task
+role: engineering_loop
+inputs:
+  query: Engineer change to POST /v1/vm/create in hyrule-cloud
+  context_pack: true
+  authority_min: A4
+  risk_level: low
+expected:
+  refs_any:
+  - generated/api/hyrule-cloud/hyrule-cloud-post-v1-vm-create-hyrule-cloud-api-routes-py-639
+  sections:
+  - target_repo_source_truth
+  - api_schema_or_deployment_context
+  - forbidden_actions
+  policy_result: allow
+forbidden: {}
+must_pass: true
+metrics:
+  citations_required: true
+  vector_scores_null: true
