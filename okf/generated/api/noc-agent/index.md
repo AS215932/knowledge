@@ -1,0 +1,31 @@
+# generated/api/noc-agent
+
+* [GET /control](noc-agent-get-control-app-main-py-802.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /control/cases](noc-agent-get-control-cases-app-main-py-808.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /control/cases/{case_id}](noc-agent-get-control-cases-case-id-app-main-py-832.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /control/cases/{case_id}/events](noc-agent-get-control-cases-case-id-events-app-main-py-841.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /control/incidents/pending](noc-agent-get-control-incidents-pending-app-main-py-787.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /control/incidents/{incident_id}](noc-agent-get-control-incidents-incident-id-app-main-py-793.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /control/proactive/status](noc-agent-get-control-proactive-status-app-main-py-920.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /control/proactive/suppressions](noc-agent-get-control-proactive-suppressions-app-main-py-1032.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /health](noc-agent-get-health-app-main-py-782.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /health/config](noc-agent-get-health-config-app-main-py-1109.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /health/mail](noc-agent-get-health-mail-app-main-py-1203.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /health/mcp](noc-agent-get-health-mcp-app-main-py-1101.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /health/model](noc-agent-get-health-model-app-main-py-1176.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [GET /metrics](noc-agent-get-metrics-app-main-py-1196.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /approval/resume](noc-agent-post-approval-resume-app-main-py-1086.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/cases/investigate](noc-agent-post-control-cases-investigate-app-main-py-889.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/cases/{case_id}/comment](noc-agent-post-control-cases-case-id-comment-app-main-py-850.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/cases/{case_id}/decision](noc-agent-post-control-cases-case-id-decision-app-main-py-865.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/incidents/{incident_id}/decision](noc-agent-post-control-incidents-incident-id-decision-app-main-py-1072.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/proactive/ack](noc-agent-post-control-proactive-ack-app-main-py-1042.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/proactive/pause](noc-agent-post-control-proactive-pause-app-main-py-973.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/proactive/resume](noc-agent-post-control-proactive-resume-app-main-py-986.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/proactive/run-once](noc-agent-post-control-proactive-run-once-app-main-py-999.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/proactive/unack](noc-agent-post-control-proactive-unack-app-main-py-1060.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /control/status](noc-agent-post-control-status-app-main-py-906.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /mail/poll](noc-agent-post-mail-poll-app-main-py-722.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /task](noc-agent-post-task-app-main-py-757.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /webhook/alertmanager](noc-agent-post-webhook-alertmanager-app-main-py-685.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.
+* [POST /webhook/icinga](noc-agent-post-webhook-icinga-app-main-py-704.md) - Detected API endpoint in AS215932/noc-agent:app/main.py.

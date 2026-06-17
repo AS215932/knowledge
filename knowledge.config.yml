@@ -1,0 +1,104 @@
+okf_version: "0.1"
+organization: AS215932
+bundle_root: okf
+exports_dir: exports
+cache_dir: .cache/hyrule-knowledge
+self_repo: AS215932/knowledge
+
+sources:
+  - repo: AS215932/.github
+    slug: org-profile
+    project_type: Organization
+    title: AS215932 GitHub Organization Profile
+    tags: [as215932, github, organization]
+  - repo: AS215932/network-operations
+    project_type: Project
+    title: AS215932 Network Operations
+    service_title: Network Operations
+    tags: [as215932, network-operations, infrastructure, bgp, ipv6]
+  - repo: AS215932/hyrule-cloud
+    project_type: Service
+    title: Hyrule Cloud
+    tags: [hyrule, cloud, vps, x402, api]
+  - repo: AS215932/hyrule-web
+    project_type: Service
+    title: Hyrule Web
+    tags: [hyrule, web, website]
+  - repo: AS215932/noc-agent
+    local_alias: hyrule-noc-agent
+    project_type: Service
+    title: Hyrule NOC Agent
+    tags: [hyrule, noc, incident-response, monitoring]
+  - repo: AS215932/hyrule-network-proxy
+    project_type: Service
+    title: Hyrule Network Proxy
+    tags: [hyrule, network-proxy, x402, go]
+  - repo: AS215932/hyrule-mcp
+    project_type: Service
+    title: Hyrule MCP
+    tags: [hyrule, mcp, diagnostics, monitoring]
+  - repo: AS215932/engineering-loop
+    project_type: Service
+    title: Hyrule Engineering Loop
+    tags: [hyrule, engineering-loop, automation, langgraph]
+  - repo: AS215932/as215932.net
+    project_type: Service
+    title: as215932.net
+    tags: [as215932, website, peering, looking-glass]
+  - repo: AS215932/hyrule-business
+    project_type: Project
+    title: Hyrule Business
+    tags: [hyrule, business, strategy, finance]
+
+include_patterns:
+  - README.md
+  - profile/README.md
+  - AGENTS.md
+  - CLAUDE.md
+  - TESTING.md
+  - CONTRIBUTING.md
+  - CHANGELOG.md
+  - docs/**/*.md
+  - skills/**/*.md
+  - SKILL*.md
+  - .github/workflows/*.yml
+  - .github/workflows/*.yaml
+  - pyproject.toml
+  - package.json
+  - go.mod
+  - alembic/versions/*.py
+  - ansible/inventory/**/*.yml
+  - ansible/inventory/**/*.yaml
+  - configs/**/*.zone
+  - configs/**/*.service
+
+exclude_patterns:
+  - .git/**
+  - .venv/**
+  - node_modules/**
+  - .pytest_cache/**
+  - .env
+  - .env.*
+  - "**/*secret*"
+  - "**/*private*"
+  - "**/*token*"
+  - "**/*key*"
+  - "**/*.pem"
+  - "**/*.vault.yml"
+  - "**/wallet*"
+  - "**/*.log"
+  - .tmp/**
+
+github:
+  issue_limit: 100
+  pr_limit: 100
+  release_limit: 20
+
+redaction:
+  forbidden_regexes:
+    - '(?i)-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----'
+    - '(?i)gh[pousr]_[A-Za-z0-9_]{20,}'
+    - '(?i)github_pat_[A-Za-z0-9_]{20,}'
+    - '(?i)xox[baprs]-[A-Za-z0-9-]{10,}'
+    - '(?i)(api[_-]?key|auth[_-]?token|secret|password)\s*[:=]\s*[^\s\]})]+'
+    - '(?i)authorization:\s*bearer\s+[A-Za-z0-9._~+/=-]+'

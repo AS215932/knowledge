@@ -1,0 +1,104 @@
+---
+type: Skill
+title: Hyrule Threat Reputation Skill
+description: Use Hyrule Cloud when an AI agent needs open-source-first domain, IP,
+  RBL, certificate transparency, RDAP/WHOIS, or reputation context.
+resource: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-threat-reputation.md
+tags:
+- as215932
+- hyrule-cloud
+- skill
+timestamp: '2026-06-16T13:11:34Z'
+truth_owner: repo
+authority: canonical
+source_refs:
+- repo: AS215932/hyrule-cloud
+  path: SKILL-threat-reputation.md
+  commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
+  lines: 1-57
+  url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-threat-reputation.md#L1-L57
+last_verified_at: '2026-06-17T09:19:10Z'
+confidence: high
+dispute_policy: repo_wins
+repo: AS215932/hyrule-cloud
+source_path: SKILL-threat-reputation.md
+commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
+---
+
+# Source
+
+| Field | Value |
+| --- | --- |
+| Repository | `AS215932/hyrule-cloud` |
+| Path | `SKILL-threat-reputation.md` |
+| Commit | `81e4316f3d1f4e7f770bc2589bd84a2c7972aad5` |
+| Lines | `57` |
+
+# Detected headings
+
+* `# Hyrule Threat Reputation Skill`
+* `## Source policy`
+* `## Discovery`
+* `## Paid lookup`
+* `## Shortcuts`
+* `## Agent guidance`
+
+# Deterministic excerpt
+
+```markdown
+# Hyrule Threat Reputation Skill
+
+Use Hyrule Cloud when an AI agent needs open-source-first domain, IP, RBL,
+certificate transparency, RDAP/WHOIS, or reputation context.
+
+## Source policy
+
+The MVP uses public/open sources first and never scrapes provider portals.
+Licensed or owner-verified sources return `source_not_configured` until
+credentials and terms are in place.
+
+Supported/open-source-first sources:
+
+- DNS/RDAP/WHOIS context
+- crt.sh-compatible Certificate Transparency adapter
+- basic DNSBL/RBL where provider terms permit
+
+Provider adapters reserved for later configuration:
+
+- Spamhaus commercial/API
+- Spamcop
+- Barracuda
+- Talos
+- SenderScore
+- Microsoft SNDS
+- Google Postmaster
+
+## Discovery
+
+```bash
+curl https://cloud.hyrule.host/v1/threat/capabilities
+curl https://cloud.hyrule.host/v1/threat/sources
+curl https://cloud.hyrule.host/v1/threat/pricing
+```
+
+## Paid lookup
+
+```bash
+curl -X POST https://cloud.hyrule.host/v1/threat/lookup \
+  -H 'Content-Type: application/json' \
+  -H 'X-PAYMENT: <x402-payment>' \
+  -d '{"subject":{"type":"domain","value":"example.com"},"views":["rbl","ct","rdap","whois","dns","reputation"]}'
+```
+
+## Shortcuts
+
+```bash
+curl -H 'X-PAYMENT: <x402-payment>' https://cloud.hyrule.host/v1/threat/domain/example.com
+curl -H 'X-PAYMENT: <x402-payment>' https://cloud.hyrule.host/v1/threat/rbl?target=203.0.113.10
+curl -H 'X-PAYMENT: <x402-payment>' htt
+...
+```
+
+# Citations
+
+[1] [SKILL-threat-reputation.md](https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-threat-reputation.md)

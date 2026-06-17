@@ -1,0 +1,45 @@
+name: ingest
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.KNOWLEDGE_GH_TOKEN || github.token }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --group dev --frozen
+      - name: Refresh OKF bundle
+        run: uv run hyrule-knowledge ingest
+      - name: Validate refreshed bundle
+        run: |
+          uv run ruff check src tests
+          uv run mypy --strict src
+          uv run pytest
+          uv run hyrule-knowledge validate okf
+          uv run hyrule-knowledge export --check
+          uv run hyrule-knowledge scan-secrets okf exports
+      - name: Create refresh pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: bot/knowledge-refresh/${{ github.run_id }}
+          title: knowledge: refresh OKF catalog ${{ github.run_id }}
+          commit-message: knowledge: refresh OKF catalog
+          body: |
+            Automated deterministic OKF refresh.
+
+            Review provenance, redaction, and generated diffs before merge.
+          labels: knowledge, automated
+          delete-branch: true

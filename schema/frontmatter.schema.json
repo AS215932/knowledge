@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS215932 OKF Concept Frontmatter",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": {"type": "string", "minLength": 1},
+    "title": {"type": "string"},
+    "description": {"type": "string"},
+    "resource": {"type": "string"},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "timestamp": {"type": "string"},
+    "truth_owner": {"enum": ["repo", "okf", "observed", "external", "derived"]},
+    "authority": {"enum": ["canonical", "advisory", "evidence", "stale", "disputed"]},
+    "source_refs": {"type": "array"},
+    "last_verified_at": {"type": "string"},
+    "confidence": {"enum": ["high", "medium", "low"]},
+    "dispute_policy": {"enum": ["repo_wins", "okf_wins", "adjudicate", "evidence_only"]}
+  },
+  "additionalProperties": true
+}
