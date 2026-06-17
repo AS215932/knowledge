@@ -1,0 +1,24 @@
+{
+  "citations": [
+    {
+      "concept_id": "generated/deployments/noc-agent-on-noc",
+      "source_uri": "repo://AS215932/network-operations/ansible/inventory/host_vars/noc.yml@fixture"
+    }
+  ],
+  "event_type": "noc_shadow_eval_summary",
+  "lessons": [
+    "NOC shadow fixtures may compare intended context shape, but committed fixtures must not include live observed traces."
+  ],
+  "metadata": {
+    "fixture": true,
+    "runtime_integration": false
+  },
+  "metrics": {
+    "live_calls": 0,
+    "shadow_only": true,
+    "vector_scores_null": true
+  },
+  "producer": "noc_shadow",
+  "subject": "noc_shadow:fixture-shadow-eval-summary",
+  "summary": "Fixture showing NOC shadow evaluation of knowledge context without live MCP/Prometheus/Icinga calls."
+}

@@ -1,0 +1,24 @@
+{
+  "citations": [
+    {
+      "concept_id": "generated/services/engineering-loop",
+      "source_uri": "repo://AS215932/engineering-loop/README.md@fixture"
+    }
+  ],
+  "event_type": "engineering_loop_run_summary",
+  "lessons": [
+    "Only compact statuses and cited references belong in learning events; raw prompts, diffs, transcripts, and command output stay out."
+  ],
+  "metadata": {
+    "contains_raw_trace": false,
+    "fixture": true
+  },
+  "metrics": {
+    "gate_status": "passed",
+    "policy_status": "passed",
+    "promotion_status": "not_requested"
+  },
+  "producer": "engineering_loop",
+  "subject": "engineering_loop:fixture-run-summary",
+  "summary": "Sanitized fixture for a local Engineering Loop run summary suitable for human review before promotion."
+}

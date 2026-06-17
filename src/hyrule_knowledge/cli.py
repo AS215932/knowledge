@@ -26,6 +26,7 @@ from .enrich import enrich_target
 from .evals import eval_check, load_eval_cases, write_eval_reports
 from .exporter import exports_match, write_exports
 from .github_source import collect_snapshot
+from .learning_ledger import ledger_check, write_learning_ledger_reports
 from .models import Concept, RepoSnapshot, SourceRef
 from .observe import collect_safe_health
 from .okf_writer import reset_generated, write_concepts, write_indexes
@@ -619,6 +620,27 @@ def cmd_find_stale(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ledger(args: argparse.Namespace) -> int:
+    paths = [Path(path) for path in args.paths] if args.paths else None
+    if args.write:
+        _, findings = write_learning_ledger_reports(paths)
+        for finding in findings:
+            print(f"{finding['event_id']}: {finding['message']}", file=sys.stderr)
+        if findings:
+            print(f"learning ledger report failed: {len(findings)} finding(s)", file=sys.stderr)
+            return 1
+        print("learning ledger reports written")
+        return 0
+    failures = ledger_check(paths)
+    for failure in failures:
+        print(failure, file=sys.stderr)
+    if failures:
+        print(f"learning ledger check failed: {len(failures)} failure(s)", file=sys.stderr)
+        return 1
+    print("learning ledger check passed")
+    return 0
+
+
 def cmd_eval(args: argparse.Namespace) -> int:
     try:
         with open_store(args.config) as store:
@@ -766,6 +788,12 @@ def build_parser() -> argparse.ArgumentParser:
     eval_parser.add_argument("--write", action="store_true")
     eval_parser.add_argument("--check", action="store_true")
     eval_parser.set_defaults(func=cmd_eval)
+
+    ledger = subparsers.add_parser("ledger")
+    ledger.add_argument("paths", nargs="*")
+    ledger.add_argument("--write", action="store_true")
+    ledger.add_argument("--check", action="store_true")
+    ledger.set_defaults(func=cmd_ledger)
 
     mcp = subparsers.add_parser("mcp")
     mcp.add_argument("--transport", default="stdio", choices=["stdio"])

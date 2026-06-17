@@ -5,6 +5,7 @@
 * [Observed evidence](observed/) - Manual/local safe-health runtime observations, evidence-only and time-bounded.
 * `exports/knowledge.sqlite` - Read-only machine store with concepts, edges, claims, policy decisions, context packs, eval cases/results, and SQLite FTS.
 * `evals/` - Deterministic retrieval/grounding/policy fixture baseline for agents.
+* `ledger/fixtures/` - Sanitized learning-ledger fixtures only; no committed live traces.
 
 # Generated
 
@@ -27,6 +28,7 @@
 * Conflict rule: A0 > A1 > A2 > A3 > A4/A5; vectors are placeholders only and never override source truth.
 * Policy: `knowledge-policy.yml` is evaluated by the built-in YAML evaluator for read-only knowledge access and human-review boundaries.
 * Context packs: generated manually/local by `hyrule-knowledge context-pack` for Engineering Loop and NOC shadow consumers.
+* Learning ledger: `learning_ledger_v1` stores reviewable A4/A2 summaries with citations; live raw traces stay out of git.
 
 # Curated
 

@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .claims import compile_claims
+from .learning_ledger import load_learning_events
 from .models import Edge
 from .okf_writer import edge_json
 from .validator import parse_frontmatter
@@ -155,6 +156,7 @@ def write_exports(
     policy_decision_rows = read_jsonl(Path("reports/policy-decisions.jsonl"))
     eval_case_rows = read_jsonl(Path("exports/eval-cases.jsonl")) or read_jsonl(Path("reports/eval-cases.jsonl"))
     eval_result_rows = read_jsonl(Path("reports/evals.jsonl"))
+    learning_event_rows = load_learning_events()
 
     write_jsonl(exports_dir / "concepts.jsonl", concepts_public)
     write_jsonl(exports_dir / "sources.jsonl", source_rows)
@@ -167,6 +169,7 @@ def write_exports(
     write_jsonl(exports_dir / "policy-decisions.jsonl", policy_decision_rows)
     write_jsonl(exports_dir / "eval-cases.jsonl", eval_case_rows)
     write_jsonl(exports_dir / "eval-results.jsonl", eval_result_rows)
+    write_jsonl(exports_dir / "learning-events.jsonl", learning_event_rows)
     manifest = {
         "concept_count": len(concepts),
         "edge_count": len(edge_rows),
@@ -179,6 +182,8 @@ def write_exports(
         "policy_decision_count": len(policy_decision_rows),
         "eval_case_count": len(eval_case_rows),
         "eval_result_count": len(eval_result_rows),
+        "learning_event_count": len(learning_event_rows),
+        "learning_ledger_version": "learning_ledger_v1",
         "retrieval_version": "retrieval_v1",
         "policy_version": "knowledge_policy_v1",
         "source_shas": source_shas or {},
@@ -199,6 +204,7 @@ def write_exports(
         policy_decision_rows,
         eval_case_rows,
         eval_result_rows,
+        learning_event_rows,
         manifest,
     )
 
@@ -222,6 +228,7 @@ def write_sqlite(
     policy_decision_rows: list[dict[str, Any]],
     eval_case_rows: list[dict[str, Any]],
     eval_result_rows: list[dict[str, Any]],
+    learning_event_rows: list[dict[str, Any]],
     manifest: dict[str, Any],
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -402,6 +409,40 @@ def write_sqlite(
                     result.get("score"),
                     json.dumps(result.get("metrics", {}), sort_keys=True),
                     json.dumps(result.get("failure_reasons", []), sort_keys=True),
+                ),
+            )
+        for event in learning_event_rows:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO learning_events (
+                  id, ledger_version, event_type, event_time, producer, subject,
+                  summary, status, authority_tier, source_json, data_classes_json,
+                  citations_json, context_pack_ids_json, policy_decision_ids_json,
+                  eval_case_ids_json, metrics_json, lessons_json, promotion_json,
+                  metadata_json, body_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    event.get("id"),
+                    event.get("ledger_version"),
+                    event.get("event_type"),
+                    event.get("event_time"),
+                    event.get("producer"),
+                    event.get("subject"),
+                    event.get("summary"),
+                    event.get("status"),
+                    event.get("authority_tier"),
+                    json.dumps(event.get("source", {}), sort_keys=True),
+                    json.dumps(event.get("data_classes", []), sort_keys=True),
+                    json.dumps(event.get("citations", []), sort_keys=True),
+                    json.dumps(event.get("context_pack_ids", []), sort_keys=True),
+                    json.dumps(event.get("policy_decision_ids", []), sort_keys=True),
+                    json.dumps(event.get("eval_case_ids", []), sort_keys=True),
+                    json.dumps(event.get("metrics", {}), sort_keys=True),
+                    json.dumps(event.get("lessons", []), sort_keys=True),
+                    json.dumps(event.get("promotion", {}), sort_keys=True),
+                    json.dumps(event.get("metadata", {}), sort_keys=True),
+                    json.dumps(event, sort_keys=True),
                 ),
             )
         conn.execute(
