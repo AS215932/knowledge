@@ -1,7 +1,7 @@
 ---
 type: API Endpoint
 title: ANY POST /v1/request
-description: Detected API endpoint in AS215932/hyrule-network-proxy:internal/server/server.go.
+description: Static API endpoint `ANY POST /v1/request` in AS215932/hyrule-network-proxy.
 resource: https://github.com/AS215932/hyrule-network-proxy/blob/b82dc72bbf382167062bff272606ce84ec20538c/internal/server/server.go#L25
 tags:
 - any
@@ -16,13 +16,15 @@ source_refs:
   commit: b82dc72bbf382167062bff272606ce84ec20538c
   lines: '25'
   url: https://github.com/AS215932/hyrule-network-proxy/blob/b82dc72bbf382167062bff272606ce84ec20538c/internal/server/server.go#L25
-last_verified_at: '2026-06-17T09:19:10Z'
-confidence: medium
+last_verified_at: '2026-06-17T10:18:30Z'
+confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-network-proxy
 method: ANY
 route: POST /v1/request
 source_path: internal/server/server.go
+function_name: s.withAuth(s.handleRequest
+request_models: []
 ---
 
 # Endpoint
@@ -33,8 +35,27 @@ source_path: internal/server/server.go
 | Path | `POST /v1/request` |
 | Repository | `AS215932/hyrule-network-proxy` |
 | Source | `internal/server/server.go:25` |
+| Function/handler | `s.withAuth(s.handleRequest` |
+| Router | `unknown` |
+| Status codes | `Not statically detected` |
+| Return annotation | `not annotated` |
+| Response model | `not statically declared` |
 
-This endpoint was detected deterministically from source code. Check the cited source for request/response semantics.
+# Request/response models
+
+No request or response model statically detected.
+
+# Dependencies
+
+No FastAPI dependencies statically detected.
+
+# Function documentation
+
+No function docstring found in source.
+
+# Notes
+
+This concept is generated from static source analysis. Check the cited source for full validation, side effects, authentication, payment gating, and runtime behavior.
 
 # Citations
 

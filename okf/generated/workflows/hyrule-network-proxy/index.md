@@ -1,3 +1,3 @@
 # generated/workflows/hyrule-network-proxy
 
-* [ci.yml](github-workflows-ci-yml.md) - name: ci
+* [ci](github-workflows-ci-yml.md) - GitHub Actions workflow `ci` from AS215932/hyrule-network-proxy.

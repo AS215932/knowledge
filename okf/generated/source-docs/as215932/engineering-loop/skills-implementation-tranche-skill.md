@@ -18,7 +18,7 @@ source_refs:
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   lines: 1-51
   url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/skills/implementation-tranche/SKILL.md#L1-L51
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop
@@ -73,7 +73,17 @@ branch-backed worktree. The diff is the deliverable; evidence makes it real.
    them; default to the repo's gates in
    `docs/agent-loops/acceptance-gates.md`.
    *Checkpoint: paste the failing output you fixed, not just the final pass.*
-6. **Self-review the diff** (`git diff`): no secrets,
+6. **Self-review the diff** (`git diff`): no secrets, no commented-out
+   code, no test deletions or skips, no drive-by refactors, complete-but-
+   minimal.
+7. **Report.** Summarize what changed, evidence per acceptance criterion,
+   and anything you could not satisfy and why.
+
+## Anti-rationalization
+
+| Excuse | Rebuttal |
+|---|---|
+| "This task is too small for the spec's criteria" | Criteria still apply; satisfying five lines of criteria is fast.
 ...
 ```
 

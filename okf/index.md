@@ -2,6 +2,7 @@
 
 * [Generated knowledge](generated/) - Deterministic concepts derived from source repositories and GitHub metadata.
 * [Curated knowledge](curated/) - Human-authored institutional knowledge owned by this OKF repository.
+* [Observed evidence](observed/) - Manual/local safe-health runtime observations, evidence-only and time-bounded.
 
 # Generated
 
@@ -14,6 +15,9 @@
 * [Workflows](generated/workflows/) - GitHub Actions workflows.
 * [GitHub](generated/github/) - Open issues, pull requests, labels, and releases as evidence concepts.
 * [Source documents](generated/source-docs/) - Source documentation, runbooks, agent instructions, and skills.
+* [Schemas](generated/schemas/) - Pydantic/API schema concepts extracted from source.
+* [Monitoring](generated/monitoring/) - Monitoring configuration summaries.
+* [Enriched](generated/enriched/) - Manual LLM-drafted source-cited enrichment concepts.
 
 # Curated
 

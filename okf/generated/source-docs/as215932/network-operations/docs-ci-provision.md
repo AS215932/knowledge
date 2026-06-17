@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-150
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/provision.md#L1-L150
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -77,7 +77,19 @@ via overlay v6 `2a0c:b641:b50:2::70` or the dom0 jump `193.70.32.138`) — see
 - Cloud-init user-data from `autoinstall/debian-cloud-init.yaml.j2`;
   hostname `ci.as215932.net`; `id_servify.pub` authorized for root.
 
-The XOA web UI (New → VM → Debian 13 cloud-init) is an equivalent manua
+The XOA web UI (New → VM → Debian 13 cloud-init) is an equivalent manual
+path if you prefer.
+
+Start the VM, wait for cloud-init to finish, and verify `ssh svag@ci` works
+over overlay v6.
+
+If you are retrofitting the existing `ci` host rather than building a fresh VM,
+attach the new 50 GiB VDI in Xen Orchestra first and place it at VBD position
+`8` so the guest sees `/dev/xvdi` before you re-apply the role.
+
+## 2. Bootstrap firewall + monitoring + logs
+
+The same way e
 ...
 ```
 

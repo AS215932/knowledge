@@ -1,6 +1,6 @@
 # generated/workflows/noc-agent
 
-* [Advisory AI PR review (replaces hosted Sourcery). Runs on the UNPRIVILEGED](github-workflows-pr-agent-yml.md) - --- name: pr-agent
-* [ci.yml](github-workflows-ci-yml.md) - name: ci
-* [request-promotion.yml](github-workflows-request-promotion-yml.md) - name: request-promotion
-* [Token-less Semgrep SAST on the UNPRIVILEGED hyrule-public-pr runner; uploads](github-workflows-semgrep-yml.md) - --- name: semgrep
+* [ci](github-workflows-ci-yml.md) - GitHub Actions workflow `ci` from AS215932/noc-agent.
+* [pr-agent](github-workflows-pr-agent-yml.md) - GitHub Actions workflow `pr-agent` from AS215932/noc-agent.
+* [request-promotion](github-workflows-request-promotion-yml.md) - GitHub Actions workflow `request-promotion` from AS215932/noc-agent.
+* [semgrep](github-workflows-semgrep-yml.md) - GitHub Actions workflow `semgrep` from AS215932/noc-agent.

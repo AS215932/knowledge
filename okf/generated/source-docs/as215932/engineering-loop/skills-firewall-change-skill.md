@@ -18,7 +18,7 @@ source_refs:
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   lines: 1-52
   url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/skills/firewall-change/SKILL.md#L1-L52
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop
@@ -75,7 +75,18 @@ traces back to a row there. The order below is mandatory.
    *Checkpoint: the generated diff matches the intended flow row, nothing
    more.*
 
-New hosts additionally: de
+New hosts additionally: define in `ansible/inventory/hosts.yml`, add to
+`peers:`, write `host_vars/<host>.yml`, document flows, re-render — then
+follow `monitoring-onboarding`.
+
+Applying to live hosts is **out of scope for the loop**: apply is gated on
+the `apply` tag + `firewall_apply=true` via the runbook in
+`docs/ansible.md`, with Icinga snapshots before and after.
+
+## Anti-rationalization
+
+| Excuse | Rebuttal |
+|---|--
 ...
 ```
 

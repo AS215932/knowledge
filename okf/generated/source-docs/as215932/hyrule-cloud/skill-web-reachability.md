@@ -18,7 +18,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-59
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-web-reachability.md#L1-L59
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -96,7 +96,17 @@ SSL Labs output and do not imply affiliation.
 
 ```bash
 curl -X POST https://cloud.hyrule.host/v1/web/tls/deep \
-  -H 'Conte
+  -H 'Content-Type: application/json' \
+  -H 'X-PAYMENT: <x402-payment>' \
+  -d '{"host":"example.com","port":443,"scan_profile":"ssl_labs_style"}'
+```
+
+## Agent guidance
+
+Prefer `/v1/web/check` for normal support triage. Use `/v1/web/tls/deep` only
+when the customer specifically needs protocol/certificate grading evidence.
+Active probes are abuse-controlled: private, reserved, loopback, link-local,
+and mult
 ...
 ```
 

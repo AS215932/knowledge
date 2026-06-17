@@ -19,7 +19,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-65
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/roles/frr/README.md#L1-L65
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -74,7 +74,16 @@ a daemon left stale by a prior run still gets converged. This avoids the trap
 where the on-disk file already matches the repo but the daemon never ingested it.
 
 `serial: 1` and the pre/post Icinga snapshot bracket are on the playbook
-(`playbooks/frr.yml`), matching the `fire
+(`playbooks/frr.yml`), matching the `firewall` role.
+
+## OS differences (`vars/<os_family>.yml`)
+
+| | FreeBSD (cr1-nl1, cr1-de1) | Debian (rtr) |
+|---|---|---|
+| `frr_conf_path` | `/usr/local/etc/frr/frr.conf` | `/etc/frr/frr.conf` |
+| `frr_reload_cmd` | `/usr/local/sbin/frr-reload` (port wrapper) | `systemctl reload frr` |
+| `frr_validate_cmd` | `vtysh -C -f` | `vtysh -C -f` |
+| `frr_pythontools_pkg` | `frr10-pythontools` | `""` (bundle
 ...
 ```
 

@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-207
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/README.md#L1-L207
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -89,7 +89,23 @@ Public operations repository for **Hyrule Networks (AS215932)** — building a c
 
 AS215932 is a solo project to build and operate a full-stack ISP with modern BGP routing, multi-homing, and IPv6-first architecture. This repository tracks infrastructure work, configuration management, and operational decisions.
 
-**Working in public** to share knowledge with the networking community and demonstra
+**Working in public** to share knowledge with the networking community and demonstrate real-world ISP operations.
+
+## Network Status
+
+### Current Infrastructure
+
+- **ASN**: AS215932
+- **Network Name**: Hyrule / Servify
+- **NOC**: noc@as215932.net
+- **Peering Policy**: Open (see PeeringDB)
+- **PeeringDB**: [AS215932](https://www.peeringdb.com/asn/215932)
+
+### Upstream Connectivity
+
+- Multiple BGP transit providers
+- Presence at multiple Internet Exchange Points (IXPs)
+- IPv6-only
 ...
 ```
 

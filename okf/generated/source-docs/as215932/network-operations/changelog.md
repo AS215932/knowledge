@@ -17,7 +17,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-47
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/CHANGELOG.md#L1-L47
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -96,8 +96,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2025.03] — ASN & prefix allocation
 
-##
-...
+### Added
+- AS215932 assigned.
+- IPv6 prefix allocation received.
+- PeeringDB and RIPE IRR records created.
 ```
 
 # Citations

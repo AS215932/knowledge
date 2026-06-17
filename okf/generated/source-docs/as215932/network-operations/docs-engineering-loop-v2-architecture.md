@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-333
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/engineering-loop/v2-architecture.md#L1-L333
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -87,7 +87,15 @@ unattended*:
 
 The v2 inversion, grounded in current loop/harness-engineering practice
 (Osmani's loop-engineering / self-improving-agents / harness-engineering
-series, Anthropic'
+series, Anthropic's long-running harness design, Lance Martin's agent design
+patterns):
+
+> v1 simulated a coding agent inside LangGraph. v2 uses LangGraph to **drive
+> a real coding-agent harness** inside a guarded worktree, judges the
+> resulting diff, and learns from every run.
+
+Everything that made v1 safe is retained: the mutation boundary, policy
+guards, model-policy tiering, loop trace, NOC handoff, the break
 ...
 ```
 

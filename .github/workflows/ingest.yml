@@ -35,8 +35,9 @@ jobs:
           uv run mypy --strict src
           uv run pytest
           uv run hyrule-knowledge validate okf
+          uv run hyrule-knowledge quality --check
           uv run hyrule-knowledge export --check
-          uv run hyrule-knowledge scan-secrets okf exports
+          uv run hyrule-knowledge scan-secrets okf exports reports
       - name: Create refresh pull request
         uses: peter-evans/create-pull-request@v7
         with:

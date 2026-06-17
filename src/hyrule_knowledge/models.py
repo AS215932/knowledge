@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
@@ -10,6 +11,82 @@ TruthOwner = Literal["repo", "okf", "observed", "external", "derived"]
 Authority = Literal["canonical", "advisory", "evidence", "stale", "disputed"]
 Confidence = Literal["high", "medium", "low"]
 DisputePolicy = Literal["repo_wins", "okf_wins", "adjudicate", "evidence_only"]
+Severity = Literal["critical", "warning", "info"]
+
+
+@dataclass(frozen=True)
+class EnrichmentMetadata:
+    mode: str = "llm"
+    provider: str = "openrouter"
+    model: str = "anthropic/claude-sonnet-4.6"
+    prompt_version: str = "useful-v1"
+    input_hash: str = ""
+    output_hash: str = ""
+    generated_at: str = ""
+
+    def as_frontmatter(self) -> dict[str, str]:
+        return {
+            "mode": self.mode,
+            "provider": self.provider,
+            "model": self.model,
+            "prompt_version": self.prompt_version,
+            "input_hash": self.input_hash,
+            "output_hash": self.output_hash,
+            "generated_at": self.generated_at,
+        }
+
+
+@dataclass(frozen=True)
+class ObservationMetadata:
+    observed_at: str
+    expires_at: str
+    collection_profile: str = "safe-health"
+    source: str | None = None
+    status: str | None = None
+
+    def as_frontmatter(self) -> dict[str, str]:
+        data = {
+            "observed_at": self.observed_at,
+            "expires_at": self.expires_at,
+            "collection_profile": self.collection_profile,
+        }
+        if self.source:
+            data["observation_source"] = self.source
+        if self.status:
+            data["observation_status"] = self.status
+        return data
+
+
+@dataclass(frozen=True)
+class QualityFinding:
+    concept_id: str
+    severity: Severity
+    code: str
+    message: str
+
+    def as_json(self) -> dict[str, str]:
+        return {
+            "concept_id": self.concept_id,
+            "severity": self.severity,
+            "code": self.code,
+            "message": self.message,
+        }
+
+
+@dataclass(frozen=True)
+class Claim:
+    concept_id: str
+    claim_text: str
+    source_ref_index: int
+    confidence: Confidence = "medium"
+
+    def as_json(self) -> dict[str, Any]:
+        return {
+            "concept_id": self.concept_id,
+            "claim_text": self.claim_text,
+            "source_ref_index": self.source_ref_index,
+            "confidence": self.confidence,
+        }
 
 
 @dataclass(frozen=True)
@@ -52,6 +129,10 @@ class Concept:
     confidence: Confidence = "medium"
     dispute_policy: DisputePolicy = "repo_wins"
     extra: dict[str, Any] = field(default_factory=dict)
+    review_status: str | None = None
+    quality_score: float | None = None
+    enrichment: EnrichmentMetadata | None = None
+    observation: ObservationMetadata | None = None
 
     @property
     def path(self) -> Path:
@@ -80,6 +161,17 @@ class Concept:
                 "dispute_policy": self.dispute_policy,
             }
         )
+        if self.review_status:
+            data["review_status"] = self.review_status
+        if self.quality_score is not None:
+            data["quality_score"] = self.quality_score
+        if self.enrichment:
+            data["enrichment"] = self.enrichment.as_frontmatter()
+            data["enrichment_json"] = json.dumps(
+                self.enrichment.as_frontmatter(), sort_keys=True, separators=(",", ":")
+            )
+        if self.observation:
+            data.update(self.observation.as_frontmatter())
         for key, value in self.extra.items():
             if value is not None:
                 data[key] = value

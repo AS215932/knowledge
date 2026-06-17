@@ -17,7 +17,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-75
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/workflows.md#L1-L75
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -69,7 +69,21 @@ docs-only ones, gets a human merge click.
 ## Lint config
 
 Both `.yamllint` and `.ansible-lint` start permissive so the existing repo
-passes. Tighten via follow-up issues —
+passes. Tighten via follow-up issues — pick one rule per issue, fix
+violations, promote the rule to error.
+
+`scripts/ci/render-all.sh` is the single entry point for "render every
+playbook." Use it locally before committing if you've touched any Ansible
+template:
+
+```bash
+scripts/ci/render-all.sh
+git diff ansible/generated/   # commit anything that shows up
+```
+
+## Why self-hosted?
+
+Decision recorded in the approved plan `we-need-to-go
 ...
 ```
 

@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-53
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/agent-loops/repo-map.md#L1-L53
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -83,7 +83,17 @@ commit: 67061d325834a7145252cdf851da1df6a4a38b9e
 - Purpose: diagnostic MCP server exposing AS215932 infrastructure tools.
 - Common classes: `mcp_diagnostic_tooling`, `monitoring_logging`, `mixed`.
 - Required roles: Systems and DevOps/NetOps; Security when output may expose
-  secrets, tenant data, or p
+  secrets, tenant data, or privileged diagnostics.
+- Gates: pytest; live smoke opt-in only.
+
+## hyrule-noc-agent
+
+- Purpose: production NOC/SOC runtime incident responder.
+- Common classes: `noc_runtime`, `mcp_diagnostic_tooling`,
+  `monitoring_logging`.
+- Required roles: Systems, DevOps/NetOps, Security.
+- Boundary: this repo can receive normal PRs, but it is not the development
+  orchestrator and must not spawn coding agen
 ...
 ```
 

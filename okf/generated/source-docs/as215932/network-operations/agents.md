@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-53
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/AGENTS.md#L1-L53
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -63,7 +63,13 @@ commit: 67061d325834a7145252cdf851da1df6a4a38b9e
 
 - After opening or updating a PR, wait for automated CI and AI agent reviews to complete before leaving it for a human reviewer.
 - Inspect failing checks, AI review comments, and normal review comments; fix real issues in follow-up commits on the same PR branch.
-- Respond to review comments that you address,
+- Respond to review comments that you address, and briefly explain if a comment is intentionally not changed.
+- Re-run or wait for CI after fixes, then confirm the required checks are green before asking for human review or saying the PR is ready.
+- If CI or an AI review is still pending when you must stop, say so explicitly and include the PR URL plus the pending/failing contexts.
+
+## Deployment Rules - Read Before Touching App Pins
+
+- Produ
 ...
 ```
 

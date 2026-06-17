@@ -19,7 +19,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-96
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/netops/testing-strategy.md#L1-L96
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -71,7 +71,13 @@ All of Tier 0 is in `.github/workflows/iac-tests.yml`. Tiers 1–2 also live the
 ### Tier 0 — static (required)
 
 `static-iac` runs `scripts/ci/iac-static.sh`, which is intentionally
-dependency-light: a stdl
+dependency-light: a stdlib `unittest` discovery over `tests/iac/` plus external
+validators (`named-checkzone`, `systemd-analyze`, `caddy adapt`,
+`unbound-checkconf`, `nft -c`) when the tool is present on the runner.
+
+The `unittest` suite includes the **source-of-truth schema gate**
+(`tests/iac/test_inventory_schema.py`): it validates the structure and internal
+consistency of `ansible/inventory/{hosts.yml,group_vars/all.y
 ...
 ```
 

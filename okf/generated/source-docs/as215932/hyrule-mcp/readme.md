@@ -18,7 +18,7 @@ source_refs:
   commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
   lines: 1-177
   url: https://github.com/AS215932/hyrule-mcp/blob/326bcc85e1c69f0d7c1839ebaa4abb73acd84185/README.md#L1-L177
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-mcp
@@ -107,7 +107,26 @@ whether an SSH key is configured; it does not include private key paths.
 - Monitoring:
   - `prometheus_query`
   - `prometheus_list_targets`
-  - `
+  - `icinga_get_host_state`
+- Routing and path:
+  - `frr_vtysh_cmd`
+  - `path_explain`
+  - `ecmp_path_select`
+  - `multi_source_probe`
+- Packet and firewall:
+  - `tcpdump_capture`
+  - `pf_log_tail`
+  - `nft_log_tail`
+  - `firewall_state`
+  - `ndp_state`
+  - `arp_state`
+- Host/service:
+  - `os_systemd_status`
+  - `os_journalctl`
+  - `dmesg_tail`
+  - `service_restart_history`
+  - `vault_agent_status`
+- D
 ...
 ```
 

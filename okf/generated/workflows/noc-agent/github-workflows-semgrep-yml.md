@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: Token-less Semgrep SAST on the UNPRIVILEGED hyrule-public-pr runner; uploads
-description: '--- name: semgrep'
+title: semgrep
+description: GitHub Actions workflow `semgrep` from AS215932/noc-agent.
 resource: https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/.github/workflows/semgrep.yml
 tags:
-- as215932
+- ci
+- github-actions
 - noc-agent
 - workflow
 timestamp: '2026-06-17T07:49:45Z'
@@ -14,30 +15,42 @@ source_refs:
 - repo: AS215932/noc-agent
   path: .github/workflows/semgrep.yml
   commit: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
-  lines: 1-50
-  url: https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/.github/workflows/semgrep.yml#L1-L50
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/.github/workflows/semgrep.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/noc-agent
 source_path: .github/workflows/semgrep.yml
-commit: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
+triggers:
+- pull_request
+- workflow_dispatch
+- push
+- schedule
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/noc-agent` |
-| Path | `.github/workflows/semgrep.yml` |
-| Commit | `98e5010648e34ac0ea6ad8e6a925fef76d0dbea9` |
-| Lines | `50` |
+| Name | `semgrep` |
+| Source | `.github/workflows/semgrep.yml` |
+| Triggers | `pull_request, workflow_dispatch, push, schedule` |
+| Deploy-like | `False` |
+| Workflow permissions | `{"contents": "read", "security-events": "write"}` |
 
-# Detected headings
+# Jobs
 
-* `# Token-less Semgrep SAST on the UNPRIVILEGED hyrule-public-pr runner; uploads`
-* `# SARIF to GitHub Code Scanning (free for this public repo). No SEMGREP_APP_TOKEN.`
-* `# Reporting-only during baseline (continue-on-error) — flip to a gate later.`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `semgrep` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+
+# Secrets referenced by name
+
+No `secrets.*` references detected.
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

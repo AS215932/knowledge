@@ -17,7 +17,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-61
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-routing-path.md#L1-L61
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -101,7 +101,13 @@ curl -X POST https://cloud.hyrule.host/v1/path/trace \
 ```
 
 ## Agent guidance
-...
+
+Use `/v1/path/report` when the ticket asks “is this my ISP, your network, or
+the remote site?” Use `/v1/path/mtr` for packet-loss claims. Use `/v1/bgp/lookup`
+when BGP origin, RPKI, route visibility, or AS path is the likely issue.
+
+Active probes are abuse-controlled: private/reserved/link-local/loopback targets
+are blocked and Hyrule does not offer general-purpose scanning.
 ```
 
 # Citations

@@ -16,7 +16,7 @@ source_refs:
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   lines: 1-75
   url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/README.md#L1-L75
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop
@@ -76,7 +76,13 @@ production.
 - `src/hyrule_engineering_loop/` — the LangGraph runtime, `AgentBackend`,
   policy/judgment/memory/intake/daemon modules, and the operator CLI.
 - `tests/` — the phased test suites (`test_engineering_graph.py`,
-  `test_phase*.py`), fully offline (mock backend,
+  `test_phase*.py`), fully offline (mock backend, no API keys).
+- `skills/` — role, writer, and ISP-procedure skills the loop injects.
+- `docs/agent-loops/`, `docs/agentic-development-loop.md`,
+  `docs/engineering-loop/` — role cards, runtime reference, and v2 design.
+- `integrations/pi/` — the Pi `/loop` extension.
+- `configs/loop/` — systemd service + timer for the operations lane.
+- `model-policy.yml`, `engineering-loop-policy.yml` — model/ba
 ...
 ```
 

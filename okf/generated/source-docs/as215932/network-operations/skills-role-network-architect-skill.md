@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-57
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/role-network-architect/SKILL.md#L1-L57
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -76,7 +76,15 @@ source of truth; blast radius; peering/transit impact; routing rollback.
    worktree, not just hunks.
    *Checkpoint: list the files you opened in `evidence_reviewed`.*
 2. Cross-check against `docs/network-flows.md` and the inventory: any flow
-   chang
+   change must have a matching row; any new peer must exist in `peers:`.
+3. Verify lab evidence for `routing_bgp_frr`/`firewall_policy`: Batfish or
+   Containerlab results in the gate evidence, or an explicit human risk
+   acceptance recorded in state.
+4. Verify the rollback section is deterministic (command/workflow, not
+   intent).
+5. Return the structured verdict with findings keyed by file/path.
+
+## M
 ...
 ```
 

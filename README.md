@@ -34,9 +34,13 @@ Conflict policy:
 
 ```bash
 uv run hyrule-knowledge ingest
+uv run hyrule-knowledge enrich --target all --dry-run
+uv run hyrule-knowledge observe --profile safe-health
+uv run hyrule-knowledge quality --write
+uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge validate okf
 uv run hyrule-knowledge export
-uv run hyrule-knowledge scan-secrets okf exports
+uv run hyrule-knowledge scan-secrets okf exports reports
 ```
 
 Regenerate and verify everything:
@@ -44,8 +48,23 @@ Regenerate and verify everything:
 ```bash
 uv run hyrule-knowledge ingest
 uv run hyrule-knowledge validate okf
+uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge export --check
-uv run hyrule-knowledge scan-secrets okf exports
+uv run hyrule-knowledge scan-secrets okf exports reports
+```
+
+Manual LLM enrichment uses OpenRouter Claude Sonnet 4.6 by default and requires `OPENROUTER_API_KEY` unless `--dry-run` is set:
+
+```bash
+uv run hyrule-knowledge enrich --target services --model anthropic/claude-sonnet-4.6
+```
+
+Manual safe-health observation uses whichever read-only endpoints are available in the environment and writes observed/evidence concepts under `okf/observed/`:
+
+```bash
+PROMETHEUS_URL=http://[mon]:9090 \
+HYRULE_MCP_HEALTH_URL=http://127.0.0.1:8765/health \
+uv run hyrule-knowledge observe --profile safe-health
 ```
 
 ## Automation

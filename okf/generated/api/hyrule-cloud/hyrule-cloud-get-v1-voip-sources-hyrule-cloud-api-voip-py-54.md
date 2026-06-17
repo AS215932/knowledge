@@ -1,0 +1,63 @@
+---
+type: API Endpoint
+title: GET /v1/voip/sources
+description: Static API endpoint `GET /v1/voip/sources` in AS215932/hyrule-cloud.
+resource: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/hyrule_cloud/api/voip.py#L54-L55
+tags:
+- api
+- get
+- hyrule-cloud
+timestamp: '2026-06-16T13:11:34Z'
+truth_owner: repo
+authority: canonical
+source_refs:
+- repo: AS215932/hyrule-cloud
+  path: hyrule_cloud/api/voip.py
+  commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
+  lines: 54-55
+  url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/hyrule_cloud/api/voip.py#L54-L55
+last_verified_at: '2026-06-17T10:18:30Z'
+confidence: high
+dispute_policy: repo_wins
+repo: AS215932/hyrule-cloud
+method: GET
+route: /v1/voip/sources
+source_path: hyrule_cloud/api/voip.py
+function_name: get_voip_sources
+request_models: []
+response_model: VoIPSourcesResponse
+---
+
+# Endpoint
+
+| Field | Value |
+| --- | --- |
+| Method | `GET` |
+| Path | `/v1/voip/sources` |
+| Repository | `AS215932/hyrule-cloud` |
+| Source | `hyrule_cloud/api/voip.py:54` |
+| Function/handler | `get_voip_sources` |
+| Router | `router` |
+| Status codes | `Not statically detected` |
+| Return annotation | `VoIPSourcesResponse` |
+| Response model | `VoIPSourcesResponse` |
+
+# Request/response models
+
+* [VoIPSourcesResponse](/generated/schemas/hyrule-cloud/VoIPSourcesResponse.md)
+
+# Dependencies
+
+No FastAPI dependencies statically detected.
+
+# Function documentation
+
+No function docstring found in source.
+
+# Notes
+
+This concept is generated from static source analysis. Check the cited source for full validation, side effects, authentication, payment gating, and runtime behavior.
+
+# Citations
+
+[1] [hyrule_cloud/api/voip.py:54-55](https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/hyrule_cloud/api/voip.py#L54-L55)

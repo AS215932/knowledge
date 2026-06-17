@@ -1,3 +1,3 @@
 # Strategy
 
-* _No curated entries yet._ - Business and long-range context.
+* [Hyrule Cloud Business Context](hyrule-cloud-business-context.md) - Curated seed/proposed knowledge.

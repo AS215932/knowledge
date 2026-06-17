@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-185
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/deploy-runbook.md#L1-L185
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -85,7 +85,16 @@ inventory:
 
 Use the promotion PR template for coordinated deploys. Merge app PRs first,
 then let the app repo request or manually update a promotion PR with the exact
-merged app SHA
+merged app SHAs. Production deploys only happen from `network-operations/main`
+after the promotion PR merges and the GitHub `production` environment gate is
+approved.
+
+The normal automated path is:
+
+1. Merge app PRs after app CI is green.
+2. The app repo's **request-promotion** workflow runs after its `ci` workflow
+   succeeds on `main`. It uses the AS215932 Promotion Bot GitHub App to send
+   `repository_dispa
 ...
 ```
 

@@ -1,0 +1,86 @@
+name: enrich
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Enrichment target
+        required: true
+        default: all
+        type: choice
+        options: [all, org, services, architecture, api, infrastructure]
+      max_concepts:
+        description: Reserved for future batching; current command uses source-pack char limit
+        required: false
+        default: '25'
+      model:
+        description: OpenRouter model
+        required: true
+        default: anthropic/claude-sonnet-4.6
+      dry_run:
+        description: Validate plumbing without calling OpenRouter
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      GH_TOKEN: ${{ secrets.KNOWLEDGE_GH_TOKEN }}
+      FALLBACK_GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Select GitHub token
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "GH_TOKEN=${FALLBACK_GH_TOKEN}" >> "$GITHUB_ENV"
+          fi
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --group dev --frozen
+      - name: Refresh source-derived OKF
+        run: uv run hyrule-knowledge ingest
+      - name: Run manual LLM enrichment
+        run: |
+          args=(--target "${{ inputs.target }}" --model "${{ inputs.model }}")
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          uv run hyrule-knowledge enrich "${args[@]}"
+      - name: Rebuild quality and exports
+        run: |
+          uv run hyrule-knowledge quality --write
+          uv run hyrule-knowledge export
+      - name: Validate enriched bundle
+        run: |
+          uv run ruff check src tests
+          uv run mypy --strict src
+          uv run pytest
+          uv run hyrule-knowledge validate okf
+          uv run hyrule-knowledge quality --check
+          uv run hyrule-knowledge export --check
+          uv run hyrule-knowledge scan-secrets okf exports reports
+      - name: Create enrichment pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/knowledge-enrich/${{ github.run_id }}
+          title: "knowledge: enrich OKF ${{ inputs.target }} ${{ github.run_id }}"
+          commit-message: "knowledge: enrich OKF ${{ inputs.target }}"
+          body: |
+            Manual LLM/source-pack enrichment run.
+
+            - target: `${{ inputs.target }}`
+            - model: `${{ inputs.model }}`
+            - dry_run: `${{ inputs.dry_run }}`
+
+            Review citations, provenance, and generated prose before merge.
+          labels: knowledge, automated
+          delete-branch: true

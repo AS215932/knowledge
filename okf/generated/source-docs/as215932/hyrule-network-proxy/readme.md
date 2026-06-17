@@ -17,7 +17,7 @@ source_refs:
   commit: b82dc72bbf382167062bff272606ce84ec20538c
   lines: 1-98
   url: https://github.com/AS215932/hyrule-network-proxy/blob/b82dc72bbf382167062bff272606ce84ec20538c/README.md#L1-L98
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-network-proxy
@@ -119,7 +119,30 @@ See `packaging/env.example`.
 ```bash
 go test ./...
 go vet ./...
-go bu
+go build ./cmd/hyrule-network-proxy
+```
+
+Run locally:
+
+```bash
+[sensitive assignment line omitted]
+HNP_API_LISTEN_ADDR=127.0.0.1:8450 \
+HNP_METRICS_LISTEN_ADDR=127.0.0.1:8451 \
+go run ./cmd/hyrule-network-proxy
+```
+
+## Production Topology
+
+```text
+Hyrule Cloud API
+  -> http://[netproxy]:8450/v1/request
+     Authorization: Bearer <vault token>
+
+Prometheus
+  -> http://[netproxy]:8451/metrics
+```
+
+The sid
 ...
 ```
 

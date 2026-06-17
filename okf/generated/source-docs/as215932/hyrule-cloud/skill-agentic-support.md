@@ -18,7 +18,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-68
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-agentic-support.md#L1-L68
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -78,7 +78,16 @@ AS215932-backed external vantage data.
 5. For routing/path claims, use `/v1/path/report` and `/v1/bgp/lookup`.
 6. For outside-in reachability, use `/v1/ports/check` or
    `/v1/nat/port-forward/check`.
-7. For NAT/CGNAT, start with free `/v1/nat/ip`, then paid `/v1/nat/loo
+7. For NAT/CGNAT, start with free `/v1/nat/ip`, then paid `/v1/nat/lookup`.
+8. For reputation, use `/v1/threat/lookup`; for VoIP, use `/v1/voip/check`.
+9. For throughput to Hyrule/AS215932, use `/v1/speedtest`.
+10. Use `/v1/mail` only for Hyrule-hosted Agent Mail mailbox operations.
+
+## Discovery
+
+- `/.well-known/x402.json` lists paid resources and prices.
+- `/v1/*/capabilities` describes each product boundary.
+- `/v1/mx/tools` lists SuperTool-compatible mail diagno
 ...
 ```
 

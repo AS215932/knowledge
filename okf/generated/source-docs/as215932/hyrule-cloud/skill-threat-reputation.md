@@ -17,7 +17,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-57
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-threat-reputation.md#L1-L57
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -95,8 +95,14 @@ curl -X POST https://cloud.hyrule.host/v1/threat/lookup \
 ```bash
 curl -H 'X-PAYMENT: <x402-payment>' https://cloud.hyrule.host/v1/threat/domain/example.com
 curl -H 'X-PAYMENT: <x402-payment>' https://cloud.hyrule.host/v1/threat/rbl?target=203.0.113.10
-curl -H 'X-PAYMENT: <x402-payment>' htt
-...
+curl -H 'X-PAYMENT: <x402-payment>' https://cloud.hyrule.host/v1/threat/ct?domain=example.com
+```
+
+## Agent guidance
+
+Use this Skill to add reputation context to mail, web, abuse, phishing, or
+blocklist investigations. For mail-specific deliverability, call `/v1/mx` first
+and use `/v1/threat` for supplemental reputation evidence.
 ```
 
 # Citations

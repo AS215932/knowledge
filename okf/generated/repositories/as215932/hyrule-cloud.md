@@ -1,7 +1,7 @@
 ---
 type: Repository
 title: Hyrule Cloud
-description: API
+description: Agentic VPS hosting on Hyrule Networks (AS215932) with x402 payments.
 resource: https://github.com/AS215932/hyrule-cloud
 tags:
 - agents
@@ -26,7 +26,7 @@ source_refs:
 - repo: AS215932/hyrule-cloud
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   url: https://github.com/AS215932/hyrule-cloud
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/hyrule-cloud
@@ -48,7 +48,23 @@ commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
 
 # Description
 
-API
+Agentic VPS hosting on Hyrule Networks (AS215932) with x402 payments.
+
+# Extracted inventory
+
+| Asset | Count |
+| --- | ---: |
+| Indexed source files | 34 |
+| API endpoints | 234 |
+| API schemas | 169 |
+| Workflows | 5 |
+| Open issues | 7 |
+| Open pull requests | 0 |
+| Releases | 0 |
+
+# Related concepts
+
+* Top-level concept: [Hyrule Cloud](/generated/services/hyrule-cloud.md)
 
 # Indexed source material
 

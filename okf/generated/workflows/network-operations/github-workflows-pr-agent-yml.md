@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: Advisory AI PR review (replaces hosted Sourcery). Runs on the UNPRIVILEGED
-description: '--- name: pr-agent'
+title: pr-agent
+description: GitHub Actions workflow `pr-agent` from AS215932/network-operations.
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/pr-agent.yml
 tags:
-- as215932
+- deploy
+- github-actions
 - network-operations
 - workflow
 timestamp: '2026-06-17T08:13:24Z'
@@ -14,47 +15,41 @@ source_refs:
 - repo: AS215932/network-operations
   path: .github/workflows/pr-agent.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  lines: 1-60
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/pr-agent.yml#L1-L60
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/pr-agent.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
 source_path: .github/workflows/pr-agent.yml
-commit: 67061d325834a7145252cdf851da1df6a4a38b9e
+triggers:
+- pull_request
+- issue_comment
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/network-operations` |
-| Path | `.github/workflows/pr-agent.yml` |
-| Commit | `67061d325834a7145252cdf851da1df6a4a38b9e` |
-| Lines | `60` |
+| Name | `pr-agent` |
+| Source | `.github/workflows/pr-agent.yml` |
+| Triggers | `pull_request, issue_comment` |
+| Deploy-like | `True` |
+| Workflow permissions | `{"contents": "read", "issues": "write", "pull-requests": "write"}` |
 
-# Detected headings
+# Jobs
 
-* `# Advisory AI PR review (replaces hosted Sourcery). Runs on the UNPRIVILEGED`
-* `# `hyrule-public-pr` runner only, with read + PR/issue-comment permissions and`
-* `# our own OpenRouter key. Never deploys, never writes code, never auto-merges.`
-* `# Config (model/fallback/instructions): .pr_agent.toml. Design: docs/ci/pr-agent.md.`
-* `# Public-fork policy: auto-review ONLY for same-repo (internal) PRs, and`
-* `# slash commands ONLY from trusted authors. This keeps OPENROUTER_API_KEY`
-* `# off untrusted fork PRs and stops anyone from burning the OpenRouter`
-* `# budget via /ask, /improve, etc.`
-* `# PR-Agent reads the OpenRouter key from openrouter__key; litellm also`
-* `# honours OPENROUTER_API_KEY. Set both from the org secret.`
-* `# Force our models via dynaconf env (SECTION__KEY, double underscore —`
-* `# the same mechanism OPENROUTER__KEY uses, and proven to reach the`
-* `# action's container). .pr_agent.toml alone is NOT honoured here: it`
-* `# only lives on this pilot branch (not the default branch) and there is`
-* `# no checkout step, so PR-Agent's "repo settings" load misses it and`
-* `# falls back to its packaged default (gpt-5.5 → gpt-5.4-mini). These`
-* `# env vars override that regardless. Once .pr_agent.toml lands on main`
-* `# (Wave 3) it becomes the durable source; these stay as a belt-and-`
-* `# suspenders pin. deepseek-v4-flash/minimax-m2.7 are custom (non-listed)`
-* `# models, so custom_model_max_tokens is required.`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `pr-agent` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+
+# Secrets referenced by name
+
+* `GITHUB_TOKEN`
+* `OPENROUTER_API_KEY`
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

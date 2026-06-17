@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-79
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/branch-protection.md#L1-L79
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -74,7 +74,13 @@ lists only `claude-for-github`, `claude`).
 - **No required reviews on the four newly-protected repos** (and `enforce_admins`
   off everywhere): this is a solo-maintainer org. Requiring an approval with no
   second maintainer forces an `--admin` bypass on every merge (self-approval is
-  forbidden) and risks a merge lockout. `network-operations`/`hy
+  forbidden) and risks a merge lockout. `network-operations`/`hyrule-web` keep
+  their pre-existing 1-review rule; the rest protect via status checks + no
+  force-push/deletion. Tighten later when there's a second reviewer. The
+  `@AS215932/ops` team exists and backs `.github/CODEOWNERS`, but
+  `require_code_owner_reviews` is intentionally left **off** for now.
+- **`semgrep`-only on `noc-agent`/`hyrule-mcp`/`as215932.net`**: those repos have
+  no test/lint wor
 ...
 ```
 

@@ -16,7 +16,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-180
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/README.md#L1-L180
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -95,7 +95,13 @@ Hyrule Cloud API (FastAPI + x402 SDK)
 ## Endpoints
 
 | Endpoint              | Method | Paid | Description                  |
-|-----------------------|--------|------|-----------------
+|-----------------------|--------|------|------------------------------|
+| `/v1/vm/create`       | POST   | Yes  | Provision a bare VM          |
+| `/v1/vm/{id}`         | GET    | No   | Status, IP, expiry           |
+| `/v1/vm/{id}/extend`  | POST   | Yes  | Add days to VM               |
+| `/v1/vm/{id}/reboot`  | POST   | No   | Hard reboot                  |
+| `/v1/vm/{id}`         | DELETE | No   | Destroy VM                   |
+| `/v1/vm/{id}/logs`
 ...
 ```
 

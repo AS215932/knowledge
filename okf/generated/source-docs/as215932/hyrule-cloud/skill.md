@@ -17,7 +17,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-311
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL.md#L1-L311
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -113,7 +113,17 @@ X-PAYMENT-REQUIRED: eyJ4NDAyVmVyc2lvbiI6Mn0...   # base64 of the body below
     }
   ],
   "amount": "0.35",
-  "cost_breakdown": {"vm_cost": "$0.35", "domain_cos
+  "cost_breakdown": {"vm_cost": "$0.35", "domain_cost": "$0.00", "total": "$0.35"},
+  "specs": {"vcpu": 1, "memory_mb": 512, "disk_gb": 10, "ipv6": true, "ipv4": false}
+}
+```
+
+Sign an EIP-3009 `TransferWithAuthorization` for the `accepts[].price`, base64-
+encode the x402 payment payload, and resend the same request with
+`X-PAYMENT: <base64>`.
+
+**Durable quotes (recommended):** call `POST /v1/vm/quote` first to lock a price
+and get a `quote_id`, the
 ...
 ```
 

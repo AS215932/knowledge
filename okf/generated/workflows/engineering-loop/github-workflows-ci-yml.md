@@ -1,11 +1,12 @@
 ---
 type: Workflow
-title: .github/workflows/ci.yml for AS215932/engineering-loop
-description: 'on: pull_request: branches: [main] push: branches: [main]'
+title: ci
+description: GitHub Actions workflow `ci` from AS215932/engineering-loop.
 resource: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/.github/workflows/ci.yml
 tags:
-- as215932
+- ci
 - engineering-loop
+- github-actions
 - workflow
 timestamp: '2026-06-16T07:29:23Z'
 truth_owner: repo
@@ -14,45 +15,43 @@ source_refs:
 - repo: AS215932/engineering-loop
   path: .github/workflows/ci.yml
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
-  lines: 1-66
-  url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/.github/workflows/ci.yml#L1-L66
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/.github/workflows/ci.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop
 source_path: .github/workflows/ci.yml
-commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
+triggers:
+- pull_request
+- push
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/engineering-loop` |
-| Path | `.github/workflows/ci.yml` |
-| Commit | `768cde6c996e42f3f91d395347ba9809e2e020e5` |
-| Lines | `66` |
+| Name | `ci` |
+| Source | `.github/workflows/ci.yml` |
+| Triggers | `pull_request, push` |
+| Deploy-like | `False` |
+| Workflow permissions | `{"contents": "read"}` |
 
-# Detected headings
+# Jobs
 
-* `# .github/workflows/ci.yml for AS215932/engineering-loop`
-* `#`
-* `# Runs on the UNPRIVILEGED ci-pr runner (label hyrule-public-pr, runner group`
-* `# public-pr). The loop's backend executes generated code, so this repo must`
-* `# NEVER be added to the privileged hyrule-ci group or the hyrule/hyrule-infra`
-* `# runner. Required checks for branch protection on main: ruff, mypy, pytest.`
-* `#`
-* `# The ci-pr runner has no uv preinstalled; each job installs it via the astral`
-* `# script and calls it at ~/.local/bin (matching the hyrule-web CI convention).`
-* `# HYRULE_MOCK_LLM defaults on; the suite runs fully offline with the`
-* `# MockBackend and never invokes a real harness binary or provider.`
-* `# TMPDIR=/tmp so pytest's tmp_path lands under /tmp: the worktree`
-* `# tests render NOC handoffs there, and the policy guard's`
-* `# allowed_handoff_dirs is ["/tmp"]. The runner's default TMPDIR is`
-* `# not /tmp, which would otherwise fail those tests on the handoff`
-* `# allowlist while passing locally.`
-* `# Offline, deterministic domain-judgment suite; no model, no network.`
-* `# Captures AS215932 token capital and blocks regressions in CI.`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `ruff` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+| `mypy` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+| `pytest` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+| `evals` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+
+# Secrets referenced by name
+
+No `secrets.*` references detected.
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

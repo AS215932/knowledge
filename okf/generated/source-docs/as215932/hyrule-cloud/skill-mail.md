@@ -18,7 +18,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-53
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-mail.md#L1-L53
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -94,8 +94,10 @@ Send mail by API:
 ```bash
 curl -X POST https://cloud.hyrule.host/v1/mail/messages/send \
   -H 'Content-Type: application/json' \
-  -H 'Authorization:
-...
+  -H 'Authorization: Bearer <mail-token>' \
+  -H 'X-PAYMENT: <x402-payment>' \
+  -d '{"mailbox_id":"mail_...","from":"support-agent@agentmail.hyrule.host","to":["customer@example.net"],"subject":"Update","text":"Hello"}'
+```
 ```
 
 # Citations

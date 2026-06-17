@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-50
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/monitoring-onboarding/SKILL.md#L1-L50
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -74,7 +74,18 @@ is the single entry point.
    `configs/mon/prometheus.yml`). Add the host to the right
    `static_configs` job (`node-infra`, `node-routers`,
    `node-offsite-ns`, …). The role does not manage this file yet — keep the
-   repo mirror and the
+   repo mirror and the change in sync.
+
+Applying (`--tags apply -e '{"monitoring_apply":true}' --limit <host>`) and
+the prometheus reload are operator actions, out of scope for the loop. Live
+deploys bracket with Icinga snapshots before and after — never skipped
+without a recorded emergency reason.
+
+## Anti-rationalization
+
+| Excuse | Rebuttal |
+|---|---|
+| "Monitoring can follow in a later PR" | Day-one rule. An unmoni
 ...
 ```
 

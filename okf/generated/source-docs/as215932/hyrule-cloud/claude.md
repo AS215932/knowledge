@@ -18,7 +18,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-165
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/CLAUDE.md#L1-L165
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -87,7 +87,15 @@ identity under `servify.network`, and AS215932 overlay/routing identity under
 
 - Python 3.12, FastAPI, Pydantic v2
 - Official Coinbase x402 Python SDK (`x402[fastapi,evm]>=2.0`) for payment gating
-- SQLAlchemy 2.0 async + async
+- SQLAlchemy 2.0 async + asyncpg (Postgres 17) for persistence
+- Alembic for migrations
+- XCP-NG XAPI (XML-RPC over HTTPS) for VM lifecycle
+- Openprovider REST API for domain registration
+- RFC 2136 (`nsupdate` + TSIG) for dynamic DNS (AAAA records)
+- cloud-init for VM bootstrapping (SSH key, UFW defaults, optional setup script)
+- APScheduler for periodic VM expiry checks
+- structlog for structured logging
+- Ruff for linting (
 ...
 ```
 

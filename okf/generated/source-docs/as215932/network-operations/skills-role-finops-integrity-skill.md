@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-49
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/role-finops-integrity/SKILL.md#L1-L49
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -80,6 +80,16 @@ and quota behavior.
 ## Must reject
 
 - Resource allocation without explicit payment confirmation hooks;
+  quota/billing changes without matching state tests; provisioning races
+  around payment-state transitions; pricing middleware changes without
+  regression tests.
+
+## Anti-rationalization
+
+| Excuse | Rebuttal |
+|---|---|
+| "The UI prevents that flow" | The API is the boundary, not the UI. The check lives server-side or it doesn't exist. |
+| "It's an internal admin path" | Internal paths leak into
 ...
 ```
 

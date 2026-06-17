@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "hyrule-knowledge"
 version = "0.1.0"
-description = "Deterministic OKF knowledge catalog generator for AS215932"
+description = "OKF knowledge catalog, enrichment, quality, and observation tooling for AS215932"
 requires-python = ">=3.12"
 dependencies = [
     "PyYAML>=6.0.2",

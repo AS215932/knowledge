@@ -37,7 +37,7 @@ source_refs:
 - repo: AS215932/network-operations
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   url: https://github.com/AS215932/network-operations
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/network-operations
@@ -60,6 +60,22 @@ commit: 67061d325834a7145252cdf851da1df6a4a38b9e
 # Description
 
 Network operations and infrastructure tracking for AS215932 (Hyrule). Building a complete ISP from scratch - BGP/OSPFv3 routing, IXP peering, automation. Working in public.
+
+# Extracted inventory
+
+| Asset | Count |
+| --- | ---: |
+| Indexed source files | 91 |
+| API endpoints | 0 |
+| API schemas | 2 |
+| Workflows | 10 |
+| Open issues | 51 |
+| Open pull requests | 6 |
+| Releases | 0 |
+
+# Related concepts
+
+* Top-level concept: [AS215932 Network Operations](/generated/projects/network-operations.md)
 
 # Indexed source material
 
@@ -143,7 +159,17 @@ Network operations and infrastructure tracking for AS215932 (Hyrule). Building a
 * [docs/runbooks/rotate-icinga-api-user.md](/generated/source-docs/as215932/network-operations/docs-runbooks-rotate-icinga-api-user.md)
 * [docs/runbooks/vps-launch-proof-smoke.md](/generated/source-docs/as215932/network-operations/docs-runbooks-vps-launch-proof-smoke.md)
 * [integrations/pi/extensions/hyrule-loop/README.md](/generated/source-docs/as215932/network-operations/integrations-pi-extensions-hyrule-loop-readme.md)
-* ... 11 additional indexed files omitted from this glance list.
+* [pyproject.toml](/generated/source-docs/as215932/network-operations/pyproject-toml.md)
+* [skills/README.md](/generated/source-docs/as215932/network-operations/skills-readme.md)
+* [skills/firewall-change/SKILL.md](/generated/source-docs/as215932/network-operations/skills-firewall-change-skill.md)
+* [skills/implementation-tranche/SKILL.md](/generated/source-docs/as215932/network-operations/skills-implementation-tranche-skill.md)
+* [skills/monitoring-onboarding/SKILL.md](/generated/source-docs/as215932/network-operations/skills-monitoring-onboarding-skill.md)
+* [skills/role-devops-netops/SKILL.md](/generated/source-docs/as215932/network-operations/skills-role-devops-netops-skill.md)
+* [skills/role-finops-integrity/SKILL.md](/generated/source-docs/as215932/network-operations/skills-role-finops-integrity-skill.md)
+* [skills/role-network-architect/SKILL.md](/generated/source-docs/as215932/network-operations/skills-role-network-architect-skill.md)
+* [skills/role-security-auditor/SKILL.md](/generated/source-docs/as215932/network-operations/skills-role-security-auditor-skill.md)
+* [skills/role-systems-engineer/SKILL.md](/generated/source-docs/as215932/network-operations/skills-role-systems-engineer-skill.md)
+* [skills/role-virtual-lab-chaos/SKILL.md](/generated/source-docs/as215932/network-operations/skills-role-virtual-lab-chaos-skill.md)
 
 # Citations
 
