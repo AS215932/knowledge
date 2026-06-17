@@ -36,7 +36,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-165
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/CLAUDE.md#L1-L165
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -132,9 +132,9 @@ No repo-local runbook files detected in indexed sources.
 
 # Related services
 
-* [hyrule-web](/generated/services/hyrule-web.md)
-* [hyrule-network-proxy](/generated/services/hyrule-network-proxy.md)
-* [network-operations](/generated/projects/network-operations.md)
+* [hyrule-web](hyrule-web.md)
+* [hyrule-network-proxy](hyrule-network-proxy.md)
+* [network-operations](../projects/network-operations.md)
 
 # Open issues/known gaps
 

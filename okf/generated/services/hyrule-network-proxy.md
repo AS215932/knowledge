@@ -23,7 +23,7 @@ source_refs:
   commit: b82dc72bbf382167062bff272606ce84ec20538c
   lines: 1-21
   url: https://github.com/AS215932/hyrule-network-proxy/blob/b82dc72bbf382167062bff272606ce84ec20538c/AGENTS.md#L1-L21
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-network-proxy
@@ -77,8 +77,8 @@ No repo-local runbook files detected in indexed sources.
 
 # Related services
 
-* [hyrule-cloud](/generated/services/hyrule-cloud.md)
-* [network-operations](/generated/projects/network-operations.md)
+* [hyrule-cloud](hyrule-cloud.md)
+* [network-operations](../projects/network-operations.md)
 
 # Open issues/known gaps
 

@@ -1,9 +1,9 @@
 ---
 type: Source Document
 title: Hyrule Engineering Loop v2 — Roadmap
-description: Phases B–G of the v2 refactor (phase A was the design itself — the [architecture
-  spec](./v2-architecture.md), templates, and the initial `skills/` tree). Each phase
-  is one reviewable PR with green gates and is dogfooded as a task spec wh...
+description: Phases B–G of the v2 refactor (phase A was the design itself — the architecture
+  spec, templates, and the initial `skills/` tree). Each phase is one reviewable PR
+  with green gates and is dogfooded as a task spec when the loop is far enoug...
 resource: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/docs/engineering-loop/v2-roadmap.md
 tags:
 - as215932
@@ -18,7 +18,7 @@ source_refs:
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   lines: 1-182
   url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/docs/engineering-loop/v2-roadmap.md#L1-L182
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop

@@ -74,10 +74,24 @@ def _without_fenced_code(body: str) -> str:
     return "\n".join(lines)
 
 
+def _validate_links(bundle_root: Path, path: Path, body: str) -> list[str]:
+    errors: list[str] = []
+    for match in LINK_RE.finditer(_without_fenced_code(body)):
+        target = match.group(1).strip()
+        clean = target.split("#", 1)[0]
+        if clean.startswith(("/generated/", "/curated/", "/observed/")):
+            errors.append(f"{path}: root-absolute internal link {target}; use a relative link")
+            continue
+        if not _target_exists(bundle_root, path, target):
+            errors.append(f"{path}: broken link target {target}")
+    return errors
+
+
 def validate_okf(bundle_root: Path) -> list[str]:
     errors: list[str] = []
     for path in sorted(bundle_root.rglob("*.md")):
         if path.name in {"index.md", "log.md"}:
+            errors.extend(_validate_links(bundle_root, path, path.read_text(encoding="utf-8")))
             continue
         try:
             data, body = parse_frontmatter(path)
@@ -92,10 +106,7 @@ def validate_okf(bundle_root: Path) -> list[str]:
         errors.extend(_validate_value(path, data, "authority", VALID_AUTHORITIES))
         errors.extend(_validate_value(path, data, "confidence", VALID_CONFIDENCE))
         errors.extend(_validate_value(path, data, "dispute_policy", VALID_DISPUTE))
-        for match in LINK_RE.finditer(_without_fenced_code(body)):
-            target = match.group(1).strip()
-            if not _target_exists(bundle_root, path, target):
-                errors.append(f"{path}: broken link target {target}")
+        errors.extend(_validate_links(bundle_root, path, body))
     return errors
 
 

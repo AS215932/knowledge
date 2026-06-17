@@ -18,7 +18,7 @@ source_refs:
   commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
   lines: 1-53
   url: https://github.com/AS215932/hyrule-mcp/blob/326bcc85e1c69f0d7c1839ebaa4abb73acd84185/pyproject.toml#L1-L53
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-mcp

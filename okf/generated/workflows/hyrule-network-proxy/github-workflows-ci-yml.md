@@ -16,7 +16,7 @@ source_refs:
   path: .github/workflows/ci.yml
   commit: b82dc72bbf382167062bff272606ce84ec20538c
   url: https://github.com/AS215932/hyrule-network-proxy/blob/b82dc72bbf382167062bff272606ce84ec20538c/.github/workflows/ci.yml
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-network-proxy

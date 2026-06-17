@@ -16,7 +16,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 68-69
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/hyrule_cloud/api/voip.py#L68-L69
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -45,8 +45,8 @@ response_model: PaidEndpointQuote
 
 # Request/response models
 
-* [VoIPCheckRequest](/generated/schemas/hyrule-cloud/VoIPCheckRequest.md)
-* [PaidEndpointQuote](/generated/schemas/hyrule-cloud/PaidEndpointQuote.md)
+* [VoIPCheckRequest](../../schemas/hyrule-cloud/VoIPCheckRequest.md)
+* [PaidEndpointQuote](../../schemas/hyrule-cloud/PaidEndpointQuote.md)
 
 # Dependencies
 

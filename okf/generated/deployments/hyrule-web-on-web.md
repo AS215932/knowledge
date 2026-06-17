@@ -20,7 +20,7 @@ source_refs:
   path: ansible/inventory/host_vars/web.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/web.yml
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -34,8 +34,8 @@ pin_value: d94146e67f9eb05f8eeb5c57cab74cbe676f5c79
 
 | Field | Value |
 | --- | --- |
-| Service | [Hyrule Web](/generated/services/hyrule-web.md) |
-| Host | [web](/generated/infrastructure/hosts/web.md) |
+| Service | [Hyrule Web](../services/hyrule-web.md) |
+| Host | [web](../infrastructure/hosts/web.md) |
 | Pin variable | `hyrule_web_version` |
 | Pinned version | `d94146e67f9eb05f8eeb5c57cab74cbe676f5c79` |
 | Source host vars | `ansible/inventory/host_vars/web.yml` |

@@ -38,12 +38,14 @@ def ensure_curated_indexes() -> None:
         "postmortems": "Incident retrospectives.",
         "strategy": "Business and long-range context.",
     }
+    root_lines = ["# Curated knowledge", ""]
     for name, description in sections.items():
         path = curated / name
         path.mkdir(parents=True, exist_ok=True)
         index = path / "index.md"
         title = name.replace("-", " ").title()
         entries = sorted(p for p in path.glob("*.md") if p.name != "index.md")
+        root_lines.append(f"* [{title}]({name}/) - {description}")
         lines = [f"# {title}\n"]
         if entries:
             for entry in entries:
@@ -52,6 +54,8 @@ def ensure_curated_indexes() -> None:
             lines.append(f"* _No curated entries yet._ - {description}")
         lines.append("")
         index.write_text("\n".join(lines), encoding="utf-8")
+    root_lines.append("")
+    (curated / "index.md").write_text("\n".join(root_lines), encoding="utf-8")
 
 
 def _snapshot_by_name(snapshots: list[tuple[SourceConfig, RepoSnapshot]], name: str) -> RepoSnapshot | None:

@@ -18,7 +18,7 @@ source_refs:
 - repo: AS215932/hyrule-business
   commit: 89febc9c95fb6766df071e054cb44fba0b1ec8e4
   url: https://github.com/AS215932/hyrule-business
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/hyrule-business
@@ -56,7 +56,7 @@ Private business planning and profitability notes for Hyrule/AS215932
 
 # Related concepts
 
-* Top-level concept: [Hyrule Business](/generated/projects/hyrule-business.md)
+* Top-level concept: [Hyrule Business](../../projects/hyrule-business.md)
 
 # Indexed source material
 

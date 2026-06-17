@@ -2,8 +2,8 @@
 type: Source Document
 title: Hyrule Engineering Loop v2 — Architecture
 description: 'Status: **approved design, pre-implementation**. This document is the
-  canonical specification that the v2 refactor (roadmap phases B–G, see [v2-roadmap.md](./v2-roadmap.md))
-  is built against. The running v1 implementation is documented i...'
+  canonical specification that the v2 refactor (roadmap phases B–G, see v2-roadmap.md)
+  is built against. The running v1 implementation is documented in docs/agentic-deve...'
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/engineering-loop/v2-architecture.md
 tags:
 - as215932
@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-333
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/engineering-loop/v2-architecture.md#L1-L333
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations

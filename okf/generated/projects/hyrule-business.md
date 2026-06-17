@@ -18,7 +18,7 @@ source_refs:
   commit: 89febc9c95fb6766df071e054cb44fba0b1ec8e4
   lines: 1-174
   url: https://github.com/AS215932/hyrule-business/blob/89febc9c95fb6766df071e054cb44fba0b1ec8e4/hosting-cost-analysis.md#L1-L174
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-business
@@ -62,8 +62,8 @@ No specific constraints extracted; follow repository `AGENTS.md` if present.
 
 # Related services
 
-* [hyrule-cloud](/generated/services/hyrule-cloud.md)
-* [network-operations](/generated/projects/network-operations.md)
+* [hyrule-cloud](../services/hyrule-cloud.md)
+* [network-operations](network-operations.md)
 
 # Open issues/known gaps
 

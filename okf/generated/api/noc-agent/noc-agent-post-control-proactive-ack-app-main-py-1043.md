@@ -16,7 +16,7 @@ source_refs:
   commit: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
   lines: 1043-1057
   url: https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/app/main.py#L1043-L1057
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/noc-agent
@@ -44,7 +44,7 @@ request_models:
 
 # Request/response models
 
-* [ProactiveAckRequest](/generated/schemas/noc-agent/ProactiveAckRequest.md)
+* [ProactiveAckRequest](../../schemas/noc-agent/ProactiveAckRequest.md)
 
 # Dependencies
 

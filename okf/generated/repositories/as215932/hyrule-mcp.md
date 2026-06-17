@@ -23,7 +23,7 @@ source_refs:
 - repo: AS215932/hyrule-mcp
   commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
   url: https://github.com/AS215932/hyrule-mcp
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/hyrule-mcp
@@ -61,17 +61,17 @@ MCP tools for administrating AS215932
 
 # Related concepts
 
-* Top-level concept: [Hyrule MCP](/generated/services/hyrule-mcp.md)
+* Top-level concept: [Hyrule MCP](../../services/hyrule-mcp.md)
 
 # Indexed source material
 
-* [.github/workflows/ci.yml](/generated/workflows/hyrule-mcp/github-workflows-ci-yml.md)
-* [.github/workflows/pr-agent.yml](/generated/workflows/hyrule-mcp/github-workflows-pr-agent-yml.md)
-* [.github/workflows/request-promotion.yml](/generated/workflows/hyrule-mcp/github-workflows-request-promotion-yml.md)
-* [.github/workflows/semgrep.yml](/generated/workflows/hyrule-mcp/github-workflows-semgrep-yml.md)
-* [README.md](/generated/source-docs/as215932/hyrule-mcp/readme.md)
-* [TESTING.md](/generated/source-docs/as215932/hyrule-mcp/testing.md)
-* [pyproject.toml](/generated/source-docs/as215932/hyrule-mcp/pyproject-toml.md)
+* [.github/workflows/ci.yml](../../workflows/hyrule-mcp/github-workflows-ci-yml.md)
+* [.github/workflows/pr-agent.yml](../../workflows/hyrule-mcp/github-workflows-pr-agent-yml.md)
+* [.github/workflows/request-promotion.yml](../../workflows/hyrule-mcp/github-workflows-request-promotion-yml.md)
+* [.github/workflows/semgrep.yml](../../workflows/hyrule-mcp/github-workflows-semgrep-yml.md)
+* [README.md](../../source-docs/as215932/hyrule-mcp/readme.md)
+* [TESTING.md](../../source-docs/as215932/hyrule-mcp/testing.md)
+* [pyproject.toml](../../source-docs/as215932/hyrule-mcp/pyproject-toml.md)
 
 # Citations
 

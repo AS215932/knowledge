@@ -17,7 +17,7 @@ source_refs:
   path: README.md
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/README.md
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: medium
 dispute_policy: adjudicate
 review_status: proposed

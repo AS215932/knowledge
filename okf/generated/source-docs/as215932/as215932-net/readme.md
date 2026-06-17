@@ -1,9 +1,9 @@
 ---
 type: Source Document
 title: as215932.net
-description: Informational website for [AS215932](https://www.peeringdb.com/asn/215932)
-  (Hyrule Networks). ASN facts, peering policy, network weathermap, prefix allocations,
-  and a stub for the upcoming Looking Glass.
+description: Informational website for AS215932 (Hyrule Networks). ASN facts, peering
+  policy, network weathermap, prefix allocations, and a stub for the upcoming Looking
+  Glass.
 resource: https://github.com/AS215932/as215932.net/blob/9c0ee2d8f2bb793ea799589ca0fe4f77571b2572/README.md
 tags:
 - as215932
@@ -18,7 +18,7 @@ source_refs:
   commit: 9c0ee2d8f2bb793ea799589ca0fe4f77571b2572
   lines: 1-54
   url: https://github.com/AS215932/as215932.net/blob/9c0ee2d8f2bb793ea799589ca0fe4f77571b2572/README.md#L1-L54
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/as215932.net
