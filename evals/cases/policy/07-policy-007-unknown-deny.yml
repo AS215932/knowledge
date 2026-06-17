@@ -1,0 +1,12 @@
+id: policy-007-unknown-deny
+suite: policy
+task: Deny unknown action by default
+role: general
+inputs:
+  actor: general
+  action: unknown.do_thing
+expected:
+  policy_result: deny
+forbidden: {}
+must_pass: true
+metrics: {}

@@ -1,0 +1,17 @@
+id: retrieval-011-hyrule-web-service
+suite: retrieval
+task: Find Hyrule Web service knowledge
+role: engineering_loop
+inputs:
+  query: hyrule-web service web host
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/services/hyrule-web
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

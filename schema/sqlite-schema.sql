@@ -67,10 +67,90 @@ CREATE TABLE IF NOT EXISTS observations (
 );
 
 CREATE TABLE IF NOT EXISTS claims (
+  id TEXT PRIMARY KEY,
   concept_id TEXT NOT NULL,
-  claim_text TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  predicate TEXT NOT NULL,
+  object TEXT NOT NULL,
+  authority_tier TEXT NOT NULL,
   source_ref_index INTEGER,
-  confidence TEXT
+  source_uri TEXT,
+  valid_from TEXT,
+  valid_to TEXT,
+  extracted_at TEXT NOT NULL,
+  confidence REAL NOT NULL DEFAULT 1.0,
+  freshness_status TEXT NOT NULL DEFAULT 'current',
+  review_status TEXT,
+  supersedes_json TEXT NOT NULL DEFAULT '[]',
+  conflicts_with_json TEXT NOT NULL DEFAULT '[]',
+  metadata_json TEXT NOT NULL DEFAULT '{}'
+);
+
+CREATE INDEX IF NOT EXISTS idx_claims_subject ON claims(subject);
+CREATE INDEX IF NOT EXISTS idx_claims_predicate ON claims(predicate);
+CREATE INDEX IF NOT EXISTS idx_claims_object ON claims(object);
+CREATE INDEX IF NOT EXISTS idx_claims_authority ON claims(authority_tier);
+CREATE INDEX IF NOT EXISTS idx_claims_concept ON claims(concept_id);
+
+CREATE TABLE IF NOT EXISTS retrieval_candidates (
+  query_id TEXT NOT NULL,
+  concept_id TEXT NOT NULL,
+  rank INTEGER NOT NULL,
+  score_exact REAL,
+  score_graph REAL,
+  score_fts REAL,
+  score_vector REAL,
+  authority_tier TEXT,
+  reason TEXT,
+  metadata_json TEXT NOT NULL DEFAULT '{}'
+);
+
+CREATE TABLE IF NOT EXISTS context_packs (
+  id TEXT PRIMARY KEY,
+  task_id TEXT,
+  role TEXT NOT NULL,
+  generated_at TEXT NOT NULL,
+  knowledge_snapshot TEXT NOT NULL,
+  retrieval_version TEXT NOT NULL,
+  policy_version TEXT NOT NULL,
+  token_budget INTEGER NOT NULL,
+  risk_level TEXT NOT NULL,
+  manifest_json TEXT NOT NULL,
+  body_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS policy_decisions (
+  id TEXT PRIMARY KEY,
+  requested_at TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  action TEXT NOT NULL,
+  target TEXT,
+  environment TEXT,
+  risk_level TEXT,
+  result TEXT NOT NULL,
+  policy_version TEXT NOT NULL,
+  reasons_json TEXT NOT NULL DEFAULT '[]',
+  constraints_json TEXT NOT NULL DEFAULT '[]',
+  input_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS eval_cases (
+  id TEXT PRIMARY KEY,
+  suite TEXT NOT NULL,
+  task TEXT NOT NULL,
+  role TEXT,
+  case_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS eval_results (
+  run_id TEXT NOT NULL,
+  case_id TEXT NOT NULL,
+  suite TEXT NOT NULL,
+  passed INTEGER NOT NULL,
+  score REAL NOT NULL,
+  metrics_json TEXT NOT NULL,
+  failure_reasons_json TEXT NOT NULL DEFAULT '[]',
+  PRIMARY KEY (run_id, case_id)
 );
 
 CREATE TABLE IF NOT EXISTS enrichment_runs (

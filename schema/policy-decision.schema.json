@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS215932 Knowledge Policy Decision",
+  "type": "object",
+  "required": ["id", "requested_at", "actor", "action", "target", "environment", "risk_level", "tool_tier", "data_classes", "result", "policy_version", "reasons", "constraints", "input"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^pol_[a-f0-9]{32}$"},
+    "requested_at": {"type": "string"},
+    "actor": {"type": "string"},
+    "action": {"type": "string"},
+    "target": {"type": ["string", "null"]},
+    "environment": {"type": "string"},
+    "risk_level": {"type": "string"},
+    "tool_tier": {"type": "integer"},
+    "data_classes": {"type": "array", "items": {"type": "string"}},
+    "result": {"type": "string", "enum": ["allow", "deny", "require_human", "allow_readonly_substitute"]},
+    "policy_version": {"type": "string"},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "constraints": {"type": "object"},
+    "input": {"type": "object"}
+  },
+  "additionalProperties": false
+}

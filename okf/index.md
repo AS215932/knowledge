@@ -3,6 +3,8 @@
 * [Generated knowledge](generated/) - Deterministic concepts derived from source repositories and GitHub metadata.
 * [Curated knowledge](curated/) - Human-authored institutional knowledge owned by this OKF repository.
 * [Observed evidence](observed/) - Manual/local safe-health runtime observations, evidence-only and time-bounded.
+* `exports/knowledge.sqlite` - Read-only machine store with concepts, edges, claims, policy decisions, context packs, eval cases/results, and SQLite FTS.
+* `evals/` - Deterministic retrieval/grounding/policy fixture baseline for agents.
 
 # Generated
 
@@ -18,6 +20,13 @@
 * [Schemas](generated/schemas/) - Pydantic/API schema concepts extracted from source.
 * [Monitoring](generated/monitoring/) - Monitoring configuration summaries.
 * [Enriched](generated/enriched/) - Manual LLM-drafted source-cited enrichment concepts.
+
+# Control-plane contracts
+
+* Authority tiers: A0 source truth, A1 reviewed OKF, A2 reviewed trace summaries, A3 observed evidence, A4 hypotheses, A5 vector hints.
+* Conflict rule: A0 > A1 > A2 > A3 > A4/A5; vectors are placeholders only and never override source truth.
+* Policy: `knowledge-policy.yml` is evaluated by the built-in YAML evaluator for read-only knowledge access and human-review boundaries.
+* Context packs: generated manually/local by `hyrule-knowledge context-pack` for Engineering Loop and NOC shadow consumers.
 
 # Curated
 

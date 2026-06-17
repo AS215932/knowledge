@@ -1,0 +1,17 @@
+id: retrieval-004-hyrule-cloud-api-deployment
+suite: retrieval
+task: Find Hyrule Cloud API deployment pin
+role: engineering_loop
+inputs:
+  query: hyrule-cloud deployment api
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/deployments/hyrule-cloud-on-api
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

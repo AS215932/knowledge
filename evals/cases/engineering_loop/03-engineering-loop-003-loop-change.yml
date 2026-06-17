@@ -1,0 +1,25 @@
+id: engineering-loop-003-loop-change
+suite: engineering_loop
+task: 'Engineering Loop: self-context'
+role: engineering_loop
+inputs:
+  query: Change Engineering Loop memory policy with context pack grounding
+  context_pack: true
+  authority_min: A4
+  risk_level: low
+expected:
+  refs_any:
+  - generated/services/engineering-loop
+  sections:
+  - task_summary
+  - target_repo_source_truth
+  - forbidden_actions
+  policy_result: allow
+forbidden:
+  data_classes:
+  - secret
+  - raw_log
+  - packet_capture
+must_pass: true
+metrics:
+  citations_required: true

@@ -1,0 +1,21 @@
+id: grounding-004-mcp-context
+suite: grounding
+task: Ground Hyrule MCP service context
+role: engineering_loop
+inputs:
+  query: Investigate Hyrule MCP health and tool availability docs
+  context_pack: true
+  authority_min: A4
+  risk_level: low
+expected:
+  refs_any:
+  - generated/services/hyrule-mcp
+  sections:
+  - target_repo_source_truth
+  - related_services_and_hosts
+  policy_result: allow
+forbidden: {}
+must_pass: true
+metrics:
+  citations_required: true
+  vector_scores_null: true

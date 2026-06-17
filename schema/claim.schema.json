@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS215932 Knowledge Claim",
+  "type": "object",
+  "required": ["id", "concept_id", "subject", "predicate", "object", "authority_tier", "extracted_at", "confidence", "freshness_status", "review_status", "metadata"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^claim_[a-f0-9]{32}$"},
+    "concept_id": {"type": "string"},
+    "subject": {"type": "string"},
+    "predicate": {"type": "string"},
+    "object": {"type": "string"},
+    "authority_tier": {"type": "string", "enum": ["A0", "A1", "A2", "A3", "A4", "A5"]},
+    "source_ref_index": {"type": ["integer", "null"]},
+    "source_uri": {"type": "string"},
+    "valid_from": {"type": ["string", "null"]},
+    "valid_to": {"type": ["string", "null"]},
+    "extracted_at": {"type": "string"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "freshness_status": {"type": "string", "enum": ["current", "expired", "unknown"]},
+    "review_status": {"type": ["string", "null"]},
+    "supersedes": {"type": "array", "items": {"type": "string"}},
+    "conflicts_with": {"type": "array", "items": {"type": "string"}},
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": false
+}

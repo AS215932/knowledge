@@ -1,0 +1,23 @@
+id: grounding-008-noc-shadow-context
+suite: grounding
+task: Ground NOC shadow context
+role: noc_shadow
+inputs:
+  query: NOC shadow compare intended and observed state for noc-agent on noc
+  context_pack: true
+  authority_min: A4
+  risk_level: low
+expected:
+  refs_any:
+  - generated/services/noc-agent
+  sections:
+  - intended_state
+  - observed_state_fixture
+  - safe_diagnostic_boundaries
+  - forbidden_actions
+  policy_result: allow
+forbidden: {}
+must_pass: true
+metrics:
+  citations_required: true
+  vector_scores_null: true

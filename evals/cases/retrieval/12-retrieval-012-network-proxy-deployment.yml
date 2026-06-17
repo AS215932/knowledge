@@ -1,0 +1,17 @@
+id: retrieval-012-network-proxy-deployment
+suite: retrieval
+task: Find network proxy deployment on netproxy
+role: engineering_loop
+inputs:
+  query: generated/deployments/hyrule-network-proxy-on-netproxy netproxy deployment
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/deployments/hyrule-network-proxy-on-netproxy
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

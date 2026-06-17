@@ -1,0 +1,17 @@
+id: retrieval-005-api-host
+suite: retrieval
+task: Find the api host in network operations
+role: engineering_loop
+inputs:
+  query: network-operations api host deployment
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/infrastructure/hosts/api
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

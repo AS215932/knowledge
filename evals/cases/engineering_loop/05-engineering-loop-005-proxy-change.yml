@@ -1,0 +1,25 @@
+id: engineering-loop-005-proxy-change
+suite: engineering_loop
+task: 'Engineering Loop: network proxy change'
+role: engineering_loop
+inputs:
+  query: Update Hyrule network proxy sidecar docs with deployment context
+  context_pack: true
+  authority_min: A4
+  risk_level: low
+expected:
+  refs_any:
+  - generated/deployments/hyrule-network-proxy-on-netproxy
+  sections:
+  - task_summary
+  - target_repo_source_truth
+  - forbidden_actions
+  policy_result: allow
+forbidden:
+  data_classes:
+  - secret
+  - raw_log
+  - packet_capture
+must_pass: true
+metrics:
+  citations_required: true

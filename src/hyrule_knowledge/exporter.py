@@ -8,6 +8,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+from .claims import compile_claims
 from .models import Edge
 from .okf_writer import edge_json
 from .validator import parse_frontmatter
@@ -50,6 +51,7 @@ def load_okf_concepts(bundle_root: Path) -> list[dict[str, Any]]:
                 "payload_json": frontmatter.get("payload_json"),
                 "observation_source": frontmatter.get("observation_source"),
                 "observation_status": frontmatter.get("observation_status"),
+                "frontmatter": frontmatter,
                 "body": body.strip(),
             }
         )
@@ -134,7 +136,7 @@ def write_exports(
     run_id: str | None = None,
 ) -> None:
     concepts = load_okf_concepts(bundle_root)
-    concepts_public = [{key: value for key, value in row.items() if key != "body"} for row in concepts]
+    concepts_public = [{key: value for key, value in row.items() if key not in {"body", "frontmatter"}} for row in concepts]
     source_rows: list[dict[str, Any]] = []
     for concept in concepts:
         for ref in concept["source_refs"]:
@@ -148,6 +150,11 @@ def write_exports(
     quality_rows = _quality_rows()
     observation_rows = _observation_rows(concepts)
     enrichment_rows = _enrichment_rows(concepts)
+    claim_rows = [claim.as_json() for claim in compile_claims(concepts, edge_rows, extracted_at=_claim_extracted_at(concepts))]
+    context_pack_rows = read_jsonl(Path("reports/context-packs.jsonl"))
+    policy_decision_rows = read_jsonl(Path("reports/policy-decisions.jsonl"))
+    eval_case_rows = read_jsonl(Path("exports/eval-cases.jsonl")) or read_jsonl(Path("reports/eval-cases.jsonl"))
+    eval_result_rows = read_jsonl(Path("reports/evals.jsonl"))
 
     write_jsonl(exports_dir / "concepts.jsonl", concepts_public)
     write_jsonl(exports_dir / "sources.jsonl", source_rows)
@@ -155,6 +162,11 @@ def write_exports(
     write_jsonl(exports_dir / "quality.jsonl", quality_rows)
     write_jsonl(exports_dir / "observations.jsonl", observation_rows)
     write_jsonl(exports_dir / "enrichment-runs.jsonl", enrichment_rows)
+    write_jsonl(exports_dir / "claims.jsonl", claim_rows)
+    write_jsonl(exports_dir / "context-packs.jsonl", context_pack_rows)
+    write_jsonl(exports_dir / "policy-decisions.jsonl", policy_decision_rows)
+    write_jsonl(exports_dir / "eval-cases.jsonl", eval_case_rows)
+    write_jsonl(exports_dir / "eval-results.jsonl", eval_result_rows)
     manifest = {
         "concept_count": len(concepts),
         "edge_count": len(edge_rows),
@@ -162,11 +174,38 @@ def write_exports(
         "quality_finding_count": len(quality_rows),
         "observation_count": len(observation_rows),
         "enrichment_run_count": len(enrichment_rows),
+        "claim_count": len(claim_rows),
+        "context_pack_count": len(context_pack_rows),
+        "policy_decision_count": len(policy_decision_rows),
+        "eval_case_count": len(eval_case_rows),
+        "eval_result_count": len(eval_result_rows),
+        "retrieval_version": "retrieval_v1",
+        "policy_version": "knowledge_policy_v1",
         "source_shas": source_shas or {},
         "run_id": run_id,
     }
     (exports_dir / "manifest.json").write_text(_json_dump(manifest) + "\n", encoding="utf-8")
-    write_sqlite(exports_dir / "knowledge.sqlite", Path("schema/sqlite-schema.sql"), concepts, edge_rows, source_rows, quality_rows, observation_rows, enrichment_rows, manifest)
+    write_sqlite(
+        exports_dir / "knowledge.sqlite",
+        Path("schema/sqlite-schema.sql"),
+        concepts,
+        edge_rows,
+        source_rows,
+        quality_rows,
+        observation_rows,
+        enrichment_rows,
+        claim_rows,
+        context_pack_rows,
+        policy_decision_rows,
+        eval_case_rows,
+        eval_result_rows,
+        manifest,
+    )
+
+
+def _claim_extracted_at(concepts: list[dict[str, Any]]) -> str:
+    values = [str(concept.get("last_verified_at")) for concept in concepts if concept.get("last_verified_at")]
+    return max(values) if values else "1970-01-01T00:00:00Z"
 
 
 def write_sqlite(
@@ -178,6 +217,11 @@ def write_sqlite(
     quality_rows: list[dict[str, Any]],
     observation_rows: list[dict[str, Any]],
     enrichment_rows: list[dict[str, Any]],
+    claim_rows: list[dict[str, Any]],
+    context_pack_rows: list[dict[str, Any]],
+    policy_decision_rows: list[dict[str, Any]],
+    eval_case_rows: list[dict[str, Any]],
+    eval_result_rows: list[dict[str, Any]],
     manifest: dict[str, Any],
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -275,6 +319,89 @@ def write_sqlite(
                     row.get("input_hash"),
                     row.get("output_hash"),
                     row.get("created_at"),
+                ),
+            )
+        for claim in claim_rows:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO claims (
+                  id, concept_id, subject, predicate, object, authority_tier,
+                  source_ref_index, source_uri, valid_from, valid_to, extracted_at,
+                  confidence, freshness_status, review_status, supersedes_json,
+                  conflicts_with_json, metadata_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    claim.get("id"),
+                    claim.get("concept_id"),
+                    claim.get("subject"),
+                    claim.get("predicate"),
+                    claim.get("object"),
+                    claim.get("authority_tier"),
+                    claim.get("source_ref_index"),
+                    claim.get("source_uri"),
+                    claim.get("valid_from"),
+                    claim.get("valid_to"),
+                    claim.get("extracted_at"),
+                    claim.get("confidence"),
+                    claim.get("freshness_status"),
+                    claim.get("review_status"),
+                    json.dumps(claim.get("supersedes", []), sort_keys=True),
+                    json.dumps(claim.get("conflicts_with", []), sort_keys=True),
+                    json.dumps(claim.get("metadata", {}), sort_keys=True),
+                ),
+            )
+        for row in context_pack_rows:
+            conn.execute(
+                "INSERT OR REPLACE INTO context_packs (id, task_id, role, generated_at, knowledge_snapshot, retrieval_version, policy_version, token_budget, risk_level, manifest_json, body_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    row.get("id"),
+                    row.get("task_id"),
+                    row.get("role"),
+                    row.get("generated_at"),
+                    row.get("knowledge_snapshot"),
+                    row.get("retrieval_version"),
+                    row.get("policy_version"),
+                    row.get("token_budget"),
+                    row.get("risk_level"),
+                    json.dumps(row.get("manifest", row), sort_keys=True),
+                    json.dumps(row, sort_keys=True),
+                ),
+            )
+        for decision in policy_decision_rows:
+            conn.execute(
+                "INSERT OR REPLACE INTO policy_decisions (id, requested_at, actor, action, target, environment, risk_level, result, policy_version, reasons_json, constraints_json, input_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    decision.get("id"),
+                    decision.get("requested_at"),
+                    decision.get("actor"),
+                    decision.get("action"),
+                    decision.get("target"),
+                    decision.get("environment"),
+                    decision.get("risk_level"),
+                    decision.get("result"),
+                    decision.get("policy_version"),
+                    json.dumps(decision.get("reasons", []), sort_keys=True),
+                    json.dumps(decision.get("constraints", {}), sort_keys=True),
+                    json.dumps(decision.get("input", {}), sort_keys=True),
+                ),
+            )
+        for case in eval_case_rows:
+            conn.execute(
+                "INSERT OR REPLACE INTO eval_cases (id, suite, task, role, case_json) VALUES (?, ?, ?, ?, ?)",
+                (case.get("id"), case.get("suite"), case.get("task"), case.get("role"), json.dumps(case, sort_keys=True)),
+            )
+        for result in eval_result_rows:
+            conn.execute(
+                "INSERT OR REPLACE INTO eval_results (run_id, case_id, suite, passed, score, metrics_json, failure_reasons_json) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (
+                    result.get("run_id"),
+                    result.get("case_id"),
+                    result.get("suite"),
+                    1 if result.get("passed") else 0,
+                    result.get("score"),
+                    json.dumps(result.get("metrics", {}), sort_keys=True),
+                    json.dumps(result.get("failure_reasons", []), sort_keys=True),
                 ),
             )
         conn.execute(

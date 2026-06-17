@@ -1,0 +1,17 @@
+id: retrieval-009-hyrule-mcp-service
+suite: retrieval
+task: Find Hyrule MCP service knowledge
+role: engineering_loop
+inputs:
+  query: hyrule-mcp service
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - generated/services/hyrule-mcp
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

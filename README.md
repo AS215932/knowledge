@@ -2,7 +2,7 @@
 
 Private OKF knowledge bundle for Servify / Hyrule / AS215932.
 
-This repository is the generated and curated institutional knowledge database for AS215932. It uses Google's draft Open Knowledge Format (OKF): Markdown files with YAML frontmatter, plus deterministic JSONL and SQLite exports for integration.
+This repository is the generated and curated institutional knowledge database for AS215932. It uses Google's draft Open Knowledge Format (OKF): Markdown files with YAML frontmatter, plus deterministic JSONL and SQLite exports for integration. It also provides the read-only foundation for the AS215932 governed learning control plane: authority tiers, machine-checkable claims, policy decisions, context packs, and deterministic eval fixtures.
 
 ## Source-of-truth model
 
@@ -26,9 +26,11 @@ Conflict policy:
 | `okf/generated/` | Generated concepts from source repos and GitHub metadata. Do not hand-edit. |
 | `okf/curated/` | Human-authored institutional knowledge. Reviewed edits live here. |
 | `exports/` | Deterministic JSONL and SQLite exports generated from OKF. |
-| `schema/` | Frontmatter and SQLite schemas. |
-| `src/hyrule_knowledge/` | Ingestion, validation, and export tooling. |
+| `schema/` | Frontmatter, claim, context-pack, policy-decision, and SQLite schemas. |
+| `evals/` | Deterministic baseline eval schemas and fixture cases. |
+| `src/hyrule_knowledge/` | Ingestion, validation, export, retrieval, policy, context-pack, eval, and MCP tooling. |
 | `knowledge.config.yml` | Source list, include/exclude patterns, and project mapping. |
+| `knowledge-policy.yml` | Built-in YAML policy evaluator configuration. |
 
 ## Common commands
 
@@ -40,7 +42,10 @@ uv run hyrule-knowledge quality --write
 uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge validate okf
 uv run hyrule-knowledge export
-uv run hyrule-knowledge scan-secrets okf exports reports
+uv run hyrule-knowledge query "POST /v1/vm/create schema" --json
+uv run hyrule-knowledge context-pack --task "Engineer change to POST /v1/vm/create" --role engineering_loop
+uv run hyrule-knowledge eval --check
+uv run hyrule-knowledge scan-secrets okf exports reports evals schema
 ```
 
 Regenerate and verify everything:
@@ -50,7 +55,8 @@ uv run hyrule-knowledge ingest
 uv run hyrule-knowledge validate okf
 uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge export --check
-uv run hyrule-knowledge scan-secrets okf exports reports
+uv run hyrule-knowledge eval --check
+uv run hyrule-knowledge scan-secrets okf exports reports evals schema
 ```
 
 Manual LLM enrichment uses OpenRouter Claude Sonnet 4.6 by default and requires `OPENROUTER_API_KEY` unless `--dry-run` is set:
@@ -71,6 +77,26 @@ uv run hyrule-knowledge observe --profile safe-health
 
 `.github/workflows/ingest.yml` runs nightly and on manual dispatch. When source knowledge changes, it opens a refresh PR. The PR must be reviewed before merge; generated knowledge is never auto-merged.
 
-## OKF consumption
+## Governed agent consumption
 
-Humans can browse `okf/index.md`. Agents should first read `okf/index.md`, then directory indexes, then individual concepts. Machine consumers should prefer `exports/concepts.jsonl`, `exports/edges.jsonl`, and `exports/knowledge.sqlite`.
+Humans can browse `okf/index.md`. Agents should first read `okf/index.md`, then directory indexes, then individual concepts. Machine consumers should prefer `exports/knowledge.sqlite` and the JSONL exports:
+
+- `claims.jsonl` / `claims` table for subject-predicate-object facts with authority tier, freshness, and provenance.
+- `concepts.jsonl`, `edges.jsonl`, and SQLite FTS for exact + graph + text retrieval.
+- `context-packs.jsonl` / `context_packs` table for policy-aware task context when explicitly generated.
+- `policy-decisions.jsonl` / `policy_decisions` table for audited policy outputs.
+- `eval-cases.jsonl` and `eval-results.jsonl` for deterministic retrieval/grounding/policy baselines.
+
+Authority tiers are ordered A0 source truth, A1 reviewed OKF, A2 reviewed trace summaries, A3 observations, A4 hypotheses, A5 vector hints. Vectors are deliberately not implemented in this tranche; retrieval score objects include null vector fields for future compatibility only.
+
+Useful read-only commands:
+
+```bash
+uv run hyrule-knowledge resolve generated/services/hyrule-cloud
+uv run hyrule-knowledge claims --subject service:hyrule-cloud --authority-min A0
+uv run hyrule-knowledge neighborhood generated/services/hyrule-cloud --depth 2
+uv run hyrule-knowledge endpoint-schema POST /v1/vm/create
+uv run hyrule-knowledge deployment-pins hyrule-cloud
+uv run hyrule-knowledge policy-decision --actor engineering_loop --action knowledge.search
+uv run hyrule-knowledge mcp --transport stdio
+```
