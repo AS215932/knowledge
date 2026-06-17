@@ -41,8 +41,8 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           branch: bot/knowledge-refresh/${{ github.run_id }}
-          title: knowledge: refresh OKF catalog ${{ github.run_id }}
-          commit-message: knowledge: refresh OKF catalog
+          title: "knowledge: refresh OKF catalog ${{ github.run_id }}"
+          commit-message: "knowledge: refresh OKF catalog"
           body: |
             Automated deterministic OKF refresh.
 
