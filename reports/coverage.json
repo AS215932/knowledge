@@ -1,0 +1,70 @@
+{
+  "concept_count": 865,
+  "concepts_by_authority": {
+    "advisory": 10,
+    "canonical": 760,
+    "evidence": 95
+  },
+  "concepts_by_truth_owner": {
+    "derived": 1,
+    "external": 95,
+    "okf": 9,
+    "repo": 760
+  },
+  "concepts_by_type": {
+    "API Endpoint": 306,
+    "API Schema": 219,
+    "Agent Instruction": 5,
+    "Architecture": 5,
+    "DNS Zone": 5,
+    "Deployment": 6,
+    "Domain Policy": 1,
+    "GitHub Issue": 79,
+    "GitHub Pull Request": 6,
+    "Infrastructure Host": 19,
+    "Lesson": 1,
+    "Monitoring Inventory": 1,
+    "Network Prefix": 6,
+    "Organization": 1,
+    "Policy": 2,
+    "Project": 2,
+    "Repository": 10,
+    "Router": 4,
+    "Runbook": 6,
+    "Service": 7,
+    "Skill": 33,
+    "Source Document": 108,
+    "Strategy": 1,
+    "Workflow": 32
+  },
+  "critical_count": 0,
+  "edge_count": 1894,
+  "endpoint_count": 306,
+  "host_count": 23,
+  "llm_enriched_count": 0,
+  "llm_enrichment_run_count": 0,
+  "llm_enrichment_run_status": "not_run",
+  "observed_count": 0,
+  "schema_count": 219,
+  "source_file_ref_count": 242,
+  "source_files_skipped": "Not enumerated in quality report; see knowledge.config.yml include/exclude patterns and ingestion logs.",
+  "source_repo_count": 10,
+  "source_repos": [
+    "AS215932/.github",
+    "AS215932/as215932.net",
+    "AS215932/engineering-loop",
+    "AS215932/hyrule-business",
+    "AS215932/hyrule-cloud",
+    "AS215932/hyrule-mcp",
+    "AS215932/hyrule-network-proxy",
+    "AS215932/hyrule-web",
+    "AS215932/network-operations",
+    "AS215932/noc-agent"
+  ],
+  "telemetry_source_status": {
+    "hyrule_mcp": "not_collected",
+    "icinga": "not_collected",
+    "prometheus": "not_collected"
+  },
+  "warning_count": 35
+}

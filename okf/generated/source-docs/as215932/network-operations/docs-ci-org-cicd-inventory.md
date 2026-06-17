@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-103
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/org-cicd-inventory.md#L1-L103
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -65,7 +65,10 @@ change.
 |------|-------|--------------------|-------------------------------------|----------|-----------|---------|
 | `network-operations` | Ansible / IaC + Python tests | `lint.yml`, `render-check.yml`, `iac-tests.yml`, `apply.yml`, `drift-detection.yml` | **Protected** — required: `lint`, `render`, `iac-gate`, `semgrep` (strict) | Yes (`apply.yml`, manual + `production`) | PR-Agent advisory | token-less SARIF |
 | `hyrule-web` | Python (uv) + TS/Vite | `ci.yml` (`test`, `frontend`), `deploy.yml` | **Protected** — required: `test`, `frontend` (strict) | Yes (`deploy.yml`, push→main / dispatch, `production`) | Sourcery (to remove) | none yet |
-| `hyrule-cloud` | Python (uv), FastAPI / x402 | `ci.yml` (`test`),
+| `hyrule-cloud` | Python (uv), FastAPI / x402 | `ci.yml` (`test`), `deploy.yml` | **Not protected** | Yes (`deploy.yml`, `production`) | Sourcery (to remove) | none yet |
+| `noc-agent` | Python ≥3.14, PydanticAI / langgraph / redis / mcp | none | **Not protected** | No | Sourcery (to remove) | none yet |
+| `hyrule-mcp` | Python ≥3.14, mcp | none | **Not protected** | No | Sourcery (to remove) | none yet |
+| `as215932.net` | Static HTML / CSS + `deploy.sh` | none
 ...
 ```
 

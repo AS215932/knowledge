@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: SSH key the github-runner user holds for reaching infra hosts as the
-description: 'name: deploy-validation'
+title: deploy-validation
+description: GitHub Actions workflow `deploy-validation` from AS215932/hyrule-web.
 resource: https://github.com/AS215932/hyrule-web/blob/d94146e67f9eb05f8eeb5c57cab74cbe676f5c79/.github/workflows/deploy-validation.yml
 tags:
-- as215932
+- deploy
+- github-actions
 - hyrule-web
 - workflow
 timestamp: '2026-06-16T15:09:49Z'
@@ -14,29 +15,39 @@ source_refs:
 - repo: AS215932/hyrule-web
   path: .github/workflows/deploy-validation.yml
   commit: d94146e67f9eb05f8eeb5c57cab74cbe676f5c79
-  lines: 1-47
-  url: https://github.com/AS215932/hyrule-web/blob/d94146e67f9eb05f8eeb5c57cab74cbe676f5c79/.github/workflows/deploy-validation.yml#L1-L47
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/hyrule-web/blob/d94146e67f9eb05f8eeb5c57cab74cbe676f5c79/.github/workflows/deploy-validation.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-web
 source_path: .github/workflows/deploy-validation.yml
-commit: d94146e67f9eb05f8eeb5c57cab74cbe676f5c79
+triggers:
+- workflow_dispatch
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/hyrule-web` |
-| Path | `.github/workflows/deploy-validation.yml` |
-| Commit | `d94146e67f9eb05f8eeb5c57cab74cbe676f5c79` |
-| Lines | `47` |
+| Name | `deploy-validation` |
+| Source | `.github/workflows/deploy-validation.yml` |
+| Triggers | `workflow_dispatch` |
+| Deploy-like | `True` |
+| Workflow permissions | `{"contents": "read"}` |
 
-# Detected headings
+# Jobs
 
-* `# SSH key the github-runner user holds for reaching infra hosts as the`
-* `# `ci` deploy user (set up by hyrule-infra's ci_runner_key role).`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `validate` | `self-hosted, linux, x64, hyrule` | `` | `{}` |
+
+# Secrets referenced by name
+
+* `HYRULE_INFRA_DEPLOY_KEY`
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

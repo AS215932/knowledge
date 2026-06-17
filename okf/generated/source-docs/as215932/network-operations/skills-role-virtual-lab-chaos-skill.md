@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-55
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/role-virtual-lab-chaos/SKILL.md#L1-L55
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -76,7 +76,17 @@ intentional disruption.
    *Checkpoint: name the artifacts compared in `evidence_reviewed`.*
 2. Verify failure behavior was exercised, not just the happy path
    (session drop, link loss, reload — whichever the change class implies).
-3. Verify the rollback script/workflow was executed in the lab,
+3. Verify the rollback script/workflow was executed in the lab, not just
+   written.
+4. If no lab evidence exists: approve only when the state records an
+   explicit human risk acceptance.
+5. Return the structured verdict with findings keyed by file/path.
+
+## Must reject
+
+- High-risk routing/system changes without local lab proof; unexercised
+  rollback scripts; firewall/routing changes that cannot demonstrate
+  expected isolation or convergence; lab results i
 ...
 ```
 

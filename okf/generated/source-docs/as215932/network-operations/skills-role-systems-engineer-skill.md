@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-52
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/role-systems-engineer/SKILL.md#L1-L52
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -79,7 +79,20 @@ application integration boundaries; resource limits and failure modes.
 3. Check the logging contract: new paths log structured events; nothing
    logs secrets.
 4. Confirm no code path bypasses an existing safety gate.
-5. Return the structured
+5. Return the structured verdict with findings keyed by file/path.
+
+## Must reject
+
+- Daemon changes without health checks; unstructured logging; secret
+  logging; Linux assumptions on BSD hosts; bypasses of existing safety
+  gates.
+
+## Anti-rationalization
+
+| Excuse | Rebuttal |
+|---|---|
+| "The service restarts fine locally" | Local restart is not a health check. Demand the probe that monitoring will run. |
+| "Logging c
 ...
 ```
 

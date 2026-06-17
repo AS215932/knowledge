@@ -23,7 +23,7 @@ source_refs:
 - repo: AS215932/noc-agent
   commit: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
   url: https://github.com/AS215932/noc-agent
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/noc-agent
@@ -46,6 +46,22 @@ commit: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
 # Description
 
 AS215932 Autonomous NOC Agent
+
+# Extracted inventory
+
+| Asset | Count |
+| --- | ---: |
+| Indexed source files | 7 |
+| API endpoints | 29 |
+| API schemas | 35 |
+| Workflows | 4 |
+| Open issues | 3 |
+| Open pull requests | 0 |
+| Releases | 0 |
+
+# Related concepts
+
+* Top-level concept: [Hyrule NOC Agent](/generated/services/noc-agent.md)
 
 # Indexed source material
 

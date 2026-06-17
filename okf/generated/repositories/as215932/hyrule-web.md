@@ -19,7 +19,7 @@ source_refs:
 - repo: AS215932/hyrule-web
   commit: d94146e67f9eb05f8eeb5c57cab74cbe676f5c79
   url: https://github.com/AS215932/hyrule-web
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/hyrule-web
@@ -42,6 +42,22 @@ commit: d94146e67f9eb05f8eeb5c57cab74cbe676f5c79
 # Description
 
 Main (branded) website
+
+# Extracted inventory
+
+| Asset | Count |
+| --- | ---: |
+| Indexed source files | 8 |
+| API endpoints | 37 |
+| API schemas | 0 |
+| Workflows | 5 |
+| Open issues | 2 |
+| Open pull requests | 0 |
+| Releases | 0 |
+
+# Related concepts
+
+* Top-level concept: [Hyrule Web](/generated/services/hyrule-web.md)
 
 # Indexed source material
 

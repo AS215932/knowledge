@@ -1,0 +1,35 @@
+{"code":"no_inbound_links","concept_id":"curated/architecture/as215932-system-map","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/architecture/engineering-loop-vs-noc-loop","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/architecture/hyrule-cloud-product-stack","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/architecture/noc-mcp-diagnostics-loop","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/architecture/production-deployment-flow","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/lessons/deployment-safety-lessons","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/policies/domain-policy","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/policies/source-of-truth-and-canonicality","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/strategy/hyrule-cloud-business-context","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/engineering-loop/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-001-initial-schema-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-002-security-hotfix-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-003-auth-and-ownership-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-005-provisioned-at-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-007-recovery-challenges-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-009-domain-launch-fields-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-010-network-intelligence-bgp-mx-mail-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-011-diagnostic-job-primitives-py","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-mcp/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-network-proxy/go-mod","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-web/package-json","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-web/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-freebsd-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-infra-vms-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-linux-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-openbsd-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-public-facing-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-routers-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-api-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-netproxy-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-proxy-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-vault-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-web-yml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/noc-agent/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}

@@ -16,7 +16,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-91
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/autoinstall/README.md#L1-L91
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -91,7 +91,15 @@ second as `xnf1`. Use the router resolver `2a0c:b641:b50:2::1` for
 
 ## OpenBSD autoinstall fallback
 
-`openbsd-fw.conf` — autoinstall response file. Serve
+`openbsd-fw.conf` — autoinstall response file. Serve via HTTP on the mgmt bridge:
+`openbsd-mail.conf` is the equivalent response file for the `mail` VM on
+xenbr-infra with static IPv6 `2a0c:b641:b50:2::90`. Use this path to build the
+first cloud-init template or when ConfigDrive provisioning is unavailable.
+
+```bash
+# On dom0: start DHCP + HTTP for autoinstall
+dhcpd -cf /etc/dhcp/dhcpd.conf xapi0
+cd /path/to/autoinstall && python3 -m http.server 80
 ...
 ```
 

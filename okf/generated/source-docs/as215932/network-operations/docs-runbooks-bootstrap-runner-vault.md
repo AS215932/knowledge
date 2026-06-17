@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-107
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/runbooks/bootstrap-runner-vault.md#L1-L107
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -90,7 +90,19 @@ vault write auth/approle/role/ci-runner \
 ```
 
 `secret_id_ttl=0` keeps the secret_id non-expiring — the runner is a
-long-lived host, not an ephemeral workload. If you prefer rotat
+long-lived host, not an ephemeral workload. If you prefer rotation, set a
+finite TTL and record the next rotation date here so it doesn't expire
+silently.
+
+## 3. Populate the KV entry
+
+Vault Agent renders from `kv/data/ci-runner` (see
+[github-runner.env.ctmpl.j2](../../ansible/roles/vault_agent/templates/github-runner.env.ctmpl.j2)).
+Seed it with the secrets apply runs currently consume:
+
+```bash
+vault kv put kv/ci-runner \
+    discord_webhook_url="https://di
 ...
 ```
 

@@ -15,7 +15,17 @@
     "source_refs": {"type": "array"},
     "last_verified_at": {"type": "string"},
     "confidence": {"enum": ["high", "medium", "low"]},
-    "dispute_policy": {"enum": ["repo_wins", "okf_wins", "adjudicate", "evidence_only"]}
+    "dispute_policy": {"enum": ["repo_wins", "okf_wins", "adjudicate", "evidence_only"]},
+    "review_status": {"type": "string"},
+    "quality_score": {"type": "number"},
+    "enrichment": {"type": "object"},
+    "enrichment_json": {"type": "string"},
+    "observed_at": {"type": "string"},
+    "expires_at": {"type": "string"},
+    "collection_profile": {"type": "string"},
+    "observation_source": {"type": "string"},
+    "observation_status": {"type": "string"},
+    "payload_json": {"type": "string"}
   },
   "additionalProperties": true
 }

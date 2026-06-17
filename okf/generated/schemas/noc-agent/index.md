@@ -1,0 +1,37 @@
+# generated/schemas/noc-agent
+
+* [AlertManagerPayload](AlertManagerPayload.md) - Pydantic API schema `AlertManagerPayload` from AS215932/noc-agent.
+* [ApprovalDecision](ApprovalDecision.md) - Pydantic API schema `ApprovalDecision` from AS215932/noc-agent.
+* [CandidateLesson](CandidateLesson.md) - Pydantic API schema `CandidateLesson` from AS215932/noc-agent.
+* [ChangeProposal](ChangeProposal.md) - Pydantic API schema `ChangeProposal` from AS215932/noc-agent.
+* [CommentRequest](CommentRequest.md) - Pydantic API schema `CommentRequest` from AS215932/noc-agent.
+* [ConfirmedFact](ConfirmedFact.md) - Pydantic API schema `ConfirmedFact` from AS215932/noc-agent.
+* [DecisionContext](DecisionContext.md) - Pydantic API schema `DecisionContext` from AS215932/noc-agent.
+* [DiagnosticEvidence](DiagnosticEvidence.md) - Pydantic API schema `DiagnosticEvidence` from AS215932/noc-agent.
+* [DiagnosticSynthesis](DiagnosticSynthesis.md) - Pydantic API schema `DiagnosticSynthesis` from AS215932/noc-agent.
+* [EvidenceItem](EvidenceItem.md) - Pydantic API schema `EvidenceItem` from AS215932/noc-agent.
+* [FastStatusRequest](FastStatusRequest.md) - Pydantic API schema `FastStatusRequest` from AS215932/noc-agent.
+* [GoldenManifest](GoldenManifest.md) - Pydantic API schema `GoldenManifest` from AS215932/noc-agent.
+* [Hotspot](Hotspot.md) - Pydantic API schema `Hotspot` from AS215932/noc-agent.
+* [HotspotEvidence](HotspotEvidence.md) - Pydantic API schema `HotspotEvidence` from AS215932/noc-agent.
+* [Hypothesis](Hypothesis.md) - Pydantic API schema `Hypothesis` from AS215932/noc-agent.
+* [IcingaNotification](IcingaNotification.md) - Pydantic API schema `IcingaNotification` from AS215932/noc-agent.
+* [InboundMail](InboundMail.md) - Pydantic API schema `InboundMail` from AS215932/noc-agent.
+* [IncidentSummary](IncidentSummary.md) - Pydantic API schema `IncidentSummary` from AS215932/noc-agent.
+* [LocalDecisionRequest](LocalDecisionRequest.md) - Pydantic API schema `LocalDecisionRequest` from AS215932/noc-agent.
+* [MailDraftPlan](MailDraftPlan.md) - Pydantic API schema `MailDraftPlan` from AS215932/noc-agent.
+* [MailPollResponse](MailPollResponse.md) - Pydantic API schema `MailPollResponse` from AS215932/noc-agent.
+* [ManualInvestigationRequest](ManualInvestigationRequest.md) - Pydantic API schema `ManualInvestigationRequest` from AS215932/noc-agent.
+* [Observation](Observation.md) - Pydantic API schema `Observation` from AS215932/noc-agent.
+* [PerimeterContext](PerimeterContext.md) - Pydantic API schema `PerimeterContext` from AS215932/noc-agent.
+* [ProactiveAckRequest](ProactiveAckRequest.md) - Pydantic API schema `ProactiveAckRequest` from AS215932/noc-agent.
+* [ProactiveCycleReport](ProactiveCycleReport.md) - Pydantic API schema `ProactiveCycleReport` from AS215932/noc-agent.
+* [ProactiveUnackRequest](ProactiveUnackRequest.md) - Pydantic API schema `ProactiveUnackRequest` from AS215932/noc-agent.
+* [RemediationProposal](RemediationProposal.md) - Pydantic API schema `RemediationProposal` from AS215932/noc-agent.
+* [RouterManifestEntry](RouterManifestEntry.md) - Pydantic API schema `RouterManifestEntry` from AS215932/noc-agent.
+* [SpecialistFinding](SpecialistFinding.md) - Pydantic API schema `SpecialistFinding` from AS215932/noc-agent.
+* [StateDelta](StateDelta.md) - Pydantic API schema `StateDelta` from AS215932/noc-agent.
+* [StateObservation](StateObservation.md) - Pydantic API schema `StateObservation` from AS215932/noc-agent.
+* [StoredDraft](StoredDraft.md) - Pydantic API schema `StoredDraft` from AS215932/noc-agent.
+* [TaskRequest](TaskRequest.md) - Pydantic API schema `TaskRequest` from AS215932/noc-agent.
+* [TelemetryContradiction](TelemetryContradiction.md) - Pydantic API schema `TelemetryContradiction` from AS215932/noc-agent.

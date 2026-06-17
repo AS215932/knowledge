@@ -18,7 +18,7 @@ source_refs:
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   lines: 1-57
   url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/docs/engineering-loop/templates/task-spec.md#L1-L57
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop
@@ -97,8 +97,19 @@ The run is complete when all acceptance criteria hold AND:
 - the diff touches only `allowed_paths`;
 - every required role judgment is `approve`.
 
-#
-...
+## Non-goals
+
+What this tranche explicitly does not do (scope fence for the backend).
+
+## Role consult notes
+
+Appended by the plan-consult pass — one subsection per required role with
+the constraints that role demands of the diff.
+
+## Rollback sketch
+
+How this change is undone if it regresses after deploy (feeds the PR
+contract's rollback section and the NOC handoff).
 ```
 
 # Citations

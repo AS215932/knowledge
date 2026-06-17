@@ -17,7 +17,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-73
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-dns-registry.md#L1-L73
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -96,7 +96,20 @@ curl -X POST 'https://cloud.hyrule.host/v1/dns/dnssec/report?name=example.com' \
 ```bash
 curl -X POST https://cloud.hyrule.host/v1/dns/recommend-records \
   -H 'Content-Type: application/json' \
-  -H 'X-PAYMENT: <x4
+  -H 'X-PAYMENT: <x402-payment>' \
+  -d '{"domain":"example.com","use_case":"sip","sip_target":"sip.example.com."}'
+```
+
+### Registry context
+
+```bash
+curl -X POST https://cloud.hyrule.host/v1/rdap/lookup \
+  -H 'Content-Type: application/json' \
+  -H 'X-PAYMENT: <x402-payment>' \
+  -d '{"subject":{"type":"domain","value":"example.com"}}'
+
+curl -X POST https://cloud.hyrule.host/v1/whois/lookup \
+  -H 'Content-Type: a
 ...
 ```
 

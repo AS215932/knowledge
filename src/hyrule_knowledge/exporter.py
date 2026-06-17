@@ -41,11 +41,27 @@ def load_okf_concepts(bundle_root: Path) -> list[dict[str, Any]]:
                 "confidence": frontmatter.get("confidence"),
                 "dispute_policy": frontmatter.get("dispute_policy"),
                 "last_verified_at": frontmatter.get("last_verified_at"),
+                "review_status": frontmatter.get("review_status"),
+                "quality_score": frontmatter.get("quality_score"),
+                "observed_at": frontmatter.get("observed_at"),
+                "expires_at": frontmatter.get("expires_at"),
+                "enrichment_json": _enrichment_json(frontmatter),
                 "source_refs": frontmatter.get("source_refs") or [],
+                "payload_json": frontmatter.get("payload_json"),
+                "observation_source": frontmatter.get("observation_source"),
+                "observation_status": frontmatter.get("observation_status"),
                 "body": body.strip(),
             }
         )
     return concepts
+
+
+def _enrichment_json(frontmatter: dict[str, Any]) -> str | None:
+    raw = frontmatter.get("enrichment")
+    if isinstance(raw, dict):
+        return json.dumps(raw, sort_keys=True)
+    raw_json = frontmatter.get("enrichment_json")
+    return str(raw_json) if raw_json is not None else None
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -53,11 +69,61 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text("".join(_json_dump(row) + "\n" for row in rows), encoding="utf-8")
 
 
-def load_edges(exports_dir: Path) -> list[dict[str, Any]]:
-    path = exports_dir / "edges.jsonl"
+def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def load_edges(exports_dir: Path) -> list[dict[str, Any]]:
+    return read_jsonl(exports_dir / "edges.jsonl")
+
+
+def _quality_rows() -> list[dict[str, Any]]:
+    return read_jsonl(Path("reports/quality.jsonl"))
+
+
+def _observation_rows(concepts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for concept in concepts:
+        if not str(concept["id"]).startswith("observed/"):
+            continue
+        rows.append(
+            {
+                "concept_id": concept["id"],
+                "observed_at": concept.get("observed_at"),
+                "expires_at": concept.get("expires_at"),
+                "source": concept.get("observation_source"),
+                "status": concept.get("observation_status"),
+                "payload_json": concept.get("payload_json") or "{}",
+            }
+        )
+    return rows
+
+
+def _enrichment_rows(concepts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for concept in concepts:
+        raw = concept.get("enrichment_json")
+        if not raw:
+            continue
+        try:
+            enrichment = json.loads(str(raw))
+        except json.JSONDecodeError:
+            enrichment = {}
+        rows.append(
+            {
+                "run_id": enrichment.get("output_hash") or concept["id"],
+                "concept_id": concept["id"],
+                "provider": enrichment.get("provider"),
+                "model": enrichment.get("model"),
+                "prompt_version": enrichment.get("prompt_version"),
+                "input_hash": enrichment.get("input_hash"),
+                "output_hash": enrichment.get("output_hash"),
+                "created_at": enrichment.get("generated_at"),
+            }
+        )
+    return rows
 
 
 def write_exports(
@@ -79,18 +145,28 @@ def write_exports(
     if not edge_rows:
         edge_rows = load_edges(exports_dir)
 
+    quality_rows = _quality_rows()
+    observation_rows = _observation_rows(concepts)
+    enrichment_rows = _enrichment_rows(concepts)
+
     write_jsonl(exports_dir / "concepts.jsonl", concepts_public)
     write_jsonl(exports_dir / "sources.jsonl", source_rows)
     write_jsonl(exports_dir / "edges.jsonl", edge_rows)
+    write_jsonl(exports_dir / "quality.jsonl", quality_rows)
+    write_jsonl(exports_dir / "observations.jsonl", observation_rows)
+    write_jsonl(exports_dir / "enrichment-runs.jsonl", enrichment_rows)
     manifest = {
         "concept_count": len(concepts),
         "edge_count": len(edge_rows),
         "source_ref_count": len(source_rows),
+        "quality_finding_count": len(quality_rows),
+        "observation_count": len(observation_rows),
+        "enrichment_run_count": len(enrichment_rows),
         "source_shas": source_shas or {},
         "run_id": run_id,
     }
     (exports_dir / "manifest.json").write_text(_json_dump(manifest) + "\n", encoding="utf-8")
-    write_sqlite(exports_dir / "knowledge.sqlite", Path("schema/sqlite-schema.sql"), concepts, edge_rows, source_rows, manifest)
+    write_sqlite(exports_dir / "knowledge.sqlite", Path("schema/sqlite-schema.sql"), concepts, edge_rows, source_rows, quality_rows, observation_rows, enrichment_rows, manifest)
 
 
 def write_sqlite(
@@ -99,6 +175,9 @@ def write_sqlite(
     concepts: list[dict[str, Any]],
     edges: list[dict[str, Any]],
     source_rows: list[dict[str, Any]],
+    quality_rows: list[dict[str, Any]],
+    observation_rows: list[dict[str, Any]],
+    enrichment_rows: list[dict[str, Any]],
     manifest: dict[str, Any],
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -112,8 +191,9 @@ def write_sqlite(
                 """
                 INSERT INTO concepts (
                   id, path, type, title, description, resource, tags_json,
-                  truth_owner, authority, confidence, dispute_policy, last_verified_at, body
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  truth_owner, authority, confidence, dispute_policy, last_verified_at,
+                  review_status, quality_score, observed_at, expires_at, enrichment_json, body
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     concept["id"],
@@ -128,6 +208,11 @@ def write_sqlite(
                     concept["confidence"],
                     concept["dispute_policy"],
                     concept["last_verified_at"],
+                    concept.get("review_status"),
+                    concept.get("quality_score"),
+                    concept.get("observed_at"),
+                    concept.get("expires_at"),
+                    concept.get("enrichment_json"),
                     concept["body"],
                 ),
             )
@@ -159,12 +244,37 @@ def write_sqlite(
         for edge in edges:
             conn.execute(
                 "INSERT OR REPLACE INTO edges (source, target, edge_type, origin, confidence) VALUES (?, ?, ?, ?, ?)",
+                (edge["source"], edge["target"], edge["edge_type"], edge["origin"], edge["confidence"]),
+            )
+        for finding in quality_rows:
+            conn.execute(
+                "INSERT INTO quality_findings (concept_id, severity, code, message) VALUES (?, ?, ?, ?)",
+                (finding.get("concept_id"), finding.get("severity"), finding.get("code"), finding.get("message")),
+            )
+        for observation in observation_rows:
+            conn.execute(
+                "INSERT INTO observations (concept_id, observed_at, expires_at, source, status, payload_json) VALUES (?, ?, ?, ?, ?, ?)",
                 (
-                    edge["source"],
-                    edge["target"],
-                    edge["edge_type"],
-                    edge["origin"],
-                    edge["confidence"],
+                    observation.get("concept_id"),
+                    observation.get("observed_at"),
+                    observation.get("expires_at"),
+                    observation.get("source"),
+                    observation.get("status"),
+                    observation.get("payload_json") or "{}",
+                ),
+            )
+        for row in enrichment_rows:
+            conn.execute(
+                "INSERT OR REPLACE INTO enrichment_runs (run_id, concept_id, provider, model, prompt_version, input_hash, output_hash, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    row.get("run_id"),
+                    row.get("concept_id"),
+                    row.get("provider"),
+                    row.get("model"),
+                    row.get("prompt_version"),
+                    row.get("input_hash"),
+                    row.get("output_hash"),
+                    row.get("created_at"),
                 ),
             )
         conn.execute(

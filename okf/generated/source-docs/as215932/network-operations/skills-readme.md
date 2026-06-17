@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-24
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/README.md#L1-L24
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -64,8 +64,8 @@ phase C rebinds prompt loading to this tree.
 | `role-finops-integrity` | evaluator/consult | cloud_api, billing/quota/metering paths |
 | `role-virtual-lab-chaos` | evaluator/consult | routing/firewall labs, high/critical risk, rollback rehearsal |
 | `implementation-tranche` | backend (generator) | every implementation run |
-| `firewall-change` | backend |
-...
+| `firewall-change` | backend | any change to who-talks-to-whom on which port |
+| `monitoring-onboarding` | backend | adding a host or service that needs monitoring |
 ```
 
 # Citations

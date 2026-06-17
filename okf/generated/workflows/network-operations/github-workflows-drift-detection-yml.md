@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: ci-pr lives on the customer-isolated segment and is managed from
-description: '--- name: drift-detection'
+title: drift-detection
+description: GitHub Actions workflow `drift-detection` from AS215932/network-operations.
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/drift-detection.yml
 tags:
-- as215932
+- deploy
+- github-actions
 - network-operations
 - workflow
 timestamp: '2026-06-17T08:13:24Z'
@@ -14,30 +15,40 @@ source_refs:
 - repo: AS215932/network-operations
   path: .github/workflows/drift-detection.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  lines: 1-88
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/drift-detection.yml#L1-L88
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/drift-detection.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
 source_path: .github/workflows/drift-detection.yml
-commit: 67061d325834a7145252cdf851da1df6a4a38b9e
+triggers:
+- schedule
+- workflow_dispatch
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/network-operations` |
-| Path | `.github/workflows/drift-detection.yml` |
-| Commit | `67061d325834a7145252cdf851da1df6a4a38b9e` |
-| Lines | `88` |
+| Name | `drift-detection` |
+| Source | `.github/workflows/drift-detection.yml` |
+| Triggers | `schedule, workflow_dispatch` |
+| Deploy-like | `True` |
+| Workflow permissions | `{"contents": "read"}` |
 
-# Detected headings
+# Jobs
 
-* `# ci-pr lives on the customer-isolated segment and is managed from`
-* `# the ops workstation, not from the privileged ci runner. extmon is`
-* `# an external placeholder until its VPS is provisioned.`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `check-drift` | `self-hosted, linux, x64, hyrule-infra` | `` | `{}` |
+
+# Secrets referenced by name
+
+* `env`
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

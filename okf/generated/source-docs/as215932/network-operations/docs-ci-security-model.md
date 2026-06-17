@@ -19,7 +19,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-69
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/security-model.md#L1-L69
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -73,6 +73,16 @@ it — and that must not matter. Nothing of value lives there (no Vault, no
 inventory schema gate (`tests/iac/test_inventory_schema.py`) pins the data-layer
 half of this invariant: `ci-pr` must be in `customer_subnet` and never in
 `infra_subnet`.
+
+## Enforcement is layered (runner groups are necessary but not sufficient)
+
+Runner-group ACLs control *which repositories* may target a runner class. They
+do **not**, by themselves, stop a workflow inside a repo permitted to both
+groups from selecting the wrong label. Job-level separation is the combination
+of:
+
+1. **Runner groups** (`public-pr` → all six repos; `hyrule-ci` → only repos that
+   de
 ...
 ```
 

@@ -17,7 +17,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-100
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/runbooks/bootstrap-hyrule-cloud-vault.md#L1-L100
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -94,7 +94,23 @@ vault kv put kv/hyrule-cloud \
     xmr_wallet_address="..." \
 [sensitive assignment line omitted]
     xmr_restore_height="0" \
-    xmr_daemon_address="node.monerowo
+    xmr_daemon_address="node.moneroworld.com:18089" \
+    xmr_rpc_url="http://127.0.0.1:18088/json_rpc" \
+    ip_prefix_pepper="$(openssl rand -hex 32)" \
+[sensitive assignment line omitted]
+    network_proxy_token="..."
+```
+
+Optional OpenBSD builder keys:
+
+```bash
+vault kv patch kv/hyrule-cloud \
+    xcpng_openbsd_builder_vm_uuid="..." \
+    xcpng_openbsd_builder_ssh_host="..." \
+    xcpng_openbsd_builder_ssh_user="svag"
+```
+
+## 4.
 ...
 ```
 

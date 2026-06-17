@@ -23,7 +23,7 @@ source_refs:
 - repo: AS215932/hyrule-mcp
   commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
   url: https://github.com/AS215932/hyrule-mcp
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/hyrule-mcp
@@ -46,6 +46,22 @@ commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
 # Description
 
 MCP tools for administrating AS215932
+
+# Extracted inventory
+
+| Asset | Count |
+| --- | ---: |
+| Indexed source files | 7 |
+| API endpoints | 0 |
+| API schemas | 5 |
+| Workflows | 4 |
+| Open issues | 11 |
+| Open pull requests | 0 |
+| Releases | 0 |
+
+# Related concepts
+
+* Top-level concept: [Hyrule MCP](/generated/services/hyrule-mcp.md)
 
 # Indexed source material
 

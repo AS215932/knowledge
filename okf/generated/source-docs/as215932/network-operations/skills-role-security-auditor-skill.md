@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-53
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/role-security-auditor/SKILL.md#L1-L53
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -77,7 +77,16 @@ isolation; multi-tenant boundary review.
    patterns (the guard is a net, not the review).
 3. For BGP: confirm inbound prefix filtering and RPKI/IRR posture is intact
    on every touched peer.
-4. For isolation-relevant changes: de
+4. For isolation-relevant changes: demand lab or rendered-config evidence
+   that the customer/infra boundary holds.
+5. Return the structured verdict with findings keyed by file/path.
+
+## Must reject
+
+- Wide or untracked listening ports; plaintext tokens/keys anywhere outside
+  Vault references; peering configs missing robust inbound filtering or
+  RPKI validation; tenant isolation regressions; unvetted cipher/key
+  handling changes.
 ...
 ```
 

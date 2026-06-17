@@ -17,7 +17,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-322
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/CLAUDE.md#L1-L322
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -92,7 +92,17 @@ Underlay (hosting provider networks) is separate from overlay (AS215932 `2a0c:b6
 | Router | Location | OS | Underlay address | Loopback (overlay) | Router-ID |
 |--------|----------|-----|------------------|-------------------|-----------|
 | cr1.nl1 | Servperso NL | FreeBSD + FRRouting | `2a0c:b640:8:69::1` | `::a` | 1.1.1.1 |
-| cr1.de1 | Servperso DE | FreeBSD + FRRouti
+| cr1.de1 | Servperso DE | FreeBSD + FRRouting | `2a0c:b640:10::213` | `::b` | 2.2.2.2 |
+| rtr | OVH FR | Debian 13 + FRRouting | `2001:41d0:303:48a::2` | `::d` | 0.0.0.13 |
+
+All loopbacks are in `2a0c:b641:b50::/128` (e.g. `2a0c:b641:b50::a`).
+
+### WireGuard mesh
+
+| Tunnel | Endpoints | Overlay /127 |
+|--------|-----------|--------------|
+| cr1.nl1 wg0 ↔ cr1.de1 wg0 | :1337 ↔ :1337 | `ff00::/127` |
+| cr1.nl1 wg3 ↔ rtr wg0 | :1340 ↔ :1337 |
 ...
 ```
 

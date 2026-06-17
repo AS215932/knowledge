@@ -15,6 +15,8 @@ This is a private OKF knowledge repository for Servify / Hyrule / AS215932. It c
 ## Editing rules
 
 - Do not hand-edit `okf/generated/` or `exports/` except while developing the generator.
+- LLM enrichment output under `okf/generated/enriched/` is advisory/proposed until reviewed; every factual claim must cite source refs.
+- Observed telemetry under `okf/observed/` is evidence only and must never be marked canonical.
 - Do edit `okf/curated/` for cross-repo lessons, ADRs, policy, postmortems, and strategy.
 - Keep all concepts OKF-conformant: YAML frontmatter at the top and non-empty `type`.
 - Preserve provenance fields: `truth_owner`, `authority`, `source_refs`, `last_verified_at`, `confidence`, and `dispute_policy`.
@@ -29,8 +31,9 @@ uv run ruff check src tests
 uv run mypy --strict src
 uv run pytest
 uv run hyrule-knowledge validate okf
+uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge export --check
-uv run hyrule-knowledge scan-secrets okf exports
+uv run hyrule-knowledge scan-secrets okf exports reports
 ```
 
 ## Agent consumption path
@@ -40,3 +43,4 @@ uv run hyrule-knowledge scan-secrets okf exports
 3. Follow markdown links between concepts.
 4. Use `exports/knowledge.sqlite` for local querying when available.
 5. Prefer cited source evidence over generated prose.
+6. Check `reports/coverage.md` and `reports/quality.json` before assuming coverage is complete.

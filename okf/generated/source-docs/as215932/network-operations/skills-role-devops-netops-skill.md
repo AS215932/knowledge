@@ -19,7 +19,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-52
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/skills/role-devops-netops/SKILL.md#L1-L52
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -78,7 +78,18 @@ sequencing; monitoring, smoke tests, drift detection.
    runner; nothing weakens the two-runner model.
 3. Check secrets: no plaintext tokens in code/YAML/docs; Vault references
    only; no test requiring production credentials by default.
-4. Che
+4. Check rollback and sequencing sections exist and are deterministic.
+5. Return the structured verdict with findings keyed by file/path.
+
+## Must reject
+
+- Live infra apply outside existing approval gates; missing rollback plan;
+  tests requiring production credentials by default; privileged runners for
+  untrusted PR code; secrets outside the Vault/runtime plane.
+
+## Anti-rationalization
+
+| Excuse | R
 ...
 ```
 

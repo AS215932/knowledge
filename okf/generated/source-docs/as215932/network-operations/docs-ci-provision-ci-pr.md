@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-112
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/provision-ci-pr.md#L1-L112
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -80,7 +80,17 @@ Contrast with the privileged `ci` runner: see `docs/ci/provision.md`.
 
 - `~/.ssh/id_servify` (ops workstation key — also authorizes `ci-pr` SSH).
 - `gh` authenticated to the AS215932 org.
-- Decide sizing: **4 vCPU, 8 GiB RAM, 20 GiB root** (Debian 13). No data disk. This remains a single GitHub Actions runner process (one job at a time); the larger VM reduces per-job runtime and avoids Docker/Semgrep/Ansible memory
+- Decide sizing: **4 vCPU, 8 GiB RAM, 20 GiB root** (Debian 13). No data disk. This remains a single GitHub Actions runner process (one job at a time); the larger VM reduces per-job runtime and avoids Docker/Semgrep/Ansible memory pressure without increasing PR job concurrency.
+
+## 1. Create the VM on the customer (vm) bridge
+
+The VM lands on `xenbr-vm`, not infra. Resolve that network's UUID on XOA, then
+run the (now parameterized) `scripts/create-vms.sh` helper:
+
+```bash
+# On XOA (10.0.0.10, via the dom0 jump) or wherever xo-cli is configured:
+xo-cli --list-objects type=network \
+  | python3 -c 'import sys,json; [print(n
 ...
 ```
 

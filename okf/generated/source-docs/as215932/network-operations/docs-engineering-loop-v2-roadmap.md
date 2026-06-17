@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-182
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/engineering-loop/v2-roadmap.md#L1-L182
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -79,7 +79,16 @@ Scope:
   size caps, spec-allowed path prefixes) instead of proposed mutations.
 - `model-policy.yml` `backends:` section + selection logic in
   `model_policy.py`.
-- `backend-canary` CLI c
+- `backend-canary` CLI command (docs-only live canary, successor of
+  `writer-canary`).
+
+Acceptance criteria:
+
+1. `uv run --group dev python -m pytest -q` green with no API keys and no
+   harness binaries installed (MockBackend everywhere).
+2. `backend-canary --dry-live` assembles spec/skills/lessons context and the
+   backend command line without executing a harness.
+3. A live `backend-canary` against a sibling repo pro
 ...
 ```
 

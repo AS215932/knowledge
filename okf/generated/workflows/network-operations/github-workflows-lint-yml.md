@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: roles_path lives in ansible/ansible.cfg, which isn't picked up when lint
-description: '--- name: lint'
+title: lint
+description: GitHub Actions workflow `lint` from AS215932/network-operations.
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/lint.yml
 tags:
-- as215932
+- ci
+- github-actions
 - network-operations
 - workflow
 timestamp: '2026-06-17T08:13:24Z'
@@ -14,33 +15,40 @@ source_refs:
 - repo: AS215932/network-operations
   path: .github/workflows/lint.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  lines: 1-84
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/lint.yml#L1-L84
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/lint.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
 source_path: .github/workflows/lint.yml
-commit: 67061d325834a7145252cdf851da1df6a4a38b9e
+triggers:
+- pull_request
+- push
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/network-operations` |
-| Path | `.github/workflows/lint.yml` |
-| Commit | `67061d325834a7145252cdf851da1df6a4a38b9e` |
-| Lines | `84` |
+| Name | `lint` |
+| Source | `.github/workflows/lint.yml` |
+| Triggers | `pull_request, push` |
+| Deploy-like | `False` |
+| Workflow permissions | `{"contents": "read", "pull-requests": "read"}` |
 
-# Detected headings
+# Jobs
 
-* `# roles_path lives in ansible/ansible.cfg, which isn't picked up when lint`
-* `# runs from the repo root — point ansible at ansible/roles explicitly so`
-* `# syntax-check can resolve role references.`
-* `# Skip generated/, but lint all hand-written scripts.`
-* `# --severity=error keeps this permissive at launch (the existing`
-* `# scripts have warning/style/info findings only); tighten via #58.`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `lint` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+
+# Secrets referenced by name
+
+No `secrets.*` references detected.
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

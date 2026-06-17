@@ -18,7 +18,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-59
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-mx.md#L1-L59
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -98,8 +98,13 @@ Full mail-delivery report:
 curl -X POST https://cloud.hyrule.host/v1/mx/jobs \
   -H 'Content-Type: application/json' \
   -H 'X-PAYMENT: <x402-payment>' \
-  -d '{"profile":"ma
-...
+  -d '{"profile":"mail_delivery","target":"example.com"}'
+```
+
+## Safety
+
+Active probes reject private, loopback, link-local, multicast, unspecified, and
+reserved targets by default.
 ```
 
 # Citations

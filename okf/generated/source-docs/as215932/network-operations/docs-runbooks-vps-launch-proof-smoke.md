@@ -19,7 +19,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-56
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/runbooks/vps-launch-proof-smoke.md#L1-L56
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -75,7 +75,15 @@ Use the app-promotion path, never a manual pin edit:
 1. `gh workflow run promote-apps.yml -F hyrule_cloud_sha=<#29 merge SHA> -F note="VPS launch-proof contract"`
 2. Review + merge the promotion PR.
 3. `app-promotion-deploy` calls `apply.yml playbook=cloud`; approve the `production` gate.
-4. Record the **rollback SHA** = the `hyrule_cloud_version` *before* t
+4. Record the **rollback SHA** = the `hyrule_cloud_version` *before* this promotion (for the rollback-by-SHA step).
+
+## Smoke sequence
+
+Run `scripts/smoke/vps-launch-proof.sh --base <cloud-api-base>` (it performs 1–2, 5–7
+and prints the launch-proof fields); steps 3–4 and 8–9 are operator-driven.
+
+1. **Quote** — `POST /v1/vm/quote` → `quote_id`, `payment_required`, accepted methods.
+2. **Unpaid create returns 402** — `POST /v1/vm/create` without payment → **HTTP 402
 ...
 ```
 

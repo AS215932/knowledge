@@ -18,7 +18,7 @@ source_refs:
 - repo: AS215932/hyrule-network-proxy
   commit: b82dc72bbf382167062bff272606ce84ec20538c
   url: https://github.com/AS215932/hyrule-network-proxy
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/hyrule-network-proxy
@@ -41,6 +41,22 @@ commit: b82dc72bbf382167062bff272606ce84ec20538c
 # Description
 
 Internal Hyrule Network Proxy sidecar for x402-gated network requests
+
+# Extracted inventory
+
+| Asset | Count |
+| --- | ---: |
+| Indexed source files | 4 |
+| API endpoints | 6 |
+| API schemas | 0 |
+| Workflows | 1 |
+| Open issues | 0 |
+| Open pull requests | 0 |
+| Releases | 0 |
+
+# Related concepts
+
+* Top-level concept: [Hyrule Network Proxy](/generated/services/hyrule-network-proxy.md)
 
 # Indexed source material
 

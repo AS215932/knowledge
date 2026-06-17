@@ -18,7 +18,7 @@ source_refs:
   commit: e225c3fe957d598f2e53a52d301730e81ec221d8
   lines: 1-56
   url: https://github.com/AS215932/.github/blob/e225c3fe957d598f2e53a52d301730e81ec221d8/profile/README.md#L1-L56
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/.github
@@ -73,7 +73,13 @@ shared under permissive terms.
 | [`hyrule-mcp`](https://github.com/AS215932/hyrule-mcp) | Live MCP diagnostic tools for routing, firewall, host, and packet-path inspection. |
 | [`engineering-loop`](https://github.com/AS215932/engineering-loop) | Autonomous development loop for infrastructure changes — plans, implements, and gates draft PRs. |
 | [`as215932.net`](https://github.com/AS215932/as215932.net) | Static website with ASN facts, topology, peering policy, and weathermap. |
-| [`noc-agent`](https://github.com/AS215932/
+| [`noc-agent`](https://github.com/AS215932/noc-agent) | Autonomous NOC agent: alert intake, incident analysis, and operator review. |
+| [`hyrule-cloud`](https://github.com/AS215932/hyrule-cloud) | Agentic VPS hosting API with x402 payments on AS215932. |
+| [`hyrule-web`](https://github.com/AS215932/hyrule-web) | Main branded website for Hyrule Networks. |
+
+## Peering with us
+
+We maintain an open peering policy at every IXP where we have a
 ...
 ```
 

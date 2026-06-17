@@ -1,34 +1,39 @@
 # generated/api/hyrule-web
 
-* [GET /](hyrule-web-get-app-patch-py-14.md) - Detected API endpoint in AS215932/hyrule-web:app_patch.py.
-* [GET /](hyrule-web-get-app-patch-py-18.md) - Detected API endpoint in AS215932/hyrule-web:app_patch.py.
-* [GET /](hyrule-web-get-hyrule-web-app-py-532.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /abuse](hyrule-web-get-abuse-hyrule-web-app-py-972.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /dashboard](hyrule-web-get-dashboard-app-patch-py-8.md) - Detected API endpoint in AS215932/hyrule-web:app_patch.py.
-* [GET /dashboard](hyrule-web-get-dashboard-hyrule-web-app-py-832.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /faq](hyrule-web-get-faq-hyrule-web-app-py-946.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /legal](hyrule-web-get-legal-hyrule-web-app-py-978.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /llms.txt](hyrule-web-get-llms-txt-hyrule-web-app-py-989.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /login](hyrule-web-get-login-hyrule-web-app-py-735.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /order](hyrule-web-get-order-hyrule-web-app-py-559.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /order/review/{quote_id}](hyrule-web-get-order-review-quote-id-hyrule-web-app-py-614.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /order/status/{vm_id}](hyrule-web-get-order-status-vm-id-hyrule-web-app-py-656.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /order/status/{vm_id}/partial](hyrule-web-get-order-status-vm-id-partial-hyrule-web-app-py-919.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /privacy](hyrule-web-get-privacy-hyrule-web-app-py-966.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /recover](hyrule-web-get-recover-hyrule-web-app-py-777.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /robots.txt](hyrule-web-get-robots-txt-hyrule-web-app-py-931.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /services](hyrule-web-get-services-hyrule-web-app-py-552.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /signup](hyrule-web-get-signup-hyrule-web-app-py-688.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /sitemap.xml](hyrule-web-get-sitemap-xml-hyrule-web-app-py-984.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /terms](hyrule-web-get-terms-hyrule-web-app-py-960.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [GET /transparency](hyrule-web-get-transparency-hyrule-web-app-py-936.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /dashboard/claim](hyrule-web-post-dashboard-claim-hyrule-web-app-py-871.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /dashboard/password](hyrule-web-post-dashboard-password-hyrule-web-app-py-885.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /dashboard/vms/{vm_id}/destroy](hyrule-web-post-dashboard-vms-vm-id-destroy-hyrule-web-app-py-864.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /dashboard/vms/{vm_id}/reboot](hyrule-web-post-dashboard-vms-vm-id-reboot-hyrule-web-app-py-857.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /login](hyrule-web-post-login-hyrule-web-app-py-741.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /logout](hyrule-web-post-logout-hyrule-web-app-py-764.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /order/review](hyrule-web-post-order-review-hyrule-web-app-py-573.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /partials/price](hyrule-web-post-partials-price-hyrule-web-app-py-904.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /recover](hyrule-web-post-recover-hyrule-web-app-py-783.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
-* [POST /signup](hyrule-web-post-signup-hyrule-web-app-py-694.md) - Detected API endpoint in AS215932/hyrule-web:hyrule_web/app.py.
+* [GET /](hyrule-web-get-hyrule-web-app-py-533.md) - Static API endpoint `GET /` in AS215932/hyrule-web.
+* [GET /](hyrule-web-get-tests-test-seo-py-29.md) - Static API endpoint `GET /` in AS215932/hyrule-web.
+* [GET /about](hyrule-web-get-about-tests-test-seo-py-33.md) - Static API endpoint `GET /about` in AS215932/hyrule-web.
+* [GET /abuse](hyrule-web-get-abuse-hyrule-web-app-py-973.md) - Static API endpoint `GET /abuse` in AS215932/hyrule-web.
+* [GET /api/data](hyrule-web-get-api-data-tests-test-seo-py-48.md) - Static API endpoint `GET /api/data` in AS215932/hyrule-web.
+* [GET /dashboard](hyrule-web-get-dashboard-hyrule-web-app-py-833.md) - Static API endpoint `GET /dashboard` in AS215932/hyrule-web.
+* [GET /dashboard](hyrule-web-get-dashboard-tests-test-seo-py-58.md) - Static API endpoint `GET /dashboard` in AS215932/hyrule-web.
+* [GET /faq](hyrule-web-get-faq-hyrule-web-app-py-947.md) - Static API endpoint `GET /faq` in AS215932/hyrule-web.
+* [GET /legal](hyrule-web-get-legal-hyrule-web-app-py-979.md) - Static API endpoint `GET /legal` in AS215932/hyrule-web.
+* [GET /llms.txt](hyrule-web-get-llms-txt-hyrule-web-app-py-990.md) - Static API endpoint `GET /llms.txt` in AS215932/hyrule-web.
+* [GET /login](hyrule-web-get-login-hyrule-web-app-py-736.md) - Static API endpoint `GET /login` in AS215932/hyrule-web.
+* [GET /order](hyrule-web-get-order-hyrule-web-app-py-560.md) - Static API endpoint `GET /order` in AS215932/hyrule-web.
+* [GET /order/review/{quote_id}](hyrule-web-get-order-review-quote-id-hyrule-web-app-py-615.md) - Static API endpoint `GET /order/review/{quote_id}` in AS215932/hyrule-web.
+* [GET /order/status/{vm_id}](hyrule-web-get-order-status-vm-id-hyrule-web-app-py-657.md) - Static API endpoint `GET /order/status/{vm_id}` in AS215932/hyrule-web.
+* [GET /order/status/{vm_id}/partial](hyrule-web-get-order-status-vm-id-partial-hyrule-web-app-py-920.md) - Static API endpoint `GET /order/status/{vm_id}/partial` in AS215932/hyrule-web.
+* [GET /partials/x](hyrule-web-get-partials-x-tests-test-seo-py-53.md) - Static API endpoint `GET /partials/x` in AS215932/hyrule-web.
+* [GET /privacy](hyrule-web-get-privacy-hyrule-web-app-py-967.md) - Static API endpoint `GET /privacy` in AS215932/hyrule-web.
+* [GET /recover](hyrule-web-get-recover-hyrule-web-app-py-778.md) - Static API endpoint `GET /recover` in AS215932/hyrule-web.
+* [GET /robots.txt](hyrule-web-get-robots-txt-hyrule-web-app-py-932.md) - Static API endpoint `GET /robots.txt` in AS215932/hyrule-web.
+* [GET /robots.txt](hyrule-web-get-robots-txt-tests-test-seo-py-63.md) - Static API endpoint `GET /robots.txt` in AS215932/hyrule-web.
+* [GET /services](hyrule-web-get-services-hyrule-web-app-py-553.md) - Static API endpoint `GET /services` in AS215932/hyrule-web.
+* [GET /signup](hyrule-web-get-signup-hyrule-web-app-py-689.md) - Static API endpoint `GET /signup` in AS215932/hyrule-web.
+* [GET /sitemap.xml](hyrule-web-get-sitemap-xml-hyrule-web-app-py-985.md) - Static API endpoint `GET /sitemap.xml` in AS215932/hyrule-web.
+* [GET /terms](hyrule-web-get-terms-hyrule-web-app-py-961.md) - Static API endpoint `GET /terms` in AS215932/hyrule-web.
+* [GET /transparency](hyrule-web-get-transparency-hyrule-web-app-py-937.md) - Static API endpoint `GET /transparency` in AS215932/hyrule-web.
+* [GET /users/{uid}](hyrule-web-get-users-uid-tests-test-seo-py-43.md) - Static API endpoint `GET /users/{uid}` in AS215932/hyrule-web.
+* [POST /dashboard/claim](hyrule-web-post-dashboard-claim-hyrule-web-app-py-872.md) - Static API endpoint `POST /dashboard/claim` in AS215932/hyrule-web.
+* [POST /dashboard/password](hyrule-web-post-dashboard-password-hyrule-web-app-py-886.md) - Static API endpoint `POST /dashboard/password` in AS215932/hyrule-web.
+* [POST /dashboard/vms/{vm_id}/destroy](hyrule-web-post-dashboard-vms-vm-id-destroy-hyrule-web-app-py-865.md) - Static API endpoint `POST /dashboard/vms/{vm_id}/destroy` in AS215932/hyrule-web.
+* [POST /dashboard/vms/{vm_id}/reboot](hyrule-web-post-dashboard-vms-vm-id-reboot-hyrule-web-app-py-858.md) - Static API endpoint `POST /dashboard/vms/{vm_id}/reboot` in AS215932/hyrule-web.
+* [POST /login](hyrule-web-post-login-hyrule-web-app-py-742.md) - Static API endpoint `POST /login` in AS215932/hyrule-web.
+* [POST /logout](hyrule-web-post-logout-hyrule-web-app-py-765.md) - Static API endpoint `POST /logout` in AS215932/hyrule-web.
+* [POST /order/review](hyrule-web-post-order-review-hyrule-web-app-py-574.md) - Static API endpoint `POST /order/review` in AS215932/hyrule-web.
+* [POST /partials/price](hyrule-web-post-partials-price-hyrule-web-app-py-905.md) - Static API endpoint `POST /partials/price` in AS215932/hyrule-web.
+* [POST /recover](hyrule-web-post-recover-hyrule-web-app-py-784.md) - Static API endpoint `POST /recover` in AS215932/hyrule-web.
+* [POST /signup](hyrule-web-post-signup-hyrule-web-app-py-695.md) - Static API endpoint `POST /signup` in AS215932/hyrule-web.
+* [POST /submit](hyrule-web-post-submit-tests-test-seo-py-38.md) - Static API endpoint `POST /submit` in AS215932/hyrule-web.

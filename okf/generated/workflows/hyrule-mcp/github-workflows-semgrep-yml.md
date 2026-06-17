@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: Token-less Semgrep SAST on the UNPRIVILEGED hyrule-public-pr runner; uploads
-description: '--- name: semgrep'
+title: semgrep
+description: GitHub Actions workflow `semgrep` from AS215932/hyrule-mcp.
 resource: https://github.com/AS215932/hyrule-mcp/blob/326bcc85e1c69f0d7c1839ebaa4abb73acd84185/.github/workflows/semgrep.yml
 tags:
-- as215932
+- ci
+- github-actions
 - hyrule-mcp
 - workflow
 timestamp: '2026-06-15T17:46:24Z'
@@ -14,30 +15,42 @@ source_refs:
 - repo: AS215932/hyrule-mcp
   path: .github/workflows/semgrep.yml
   commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
-  lines: 1-50
-  url: https://github.com/AS215932/hyrule-mcp/blob/326bcc85e1c69f0d7c1839ebaa4abb73acd84185/.github/workflows/semgrep.yml#L1-L50
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/hyrule-mcp/blob/326bcc85e1c69f0d7c1839ebaa4abb73acd84185/.github/workflows/semgrep.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-mcp
 source_path: .github/workflows/semgrep.yml
-commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
+triggers:
+- pull_request
+- workflow_dispatch
+- push
+- schedule
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/hyrule-mcp` |
-| Path | `.github/workflows/semgrep.yml` |
-| Commit | `326bcc85e1c69f0d7c1839ebaa4abb73acd84185` |
-| Lines | `50` |
+| Name | `semgrep` |
+| Source | `.github/workflows/semgrep.yml` |
+| Triggers | `pull_request, workflow_dispatch, push, schedule` |
+| Deploy-like | `False` |
+| Workflow permissions | `{"contents": "read", "security-events": "write"}` |
 
-# Detected headings
+# Jobs
 
-* `# Token-less Semgrep SAST on the UNPRIVILEGED hyrule-public-pr runner; uploads`
-* `# SARIF to GitHub Code Scanning (free for this public repo). No SEMGREP_APP_TOKEN.`
-* `# Reporting-only during baseline (continue-on-error) — flip to a gate later.`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `semgrep` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+
+# Secrets referenced by name
+
+No `secrets.*` references detected.
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

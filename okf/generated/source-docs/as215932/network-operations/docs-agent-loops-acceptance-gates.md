@@ -17,7 +17,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-419
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/agent-loops/acceptance-gates.md#L1-L419
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -135,7 +135,20 @@ NOC_AGENT_LIVE_SMOKE=1 uv run --group dev python -m pytest -q tests/test_live_sm
 
 If an engineering change alters diagnostic output, command syntax, log shape,
 or MCP tool schema, set `mcp_schema_breaking = true`. The change then requires
-coordinated planning with `hyrule-mcp` so N
+coordinated planning with `hyrule-mcp` so NOC incident diagnostics are not
+blinded by schema drift.
+
+## Digital Twin / Local Emulation
+
+Required for:
+
+- `routing_bgp_frr`
+- `firewall_policy`
+- high-risk OS/runtime changes
+
+Use trusted lab tooling where available, such as Batfish, Containerlab, or
+nested local hypervisor validation. The gate must verify native target config
+parsing, routing convergence or firewall isolation, expected failur
 ...
 ```
 

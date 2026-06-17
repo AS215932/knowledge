@@ -18,7 +18,7 @@ source_refs:
   commit: 9c0ee2d8f2bb793ea799589ca0fe4f77571b2572
   lines: 1-54
   url: https://github.com/AS215932/as215932.net/blob/9c0ee2d8f2bb793ea799589ca0fe4f77571b2572/README.md#L1-L54
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/as215932.net
@@ -82,6 +82,20 @@ repository — this repo only contains the site content.
 
 `deploy.sh` is a thin wrapper around `rsync` — it touches only
 `/var/www/as215932.net/` and reloads nginx. No other state is changed.
+
+## Editing
+
+Since pages share a nav / header / footer, changes to the menu must be
+applied to all five HTML files. There is no template engine — that's
+intentional, to keep the site buildable with nothing but a text editor.
+
+When adding content, keep rendered lines at or under 80 columns where
+possible (CSS wraps longer lines, but breaking manually keeps the
+aesthetic).
+
+## License
+
+Same as the re
 ...
 ```
 

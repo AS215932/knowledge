@@ -18,7 +18,7 @@ source_refs:
   commit: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
   lines: 1-262
   url: https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/README.md#L1-L262
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/noc-agent
@@ -90,7 +90,18 @@ Existing interfaces preserved:
 - `GET /health/mail`
 - `GET /metrics`
 
-New
+New control-plane interfaces:
+
+- `GET /control/incidents/pending`
+- `GET /control/incidents/{incident_id}`
+- `POST /control/incidents/{incident_id}/decision`
+- `POST /approval/resume`
+- `GET /control/proactive/status`
+- `POST /control/proactive/pause`
+- `POST /control/proactive/resume`
+- `POST /control/proactive/run-once`
+- `GET /control/proactive/suppressions`
+- `POST /control/proactive/ack` / `POST
 ...
 ```
 

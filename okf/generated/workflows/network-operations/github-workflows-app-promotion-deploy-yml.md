@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: 'Ordering matters for NOC monitoring changes: install mon-side'
-description: '--- name: app-promotion-deploy'
+title: app-promotion-deploy
+description: GitHub Actions workflow `app-promotion-deploy` from AS215932/network-operations.
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/app-promotion-deploy.yml
 tags:
-- as215932
+- deploy
+- github-actions
 - network-operations
 - workflow
 timestamp: '2026-06-17T08:13:24Z'
@@ -14,30 +15,40 @@ source_refs:
 - repo: AS215932/network-operations
   path: .github/workflows/app-promotion-deploy.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  lines: 1-98
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/app-promotion-deploy.yml#L1-L98
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/app-promotion-deploy.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
 source_path: .github/workflows/app-promotion-deploy.yml
-commit: 67061d325834a7145252cdf851da1df6a4a38b9e
+triggers:
+- push
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/network-operations` |
-| Path | `.github/workflows/app-promotion-deploy.yml` |
-| Commit | `67061d325834a7145252cdf851da1df6a4a38b9e` |
-| Lines | `98` |
+| Name | `app-promotion-deploy` |
+| Source | `.github/workflows/app-promotion-deploy.yml` |
+| Triggers | `push` |
+| Deploy-like | `True` |
+| Workflow permissions | `{"contents": "read", "pull-requests": "write"}` |
 
-# Detected headings
+# Jobs
 
-* `# Ordering matters for NOC monitoring changes: install mon-side`
-* `# CheckCommand/script definitions before the monitoring role renders`
-* `# host services that reference them, then deploy noc-side services.`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `detect` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+| `apply` | `unspecified` | `` | `{}` |
+
+# Secrets referenced by name
+
+No `secrets.*` references detected.
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

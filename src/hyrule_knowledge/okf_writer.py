@@ -52,6 +52,11 @@ def reset_generated(bundle_root: Path) -> None:
         "workflows",
         "github",
         "source-docs",
+        "schemas",
+        "deployments",
+        "monitoring",
+        "quality",
+        "enriched",
     ]:
         (generated / subdir).mkdir(parents=True, exist_ok=True)
 

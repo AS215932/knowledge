@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-60
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/pr-agent.md#L1-L60
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -71,7 +71,20 @@ that delivers `OPENROUTER__KEY`), which is honoured immediately:
 
 ```yaml
 CONFIG__MODEL: openrouter/deepseek/deepseek-v4-flash
-CONFIG__FALLBACK_MODELS: '["openrouter/m
+CONFIG__FALLBACK_MODELS: '["openrouter/minimax/minimax-m2.7"]'
+CONFIG__CUSTOM_MODEL_MAX_TOKENS: "128000"
+```
+
+Both models are *custom* (litellm) models → `custom_model_max_tokens` is
+required. Keep the env pin even after `.pr_agent.toml` lands (belt and braces).
+
+## Fork / trust policy
+
+```yaml
+if: >
+  (github.event_name == 'pull_request' &&
+   github.event.pull_request.head.repo.full_name == github.repository) ||
+  (github.event_name =
 ...
 ```
 

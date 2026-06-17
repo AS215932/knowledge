@@ -22,7 +22,7 @@ source_refs:
 - repo: AS215932/engineering-loop
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   url: https://github.com/AS215932/engineering-loop
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/engineering-loop
@@ -45,6 +45,22 @@ commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
 # Description
 
 Autonomous development loop for AS215932 based on LangGraph
+
+# Extracted inventory
+
+| Asset | Count |
+| --- | ---: |
+| Indexed source files | 29 |
+| API endpoints | 0 |
+| API schemas | 8 |
+| Workflows | 1 |
+| Open issues | 4 |
+| Open pull requests | 0 |
+| Releases | 0 |
+
+# Related concepts
+
+* Top-level concept: [Hyrule Engineering Loop](/generated/services/engineering-loop.md)
 
 # Indexed source material
 

@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: Renders every playbook in --tags validate --connection=local mode and
-description: '--- name: render-check'
+title: render-check
+description: GitHub Actions workflow `render-check` from AS215932/network-operations.
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/render-check.yml
 tags:
-- as215932
+- deploy
+- github-actions
 - network-operations
 - workflow
 timestamp: '2026-06-17T08:13:24Z'
@@ -14,33 +15,40 @@ source_refs:
 - repo: AS215932/network-operations
   path: .github/workflows/render-check.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  lines: 1-53
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/render-check.yml#L1-L53
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/render-check.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
 source_path: .github/workflows/render-check.yml
-commit: 67061d325834a7145252cdf851da1df6a4a38b9e
+triggers:
+- pull_request
+- push
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/network-operations` |
-| Path | `.github/workflows/render-check.yml` |
-| Commit | `67061d325834a7145252cdf851da1df6a4a38b9e` |
-| Lines | `53` |
+| Name | `render-check` |
+| Source | `.github/workflows/render-check.yml` |
+| Triggers | `pull_request, push` |
+| Deploy-like | `True` |
+| Workflow permissions | `{"contents": "read", "pull-requests": "read"}` |
 
-# Detected headings
+# Jobs
 
-* `# Renders every playbook in --tags validate --connection=local mode and`
-* `# asserts that the checked-in ansible/generated/ output matches what the`
-* `# render produces. Catches stale generated/ checkins (the operator forgot`
-* `# to commit a re-render) and template typos that don't surface until apply.`
-* `# Catch BOTH modified tracked files and brand-new untracked renders`
-* `# (a never-committed generated file slips past `git diff --exit-code`).`
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `render` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+
+# Secrets referenced by name
+
+No `secrets.*` references detected.
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

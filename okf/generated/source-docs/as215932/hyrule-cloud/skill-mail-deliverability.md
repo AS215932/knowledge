@@ -18,7 +18,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1-76
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/SKILL-mail-deliverability.md#L1-L76
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -97,7 +97,21 @@ curl -X POST https://cloud.hyrule.host/v1/mx/bounce/parse \
   -H 'Content-Type: application/json' \
   -H 'X-PAYMENT: <x402-payment>' \
   -d '{
-    "message":"550 5.7.
+    "message":"550 5.7.26 Unauthenticated email from example.com is not accepted",
+    "context":{"sender_domain":"example.com","recipient_domain":"gmail.com"}
+  }'
+```
+
+## DNS record recommendations
+
+```bash
+curl -X POST https://cloud.hyrule.host/v1/mx/recommend-records \
+  -H 'Content-Type: application/json' \
+  -H 'X-PAYMENT: <x402-payment>' \
+  -d '{
+    "domain":"example.com",
+    "provider":"custom",
+    "sending_
 ...
 ```
 

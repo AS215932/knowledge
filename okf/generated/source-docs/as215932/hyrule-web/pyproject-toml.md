@@ -18,7 +18,7 @@ source_refs:
   commit: d94146e67f9eb05f8eeb5c57cab74cbe676f5c79
   lines: 1-57
   url: https://github.com/AS215932/hyrule-web/blob/d94146e67f9eb05f8eeb5c57cab74cbe676f5c79/pyproject.toml#L1-L57
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-web

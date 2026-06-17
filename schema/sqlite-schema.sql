@@ -11,6 +11,11 @@ CREATE TABLE IF NOT EXISTS concepts (
   confidence TEXT,
   dispute_policy TEXT,
   last_verified_at TEXT,
+  review_status TEXT,
+  quality_score REAL,
+  observed_at TEXT,
+  expires_at TEXT,
+  enrichment_json TEXT,
   body TEXT NOT NULL DEFAULT ''
 );
 
@@ -43,6 +48,40 @@ CREATE TABLE IF NOT EXISTS github_items (
   url TEXT,
   updated_at TEXT,
   payload_json TEXT NOT NULL DEFAULT '{}'
+);
+
+CREATE TABLE IF NOT EXISTS quality_findings (
+  concept_id TEXT NOT NULL,
+  severity TEXT NOT NULL,
+  code TEXT NOT NULL,
+  message TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS observations (
+  concept_id TEXT NOT NULL,
+  observed_at TEXT,
+  expires_at TEXT,
+  source TEXT,
+  status TEXT,
+  payload_json TEXT NOT NULL DEFAULT '{}'
+);
+
+CREATE TABLE IF NOT EXISTS claims (
+  concept_id TEXT NOT NULL,
+  claim_text TEXT NOT NULL,
+  source_ref_index INTEGER,
+  confidence TEXT
+);
+
+CREATE TABLE IF NOT EXISTS enrichment_runs (
+  run_id TEXT PRIMARY KEY,
+  concept_id TEXT,
+  provider TEXT,
+  model TEXT,
+  prompt_version TEXT,
+  input_hash TEXT,
+  output_hash TEXT,
+  created_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS runs (

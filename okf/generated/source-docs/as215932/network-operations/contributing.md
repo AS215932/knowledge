@@ -17,7 +17,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-64
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/CONTRIBUTING.md#L1-L64
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -85,7 +85,20 @@ Open an issue with the `peering` label and include:
 - Document new playbooks or scripts with a short header comment.
 - Follow the existing 80-column soft target for documentation.
 
-## Repository
+## Repository structure conventions
+
+```
+configs/     # Jinja2 templates and generated router configs
+docs/        # Architecture, runbooks, and peering docs
+scripts/     # Bootstrap and operational helpers
+autoinstall/ # OS autoinstall and QMP tooling
+.github/     # Issue templates and CI workflows
+```
+
+## Automation & CI
+
+- App repos do **not** deploy production on merge.
+- After an app repo CI succeeds on `m
 ...
 ```
 

@@ -18,7 +18,7 @@ source_refs:
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   lines: 1-84
   url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/docs/agent-loops/change-orchestrator.md#L1-L84
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop
@@ -88,7 +88,21 @@ role_reviews:
   systems_engineer: "required|not_required|complete"
   devops_netops: "required|not_required|complete"
   security_auditor: "required|not_required|complete"
-  finops_integrity: "requir
+  finops_integrity: "required|not_required|complete"
+  virtual_lab_chaos: "required|not_required|complete"
+mcp_schema_breaking: false
+emulated_lab_verified: "not_applicable|pending|passed|failed"
+model_policy_file: "model-policy.yml"
+implementation_tranches: []
+validation_gates: []
+rollback_plan: ""
+noc_handoff: ""
+```
+
+## Conditional Routing
+
+- App-only changes require Systems Engineer + DevOps/NetOps.
+- Cloud API, VPS pro
 ...
 ```
 

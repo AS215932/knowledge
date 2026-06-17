@@ -1,3 +1,3 @@
 # Lessons
 
-* _No curated entries yet._ - Durable operational and engineering lessons.
+* [Deployment Safety Lessons](deployment-safety-lessons.md) - Curated seed/proposed knowledge.

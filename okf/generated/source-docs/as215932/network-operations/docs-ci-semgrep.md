@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-47
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/semgrep.md#L1-L47
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -69,7 +69,15 @@ To turn Semgrep into a true blocking gate once the baseline is triaged: drop
 per repo only after the existing findings are reviewed — don't block on
 historical findings. Recommended progression: baseline (reporting-only) → block
 new high-severity → high-confidence medium+ on the security-sensitive repos
-(`hyr
+(`hyrule-cloud`, `noc-agent`, `hyrule-mcp`).
+
+## Packs
+
+Curated `p/` rulesets per stack (`p/ci`, `p/github-actions`, `p/secrets`, plus
+`p/python` / `p/javascript` / `p/typescript` as relevant). The Actions rules are
+the security-critical ones for this org: they flag `pull_request_target`,
+`permissions: write-all`, unpinned third-party actions, `curl | sh`, secrets
+echoed to logs, and self-hosted-runner
 ...
 ```
 

@@ -1,10 +1,11 @@
 ---
 type: Workflow
-title: promote-apps.yml
-description: '--- name: promote-apps'
+title: promote-apps
+description: GitHub Actions workflow `promote-apps` from AS215932/network-operations.
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/promote-apps.yml
 tags:
-- as215932
+- deploy
+- github-actions
 - network-operations
 - workflow
 timestamp: '2026-06-17T08:13:24Z'
@@ -14,28 +15,41 @@ source_refs:
 - repo: AS215932/network-operations
   path: .github/workflows/promote-apps.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  lines: 1-222
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/promote-apps.yml#L1-L222
-last_verified_at: '2026-06-17T09:19:10Z'
+  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/promote-apps.yml
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
 source_path: .github/workflows/promote-apps.yml
-commit: 67061d325834a7145252cdf851da1df6a4a38b9e
+triggers:
+- repository_dispatch
+- workflow_dispatch
 ---
 
-# Source
+# Workflow
 
 | Field | Value |
 | --- | --- |
-| Repository | `AS215932/network-operations` |
-| Path | `.github/workflows/promote-apps.yml` |
-| Commit | `67061d325834a7145252cdf851da1df6a4a38b9e` |
-| Lines | `222` |
+| Name | `promote-apps` |
+| Source | `.github/workflows/promote-apps.yml` |
+| Triggers | `repository_dispatch, workflow_dispatch` |
+| Deploy-like | `True` |
+| Workflow permissions | `{"contents": "write", "pull-requests": "write"}` |
 
-# Detected headings
+# Jobs
 
-No markdown headings detected.
+| Job | Runs on | Environment | Permissions |
+| --- | --- | --- | --- |
+| `promote` | `self-hosted, linux, x64, hyrule-public-pr` | `` | `{}` |
+
+# Secrets referenced by name
+
+* `PROMOTION_APP_ID`
+* `PROMOTION_APP_PRIVATE_KEY`
+
+# Operational notes
+
+This workflow summary is statically parsed from GitHub Actions YAML. It intentionally records secret names only, never values.
 
 # Citations
 

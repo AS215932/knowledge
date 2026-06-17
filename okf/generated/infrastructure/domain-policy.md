@@ -38,7 +38,7 @@ source_refs:
   path: AGENTS.md
   commit: b82dc72bbf382167062bff272606ce84ec20538c
   url: https://github.com/AS215932/hyrule-network-proxy/blob/b82dc72bbf382167062bff272606ce84ec20538c/AGENTS.md
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 ---

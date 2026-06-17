@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-64
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/runbooks/rotate-icinga-api-user.md#L1-L64
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -96,7 +96,18 @@ vault kv patch kv/noc-agent \
 ssh noc 'journalctl -fu vault-agent-noc-agent'
 # After the next /opt/noc-agent/.env render (driven by Vault TTL — see
 # CTMPL config), noc-agent re-reads .env on its next restart. Since PR #40
-# (vault-agent JWT no-
+# (vault-agent JWT no-restart), the env-template re-render DOES bounce
+# noc-agent, so the new credential is picked up automatically.
+
+# 6. Smoke: hyrule-mcp should still successfully call icinga_get_host_state.
+curl -s -k -u "noc-agent:$NEW_PW" \
+  "https://mon.as215932.net:5665/v1/objects/hosts/noc" | jq .results
+```
+
+## Failure modes
+
+- **`401 Unauthorized` after rotation**: vault-agent on noc hasn't yet
+  re-render
 ...
 ```
 

@@ -18,7 +18,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-168
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/runbooks/bootstrap-engineering-loop-vault.md#L1-L168
-last_verified_at: '2026-06-17T09:19:10Z'
+last_verified_at: '2026-06-17T10:18:30Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -98,7 +98,24 @@ Create a GitHub App owned by `AS215932`, for example
 
 Repository access must be limited to exactly these repositories:
 
-- `AS215932/engineering-loo
+- `AS215932/engineering-loop`
+- `AS215932/network-operations`
+- `AS215932/hyrule-cloud`
+- `AS215932/hyrule-web`
+- `AS215932/hyrule-mcp`
+- `AS215932/noc-agent`
+- `AS215932/hyrule-network-proxy`
+- `AS215932/as215932.net`
+
+Required repository permissions:
+
+- Metadata: read
+- Issues: read/write
+- Contents: read/write
+- Pull requests: read/write
+
+Do not grant organization administration, Actions/workflow, secrets, members,
+or ru
 ...
 ```
 
