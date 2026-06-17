@@ -21,7 +21,8 @@
         "grounding",
         "policy",
         "engineering_loop",
-        "noc_shadow"
+        "noc_shadow",
+        "learning_promotion"
       ]
     },
     "task": {

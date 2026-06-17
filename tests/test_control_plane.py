@@ -62,10 +62,10 @@ def test_policy_evaluator_safety_boundaries() -> None:
     assert policy_decision_for(actor="engineering_loop", action="knowledge.search", data_classes=["secret"]).result == "deny"
 
 
-def test_seeded_eval_baseline_has_40_passing_cases() -> None:
+def test_seeded_eval_baseline_has_passing_cases() -> None:
     cases = load_eval_cases(Path("evals"))
-    assert len(cases) == 40
+    assert len(cases) >= 43
     with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
         results = run_evals(store=store, cases=cases)
-    assert len(results) == 40
+    assert len(results) == len(cases)
     assert all(result.passed for result in results)

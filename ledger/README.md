@@ -10,7 +10,12 @@ Use:
 ```bash
 uv run hyrule-knowledge ledger --write
 uv run hyrule-knowledge ledger --check
+uv run hyrule-knowledge ledger --list
+uv run hyrule-knowledge ledger --review <event-id-or-subject> --promotion-kind summary
+uv run hyrule-knowledge ledger --promote <event-id-or-subject> --reviewer <human> --promotion-kind summary --rationale "reviewed"
 ```
 
-Events are A4 proposals/fixtures unless promoted by human review into A2
-reviewed summaries. Promotion into curated OKF remains a human workflow.
+Events are A4 proposals/fixtures unless promoted by human review into A1
+curated lessons or A2 reviewed summaries. Promotion writes an audit record under
+`ledger/reviews/` and an OKF concept under `okf/curated/lessons/` or
+`okf/curated/summaries/`.

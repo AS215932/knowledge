@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS215932 Learning Event Human Review",
+  "type": "object",
+  "required": ["id", "ledger_version", "event_id", "event_type", "decision", "promotion_kind", "reviewer", "reviewed_at", "rationale", "event_hash", "validation_errors", "source_refs"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^review_[a-f0-9]{32}$"},
+    "ledger_version": {"type": "string"},
+    "event_id": {"type": "string"},
+    "event_type": {"type": "string"},
+    "decision": {"type": "string", "enum": ["approved", "rejected"]},
+    "promotion_kind": {"type": "string", "enum": ["lesson", "summary"]},
+    "reviewer": {"type": "string", "minLength": 1},
+    "reviewed_at": {"type": "string"},
+    "rationale": {"type": "string", "minLength": 1},
+    "target_concept_id": {"type": ["string", "null"]},
+    "target_path": {"type": ["string", "null"]},
+    "authority_tier_after_promotion": {"type": ["string", "null"], "enum": ["A1", "A2", null]},
+    "event_hash": {"type": "string"},
+    "validation_errors": {"type": "array", "items": {"type": "string"}},
+    "source_refs": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": false
+}

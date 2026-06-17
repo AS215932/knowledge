@@ -12,6 +12,11 @@ from .authority import AuthorityTier
 from .context_pack import build_context_pack
 from .contracts import EvalCase, EvalResult, stable_hash
 from .policy import policy_decision_for
+from .promotion import (
+    build_review_packet,
+    promote_learning_event,
+    validate_promoted_concept_markdown,
+)
 from .retrieval import KnowledgeRetriever
 from .store import KnowledgeStore
 
@@ -59,6 +64,8 @@ def run_evals(
     for case in selected:
         if case.suite == "policy":
             result = _run_policy_case(case, run_id)
+        elif case.suite == "learning_promotion":
+            result = _run_learning_promotion_case(case, run_id)
         elif case.suite in {"engineering_loop", "noc_shadow", "grounding"} and case.inputs.get("context_pack"):
             result = _run_context_case(case, run_id, store)
         else:
@@ -209,6 +216,46 @@ def _run_policy_case(case: EvalCase, run_id: str) -> EvalResult:
     expected = str(case.expected.get("policy_result") or "allow")
     failures = [] if decision.result == expected else [f"policy result mismatch: {decision.result} != {expected}"]
     metrics = {"policy_result": decision.result, "decision": decision.as_json()}
+    return EvalResult(run_id, case.id, case.suite, not failures, 1.0 if not failures else 0.0, metrics, failures)
+
+
+def _run_learning_promotion_case(case: EvalCase, run_id: str) -> EvalResult:
+    event_ref = str(case.inputs.get("event") or case.inputs.get("event_id") or case.task)
+    promotion_kind = str(case.inputs.get("promotion_kind") or "summary")
+    reviewer = str(case.inputs.get("reviewer") or "eval-reviewer")
+    failures: list[str] = []
+    metrics: dict[str, Any] = {}
+    packet = build_review_packet(event_ref, promotion_kind="lesson" if promotion_kind == "lesson" else "summary")
+    metrics["promotion_blockers"] = packet["promotion_blockers"]
+    if case.expected.get("blocker_free", True) and packet["promotion_blockers"]:
+        failures.append(f"review packet has blockers: {packet['promotion_blockers']}")
+    decision = str(case.inputs.get("decision") or "approved")
+    result = promote_learning_event(
+        event_ref,
+        reviewer=reviewer,
+        promotion_kind="lesson" if promotion_kind == "lesson" else "summary",
+        decision="rejected" if decision == "rejected" else "approved",
+        rationale="Deterministic eval dry-run review.",
+        dry_run=True,
+    )
+    metrics.update(
+        {
+            "target_concept_id": result.target_concept_id,
+            "review_id": result.review_id,
+            "wrote": result.wrote,
+            "promotion_kind": result.promotion_kind,
+            "decision": result.decision,
+        }
+    )
+    expected_tier = str(case.expected.get("authority_tier") or ("A2" if promotion_kind == "summary" else "A1"))
+    if result.concept_markdown:
+        markdown_errors = validate_promoted_concept_markdown(result.concept_markdown, expected_tier=expected_tier)
+        metrics["markdown_errors"] = markdown_errors
+        failures.extend(markdown_errors)
+    if case.expected.get("target_prefix") and not str(result.target_concept_id or "").startswith(str(case.expected["target_prefix"])):
+        failures.append(f"target prefix mismatch: {result.target_concept_id} does not start with {case.expected['target_prefix']}")
+    if result.wrote:
+        failures.append("learning promotion eval must not write files")
     return EvalResult(run_id, case.id, case.suite, not failures, 1.0 if not failures else 0.0, metrics, failures)
 
 

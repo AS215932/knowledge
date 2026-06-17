@@ -28,7 +28,7 @@
 * Conflict rule: A0 > A1 > A2 > A3 > A4/A5; vectors are placeholders only and never override source truth.
 * Policy: `knowledge-policy.yml` is evaluated by the built-in YAML evaluator for read-only knowledge access and human-review boundaries.
 * Context packs: generated manually/local by `hyrule-knowledge context-pack` for Engineering Loop and NOC shadow consumers.
-* Learning ledger: `learning_ledger_v1` stores reviewable A4/A2 summaries with citations; live raw traces stay out of git.
+* Learning ledger: `learning_ledger_v1` stores reviewable A4 proposals with citations; human promotion writes A1 lessons or A2 summaries and review records.
 
 # Curated
 
@@ -38,3 +38,4 @@
 * [Policies](curated/policies/) - OKF-owned policy and escalation rules.
 * [Postmortems](curated/postmortems/) - Incident retrospectives.
 * [Strategy](curated/strategy/) - Business and long-range context.
+* [Summaries](curated/summaries/) - Human-reviewed A2 learning and trace summaries.

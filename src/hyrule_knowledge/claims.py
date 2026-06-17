@@ -77,6 +77,10 @@ def _claims_for_concept(concept: dict[str, Any], extracted_at: str) -> list[Know
         return _workflow_claims(concept, extracted_at)
     if concept_type in {"Policy", "Domain Policy"} or str(concept.get("id", "")).startswith("curated/policies/"):
         return _policy_claims(concept, extracted_at)
+    if concept_type in {"Learning Summary", "Trace Summary", "Promotion Summary"}:
+        return _learning_summary_claims(concept, extracted_at)
+    if concept_type == "Lesson":
+        return _lesson_claims(concept, extracted_at)
     if str(concept.get("id", "")).startswith("observed/") or concept_type == "Observation":
         return _observation_claims(concept, extracted_at)
     return []
@@ -281,6 +285,73 @@ def _policy_claims(concept: dict[str, Any], extracted_at: str) -> list[Knowledge
     return [
         _claim(concept, subject=subject, predicate="has_review_status", object_value=review_status, extracted_at=extracted_at, authority_tier=tier, review_status=review_status),
         _claim(concept, subject=subject, predicate="applies_to", object_value="as215932", extracted_at=extracted_at, authority_tier=tier, review_status=review_status),
+    ]
+
+
+def _learning_summary_claims(concept: dict[str, Any], extracted_at: str) -> list[KnowledgeClaim]:
+    fm = _frontmatter(concept)
+    concept_id = str(concept["id"])
+    event_id = str(fm.get("learning_event_id") or "").strip()
+    subject = str(fm.get("learning_event_subject") or event_id or concept_id).strip()
+    claims: list[KnowledgeClaim] = []
+    if event_id:
+        claims.append(
+            _claim(
+                concept,
+                subject=f"learning_event:{event_id}",
+                predicate="promoted_to",
+                object_value=f"concept:{concept_id}",
+                extracted_at=extracted_at,
+                authority_tier=AuthorityTier.A2,
+                review_status="reviewed",
+                metadata={"promotion_kind": fm.get("promotion_kind", "summary")},
+            )
+        )
+    if subject:
+        claims.append(
+            _claim(
+                concept,
+                subject=f"concept:{concept_id}",
+                predicate="summarizes",
+                object_value=subject,
+                extracted_at=extracted_at,
+                authority_tier=AuthorityTier.A2,
+                review_status="reviewed",
+            )
+        )
+    reviewer = str(fm.get("reviewed_by") or "").strip()
+    if reviewer:
+        claims.append(
+            _claim(
+                concept,
+                subject=f"concept:{concept_id}",
+                predicate="reviewed_by",
+                object_value=reviewer,
+                extracted_at=extracted_at,
+                authority_tier=AuthorityTier.A2,
+                review_status="reviewed",
+            )
+        )
+    return claims
+
+
+def _lesson_claims(concept: dict[str, Any], extracted_at: str) -> list[KnowledgeClaim]:
+    fm = _frontmatter(concept)
+    concept_id = str(concept["id"])
+    event_id = str(fm.get("learning_event_id") or "").strip()
+    if not event_id:
+        return []
+    return [
+        _claim(
+            concept,
+            subject=f"learning_event:{event_id}",
+            predicate="promoted_to_lesson",
+            object_value=f"concept:{concept_id}",
+            extracted_at=extracted_at,
+            authority_tier=AuthorityTier.A1,
+            review_status="reviewed",
+            metadata={"promotion_kind": fm.get("promotion_kind", "lesson")},
+        )
     ]
 
 

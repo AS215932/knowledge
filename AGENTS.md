@@ -19,11 +19,12 @@ This is a private OKF knowledge repository for Servify / Hyrule / AS215932. It c
 - Do not hand-edit `okf/generated/` or `exports/` except while developing the generator.
 - LLM enrichment output under `okf/generated/enriched/` is advisory/proposed until reviewed; every factual claim must cite source refs.
 - Observed telemetry under `okf/observed/` is evidence only and must never be marked canonical.
-- Do edit `okf/curated/` for cross-repo lessons, ADRs, policy, postmortems, and strategy.
+- Do edit `okf/curated/` for cross-repo lessons, ADRs, policy, postmortems, strategy, and human-reviewed learning summaries.
 - Keep all concepts OKF-conformant: YAML frontmatter at the top and non-empty `type`.
 - Preserve provenance fields: `truth_owner`, `authority`, `source_refs`, `last_verified_at`, `confidence`, and `dispute_policy`.
 - Never commit secrets. Do not include token values, private keys, wallet data, `.env` files, vault files, raw logs, cookies, or authorization headers.
 - Keep live learning traces/telemetry out of git except for explicit schemas and deterministic sanitized fixtures under `ledger/fixtures/`.
+- Promote learning events only via human review (`hyrule-knowledge ledger --review` then `--promote --reviewer ...`). A2 summaries must live under `okf/curated/summaries/`; reviewed lessons live under `okf/curated/lessons/`.
 - Policy decisions must use `knowledge-policy.yml` and `hyrule_knowledge.policy`; do not add an OPA runtime dependency in this tranche.
 
 ## Validation before handoff
