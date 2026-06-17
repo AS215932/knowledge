@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AS215932 Sanitized Learning Event",
+  "type": "object",
+  "required": ["id", "ledger_version", "event_type", "event_time", "producer", "subject", "summary", "status", "authority_tier", "citations", "data_classes", "metrics", "lessons", "promotion", "metadata"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^learn_[a-f0-9]{32}$"},
+    "ledger_version": {"type": "string", "const": "learning_ledger_v1"},
+    "event_type": {"type": "string", "enum": ["context_pack_used", "engineering_loop_run_summary", "noc_shadow_eval_summary", "eval_run_summary", "policy_review_summary", "lesson_candidate"]},
+    "event_time": {"type": "string"},
+    "producer": {"type": "string", "enum": ["knowledge", "engineering_loop", "noc_shadow", "human_review", "fixture"]},
+    "subject": {"type": "string"},
+    "summary": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["fixture", "proposed", "reviewed", "rejected", "superseded"]},
+    "authority_tier": {"type": "string", "enum": ["A2", "A3", "A4"]},
+    "source": {"type": "object"},
+    "data_classes": {"type": "array", "items": {"type": "string"}},
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "concept_id": {"type": "string"},
+          "claim_id": {"type": "string"},
+          "source_uri": {"type": "string"},
+          "context_pack_id": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "context_pack_ids": {"type": "array", "items": {"type": "string"}},
+    "policy_decision_ids": {"type": "array", "items": {"type": "string"}},
+    "eval_case_ids": {"type": "array", "items": {"type": "string"}},
+    "metrics": {"type": "object"},
+    "lessons": {"type": "array", "items": {"type": "string"}},
+    "promotion": {
+      "type": "object",
+      "properties": {
+        "review_required": {"type": "boolean"},
+        "target": {"type": "string"}
+      },
+      "required": ["review_required"],
+      "additionalProperties": true
+    },
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": false
+}

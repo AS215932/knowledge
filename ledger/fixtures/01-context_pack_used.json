@@ -1,0 +1,32 @@
+{
+  "citations": [
+    {
+      "concept_id": "generated/services/hyrule-cloud",
+      "source_uri": "repo://AS215932/hyrule-cloud/README.md@fixture"
+    },
+    {
+      "context_pack_id": "ctx_fixture_engineering_loop"
+    }
+  ],
+  "context_pack_ids": [
+    "ctx_fixture_engineering_loop"
+  ],
+  "event_type": "context_pack_used",
+  "lessons": [
+    "Engineering Loop context consumption must preserve citations and null vector placeholders."
+  ],
+  "metadata": {
+    "fixture": true,
+    "runtime_writes_knowledge_repo": false
+  },
+  "metrics": {
+    "included_ref_count": 1,
+    "vector_scores_null": true
+  },
+  "policy_decision_ids": [
+    "pol_fixture_engineering_loop_allow"
+  ],
+  "producer": "engineering_loop",
+  "subject": "engineering_loop:fixture-context-pack-consumption",
+  "summary": "Fixture showing Engineering Loop consuming a cited AS215932 knowledge context pack without writing to the knowledge repo."
+}

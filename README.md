@@ -45,7 +45,8 @@ uv run hyrule-knowledge export
 uv run hyrule-knowledge query "POST /v1/vm/create schema" --json
 uv run hyrule-knowledge context-pack --task "Engineer change to POST /v1/vm/create" --role engineering_loop
 uv run hyrule-knowledge eval --check
-uv run hyrule-knowledge scan-secrets okf exports reports evals schema
+uv run hyrule-knowledge ledger --check
+uv run hyrule-knowledge scan-secrets okf exports reports evals ledger schema
 ```
 
 Regenerate and verify everything:
@@ -56,7 +57,8 @@ uv run hyrule-knowledge validate okf
 uv run hyrule-knowledge quality --check
 uv run hyrule-knowledge export --check
 uv run hyrule-knowledge eval --check
-uv run hyrule-knowledge scan-secrets okf exports reports evals schema
+uv run hyrule-knowledge ledger --check
+uv run hyrule-knowledge scan-secrets okf exports reports evals ledger schema
 ```
 
 Manual LLM enrichment uses OpenRouter Claude Sonnet 4.6 by default and requires `OPENROUTER_API_KEY` unless `--dry-run` is set:
@@ -86,6 +88,7 @@ Humans can browse `okf/index.md`. Agents should first read `okf/index.md`, then 
 - `context-packs.jsonl` / `context_packs` table for policy-aware task context when explicitly generated.
 - `policy-decisions.jsonl` / `policy_decisions` table for audited policy outputs.
 - `eval-cases.jsonl` and `eval-results.jsonl` for deterministic retrieval/grounding/policy baselines.
+- `learning-events.jsonl` / `learning_events` table for sanitized fixture/local-artifact learning summaries awaiting human review.
 
 Authority tiers are ordered A0 source truth, A1 reviewed OKF, A2 reviewed trace summaries, A3 observations, A4 hypotheses, A5 vector hints. Vectors are deliberately not implemented in this tranche; retrieval score objects include null vector fields for future compatibility only.
 
@@ -98,5 +101,6 @@ uv run hyrule-knowledge neighborhood generated/services/hyrule-cloud --depth 2
 uv run hyrule-knowledge endpoint-schema POST /v1/vm/create
 uv run hyrule-knowledge deployment-pins hyrule-cloud
 uv run hyrule-knowledge policy-decision --actor engineering_loop --action knowledge.search
+uv run hyrule-knowledge ledger --write
 uv run hyrule-knowledge mcp --transport stdio
 ```

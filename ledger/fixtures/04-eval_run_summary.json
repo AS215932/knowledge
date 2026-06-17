@@ -1,0 +1,23 @@
+{
+  "citations": [],
+  "eval_case_ids": [
+    "retrieval-001-vm-create-endpoint",
+    "policy-001-search-allow",
+    "grounding-001-vm-context"
+  ],
+  "event_type": "eval_run_summary",
+  "lessons": [
+    "Vector search remains deferred until deterministic retrieval evals show where semantic recall is needed."
+  ],
+  "metadata": {
+    "fixture": true
+  },
+  "metrics": {
+    "passed": 40,
+    "total": 40,
+    "vectors_enabled": false
+  },
+  "producer": "knowledge",
+  "subject": "knowledge:baseline-evals",
+  "summary": "Fixture summary for the deterministic knowledge eval baseline."
+}

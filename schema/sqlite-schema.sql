@@ -153,6 +153,34 @@ CREATE TABLE IF NOT EXISTS eval_results (
   PRIMARY KEY (run_id, case_id)
 );
 
+CREATE TABLE IF NOT EXISTS learning_events (
+  id TEXT PRIMARY KEY,
+  ledger_version TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  event_time TEXT NOT NULL,
+  producer TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  summary TEXT NOT NULL,
+  status TEXT NOT NULL,
+  authority_tier TEXT NOT NULL,
+  source_json TEXT NOT NULL DEFAULT '{}',
+  data_classes_json TEXT NOT NULL DEFAULT '[]',
+  citations_json TEXT NOT NULL DEFAULT '[]',
+  context_pack_ids_json TEXT NOT NULL DEFAULT '[]',
+  policy_decision_ids_json TEXT NOT NULL DEFAULT '[]',
+  eval_case_ids_json TEXT NOT NULL DEFAULT '[]',
+  metrics_json TEXT NOT NULL DEFAULT '{}',
+  lessons_json TEXT NOT NULL DEFAULT '[]',
+  promotion_json TEXT NOT NULL DEFAULT '{}',
+  metadata_json TEXT NOT NULL DEFAULT '{}',
+  body_json TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_learning_events_type ON learning_events(event_type);
+CREATE INDEX IF NOT EXISTS idx_learning_events_producer ON learning_events(producer);
+CREATE INDEX IF NOT EXISTS idx_learning_events_subject ON learning_events(subject);
+CREATE INDEX IF NOT EXISTS idx_learning_events_status ON learning_events(status);
+
 CREATE TABLE IF NOT EXISTS enrichment_runs (
   run_id TEXT PRIMARY KEY,
   concept_id TEXT,
