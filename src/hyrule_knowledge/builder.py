@@ -83,6 +83,11 @@ def first_existing_source_ref(snapshot: RepoSnapshot, candidates: list[str]) -> 
     return source_ref(snapshot)
 
 
+def _strip_markdown_links(text: str) -> str:
+    text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r"\1", text)
+    return re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+
+
 def _first_heading(text: str, default: str) -> str:
     for line in text.splitlines():
         stripped = line.strip()
@@ -108,7 +113,7 @@ def _first_paragraph(text: str, fallback: str) -> str:
             continue
         if clean.startswith("#") or clean.startswith("```"):
             continue
-        sentence = " ".join(clean.split())
+        sentence = _strip_markdown_links(" ".join(clean.split()))
         if len(sentence) > 240:
             sentence = sentence[:237].rstrip() + "..."
         return sentence

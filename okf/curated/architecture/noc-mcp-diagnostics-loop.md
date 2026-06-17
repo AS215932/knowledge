@@ -21,7 +21,7 @@ source_refs:
   path: README.md
   commit: 326bcc85e1c69f0d7c1839ebaa4abb73acd84185
   url: https://github.com/AS215932/hyrule-mcp/blob/326bcc85e1c69f0d7c1839ebaa4abb73acd84185/README.md
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: medium
 dispute_policy: adjudicate
 review_status: proposed

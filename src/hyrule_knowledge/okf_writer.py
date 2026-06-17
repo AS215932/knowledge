@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+import re
 import shutil
 from collections import defaultdict
 from pathlib import Path
@@ -11,6 +13,7 @@ import yaml
 from .models import Concept, Edge
 
 RESERVED = {"index.md", "log.md"}
+INTERNAL_ABSOLUTE_LINK_RE = re.compile(r"(?<!!)\[([^\]]+)\]\(/((?:generated|curated|observed)/[^)#]+)(#[^)]+)?\)")
 
 
 def slugify(value: str) -> str:
@@ -27,6 +30,21 @@ def slugify(value: str) -> str:
     return slug or "item"
 
 
+def _relative_okf_link(source_concept_id: str, target: str, anchor: str | None) -> str:
+    source_path = Path("okf") / f"{source_concept_id}.md"
+    target_path = Path("okf") / target
+    relative = Path(os.path.relpath(target_path, source_path.parent)).as_posix()
+    return relative + (anchor or "")
+
+
+def _rewrite_internal_absolute_links(body: str, source_concept_id: str) -> str:
+    def replace(match: re.Match[str]) -> str:
+        label, target, anchor = match.group(1), match.group(2), match.group(3)
+        return f"[{label}]({_relative_okf_link(source_concept_id, target, anchor)})"
+
+    return INTERNAL_ABSOLUTE_LINK_RE.sub(replace, body)
+
+
 def dump_concept(concept: Concept) -> str:
     frontmatter = yaml.safe_dump(
         concept.frontmatter(),
@@ -34,7 +52,7 @@ def dump_concept(concept: Concept) -> str:
         allow_unicode=True,
         default_flow_style=False,
     ).strip()
-    body = concept.body.strip() + "\n"
+    body = _rewrite_internal_absolute_links(concept.body.strip(), concept.concept_id) + "\n"
     return f"---\n{frontmatter}\n---\n\n{body}"
 
 
@@ -72,6 +90,12 @@ def _relative_link(from_dir: Path, to_path: Path) -> str:
     return to_path.relative_to(from_dir).as_posix() if to_path.parent == from_dir else to_path.name
 
 
+def _plain_description(description: str) -> str:
+    without_images = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r"\1", description)
+    without_links = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", without_images)
+    return " ".join(without_links.split())
+
+
 def write_indexes(bundle_root: Path, concepts: list[Concept]) -> None:
     by_dir: dict[Path, list[Concept]] = defaultdict(list)
     for concept in concepts:
@@ -87,22 +111,23 @@ def write_indexes(bundle_root: Path, concepts: list[Concept]) -> None:
         lines = [f"# {heading}\n"]
         for concept in sorted(items, key=lambda item: item.title.lower()):
             path = bundle_root.parent / concept.path
-            desc = f" - {concept.description}" if concept.description else ""
+            desc = f" - {_plain_description(concept.description)}" if concept.description else ""
             lines.append(f"* [{concept.title}]({path.name}){desc}")
         lines.append("")
         (directory / "index.md").write_text("\n".join(lines), encoding="utf-8")
 
-    for directory in sorted([p for p in generated.rglob("*") if p.is_dir()]):
+    for directory in sorted([generated, *[p for p in generated.rglob("*") if p.is_dir()]]):
         index = directory / "index.md"
         if index.exists():
             continue
         subdirs = sorted(p for p in directory.iterdir() if p.is_dir())
-        if not subdirs:
-            continue
         heading = directory.relative_to(bundle_root).as_posix()
         lines = [f"# {heading}\n"]
-        for subdir in subdirs:
-            lines.append(f"* [{subdir.name}]({subdir.name}/) - Generated concepts under `{subdir.name}`.")
+        if subdirs:
+            for subdir in subdirs:
+                lines.append(f"* [{subdir.name}]({subdir.name}/) - Generated concepts under `{subdir.name}`.")
+        else:
+            lines.append("No generated concepts currently present in this directory.")
         lines.append("")
         index.write_text("\n".join(lines), encoding="utf-8")
 

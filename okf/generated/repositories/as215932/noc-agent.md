@@ -23,7 +23,7 @@ source_refs:
 - repo: AS215932/noc-agent
   commit: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
   url: https://github.com/AS215932/noc-agent
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/noc-agent
@@ -61,17 +61,17 @@ AS215932 Autonomous NOC Agent
 
 # Related concepts
 
-* Top-level concept: [Hyrule NOC Agent](/generated/services/noc-agent.md)
+* Top-level concept: [Hyrule NOC Agent](../../services/noc-agent.md)
 
 # Indexed source material
 
-* [.github/workflows/ci.yml](/generated/workflows/noc-agent/github-workflows-ci-yml.md)
-* [.github/workflows/pr-agent.yml](/generated/workflows/noc-agent/github-workflows-pr-agent-yml.md)
-* [.github/workflows/request-promotion.yml](/generated/workflows/noc-agent/github-workflows-request-promotion-yml.md)
-* [.github/workflows/semgrep.yml](/generated/workflows/noc-agent/github-workflows-semgrep-yml.md)
-* [README.md](/generated/source-docs/as215932/noc-agent/readme.md)
-* [TESTING.md](/generated/source-docs/as215932/noc-agent/testing.md)
-* [pyproject.toml](/generated/source-docs/as215932/noc-agent/pyproject-toml.md)
+* [.github/workflows/ci.yml](../../workflows/noc-agent/github-workflows-ci-yml.md)
+* [.github/workflows/pr-agent.yml](../../workflows/noc-agent/github-workflows-pr-agent-yml.md)
+* [.github/workflows/request-promotion.yml](../../workflows/noc-agent/github-workflows-request-promotion-yml.md)
+* [.github/workflows/semgrep.yml](../../workflows/noc-agent/github-workflows-semgrep-yml.md)
+* [README.md](../../source-docs/as215932/noc-agent/readme.md)
+* [TESTING.md](../../source-docs/as215932/noc-agent/testing.md)
+* [pyproject.toml](../../source-docs/as215932/noc-agent/pyproject-toml.md)
 
 # Citations
 

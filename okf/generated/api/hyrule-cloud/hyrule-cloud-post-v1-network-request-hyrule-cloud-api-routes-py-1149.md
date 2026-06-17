@@ -16,7 +16,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 1149-1182
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/hyrule_cloud/api/routes.py#L1149-L1182
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -45,8 +45,8 @@ response_model: NetworkResponse
 
 # Request/response models
 
-* [NetworkRequest](/generated/schemas/hyrule-cloud/NetworkRequest.md)
-* [NetworkResponse](/generated/schemas/hyrule-cloud/NetworkResponse.md)
+* [NetworkRequest](../../schemas/hyrule-cloud/NetworkRequest.md)
+* [NetworkResponse](../../schemas/hyrule-cloud/NetworkResponse.md)
 
 # Dependencies
 

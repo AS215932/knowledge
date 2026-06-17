@@ -49,7 +49,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-240
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/CLAUDE.md#L1-L240
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -125,13 +125,13 @@ Network operations and infrastructure tracking for AS215932 (Hyrule). Building a
 
 # Related services
 
-* [noc-agent](/generated/services/noc-agent.md)
-* [hyrule-mcp](/generated/services/hyrule-mcp.md)
-* [engineering-loop](/generated/services/engineering-loop.md)
-* [hyrule-cloud](/generated/services/hyrule-cloud.md)
-* [hyrule-web](/generated/services/hyrule-web.md)
-* [hyrule-network-proxy](/generated/services/hyrule-network-proxy.md)
-* [as215932.net](/generated/services/as215932-net.md)
+* [noc-agent](../services/noc-agent.md)
+* [hyrule-mcp](../services/hyrule-mcp.md)
+* [engineering-loop](../services/engineering-loop.md)
+* [hyrule-cloud](../services/hyrule-cloud.md)
+* [hyrule-web](../services/hyrule-web.md)
+* [hyrule-network-proxy](../services/hyrule-network-proxy.md)
+* [as215932.net](../services/as215932-net.md)
 
 # Open issues/known gaps
 

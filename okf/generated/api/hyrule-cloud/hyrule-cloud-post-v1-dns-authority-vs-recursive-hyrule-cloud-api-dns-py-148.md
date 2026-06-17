@@ -16,7 +16,7 @@ source_refs:
   commit: 81e4316f3d1f4e7f770bc2589bd84a2c7972aad5
   lines: 148-151
   url: https://github.com/AS215932/hyrule-cloud/blob/81e4316f3d1f4e7f770bc2589bd84a2c7972aad5/hyrule_cloud/api/dns.py#L148-L151
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/hyrule-cloud
@@ -45,7 +45,7 @@ response_model: DNSDiagnosticResponse
 
 # Request/response models
 
-* [DNSAuthorityCompareRequest](/generated/schemas/hyrule-cloud/DNSAuthorityCompareRequest.md)
+* [DNSAuthorityCompareRequest](../../schemas/hyrule-cloud/DNSAuthorityCompareRequest.md)
 * `DNSDiagnosticResponse`
 
 # Dependencies

@@ -1,8 +1,8 @@
 ---
 type: Source Document
 title: CI workflows
-description: All CI runs on the self-hosted `ci` VM (see [docs/ci/provision.md](./provision.md)).
-  Workflows match the runner label set `self-hosted, linux, x64, hyrule-infra`.
+description: All CI runs on the self-hosted `ci` VM (see docs/ci/provision.md). Workflows
+  match the runner label set `self-hosted, linux, x64, hyrule-infra`.
 resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/workflows.md
 tags:
 - as215932
@@ -17,7 +17,7 @@ source_refs:
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   lines: 1-75
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/docs/ci/workflows.md#L1-L75
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations

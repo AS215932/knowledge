@@ -15,7 +15,7 @@ source_refs:
   path: configs/0.5.b.0.1.4.6.b.c.0.a.2.ip6.arpa.zone
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/configs/0.5.b.0.1.4.6.b.c.0.a.2.ip6.arpa.zone
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations

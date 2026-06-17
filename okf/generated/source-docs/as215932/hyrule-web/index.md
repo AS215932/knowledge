@@ -1,5 +1,5 @@
 # generated/source-docs/as215932/hyrule-web
 
-* [Hyrule Web](readme.md) - Main branded website for [Hyrule Networks (AS215932)](https://as215932.net).
+* [Hyrule Web](readme.md) - Main branded website for Hyrule Networks (AS215932).
 * [package.json](package-json.md) - { "name": "hyrule-web-frontend", "version": "0.1.0", "private": true, "type": "module", "description": "Frontend build for hyrule-web (Vite + TypeScript + Tailwind). Bundles to hyrule_web/static/dist/; the committed bundle is shipped by...
 * [Stray scratch files at repo root from earlier work — not part of the package.](pyproject-toml.md) - [project] name = "hyrule-web" version = "0.1.0" description = "Web frontend for Hyrule Cloud — lightweight, server-rendered, Tor-friendly" requires-python = ">=3.12" dependencies = [ "fastapi>=0.115", "uvicorn[standard]>=0.34", "jinja2>=...

@@ -20,7 +20,7 @@ source_refs:
   path: ansible/inventory/host_vars/noc.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/noc.yml
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -34,8 +34,8 @@ pin_value: 98e5010648e34ac0ea6ad8e6a925fef76d0dbea9
 
 | Field | Value |
 | --- | --- |
-| Service | [Hyrule NOC Agent](/generated/services/noc-agent.md) |
-| Host | [noc](/generated/infrastructure/hosts/noc.md) |
+| Service | [Hyrule NOC Agent](../services/noc-agent.md) |
+| Host | [noc](../infrastructure/hosts/noc.md) |
 | Pin variable | `noc_agent_version` |
 | Pinned version | `98e5010648e34ac0ea6ad8e6a925fef76d0dbea9` |
 | Source host vars | `ansible/inventory/host_vars/noc.yml` |

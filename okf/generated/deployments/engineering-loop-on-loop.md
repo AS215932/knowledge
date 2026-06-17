@@ -21,7 +21,7 @@ source_refs:
   path: ansible/inventory/host_vars/loop.yml
   commit: 67061d325834a7145252cdf851da1df6a4a38b9e
   url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/loop.yml
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -35,8 +35,8 @@ pin_value: 768cde6c996e42f3f91d395347ba9809e2e020e5
 
 | Field | Value |
 | --- | --- |
-| Service | [Hyrule Engineering Loop](/generated/services/engineering-loop.md) |
-| Host | [loop](/generated/infrastructure/hosts/loop.md) |
+| Service | [Hyrule Engineering Loop](../services/engineering-loop.md) |
+| Host | [loop](../infrastructure/hosts/loop.md) |
 | Pin variable | `engineering_loop_version` |
 | Pinned version | `768cde6c996e42f3f91d395347ba9809e2e020e5` |
 | Source host vars | `ansible/inventory/host_vars/loop.yml` |

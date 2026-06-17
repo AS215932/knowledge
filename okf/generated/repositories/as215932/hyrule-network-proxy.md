@@ -18,7 +18,7 @@ source_refs:
 - repo: AS215932/hyrule-network-proxy
   commit: b82dc72bbf382167062bff272606ce84ec20538c
   url: https://github.com/AS215932/hyrule-network-proxy
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: evidence_only
 repo: AS215932/hyrule-network-proxy
@@ -56,14 +56,14 @@ Internal Hyrule Network Proxy sidecar for x402-gated network requests
 
 # Related concepts
 
-* Top-level concept: [Hyrule Network Proxy](/generated/services/hyrule-network-proxy.md)
+* Top-level concept: [Hyrule Network Proxy](../../services/hyrule-network-proxy.md)
 
 # Indexed source material
 
-* [.github/workflows/ci.yml](/generated/workflows/hyrule-network-proxy/github-workflows-ci-yml.md)
-* [AGENTS.md](/generated/source-docs/as215932/hyrule-network-proxy/agents.md)
-* [README.md](/generated/source-docs/as215932/hyrule-network-proxy/readme.md)
-* [go.mod](/generated/source-docs/as215932/hyrule-network-proxy/go-mod.md)
+* [.github/workflows/ci.yml](../../workflows/hyrule-network-proxy/github-workflows-ci-yml.md)
+* [AGENTS.md](../../source-docs/as215932/hyrule-network-proxy/agents.md)
+* [README.md](../../source-docs/as215932/hyrule-network-proxy/readme.md)
+* [go.mod](../../source-docs/as215932/hyrule-network-proxy/go-mod.md)
 
 # Citations
 

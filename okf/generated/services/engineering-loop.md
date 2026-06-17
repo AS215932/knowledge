@@ -23,7 +23,7 @@ source_refs:
   commit: 768cde6c996e42f3f91d395347ba9809e2e020e5
   lines: 1-75
   url: https://github.com/AS215932/engineering-loop/blob/768cde6c996e42f3f91d395347ba9809e2e020e5/README.md#L1-L75
-last_verified_at: '2026-06-17T10:18:30Z'
+last_verified_at: '2026-06-17T10:33:31Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/engineering-loop
@@ -82,10 +82,10 @@ No repo-local runbook files detected in indexed sources.
 
 # Related services
 
-* [network-operations](/generated/projects/network-operations.md)
-* [noc-agent](/generated/services/noc-agent.md)
-* [hyrule-cloud](/generated/services/hyrule-cloud.md)
-* [hyrule-web](/generated/services/hyrule-web.md)
+* [network-operations](../projects/network-operations.md)
+* [noc-agent](noc-agent.md)
+* [hyrule-cloud](hyrule-cloud.md)
+* [hyrule-web](hyrule-web.md)
 
 # Open issues/known gaps
 
