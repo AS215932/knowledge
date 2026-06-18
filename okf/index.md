@@ -28,7 +28,7 @@
 * Conflict rule: A0 > A1 > A2 > A3 > A4/A5; vectors are placeholders only and never override source truth.
 * Policy: `knowledge-policy.yml` is evaluated by the built-in YAML evaluator for read-only knowledge access and human-review boundaries.
 * Context packs: generated manually/local by `hyrule-knowledge context-pack` for Engineering Loop and NOC shadow consumers.
-* Learning ledger: `learning_ledger_v1` stores reviewable A4 proposals with citations; human promotion writes A1 lessons or A2 summaries and review records.
+* Learning ledger: `learning_ledger_v1` stores reviewable A4 proposals with citations; `ledger import`, `ledger promote-pr`, and `ledger lifecycle` govern import, A1/A2 promotion, rejection, stale-review checks, and review records.
 
 # Curated
 

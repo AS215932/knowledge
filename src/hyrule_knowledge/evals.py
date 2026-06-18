@@ -8,11 +8,13 @@ from typing import Any
 
 import yaml
 
-from .authority import AuthorityTier
+from .authority import AuthorityTier, tier_rank
 from .context_pack import build_context_pack
 from .contracts import EvalCase, EvalResult, stable_hash
+from .learning_ledger import load_learning_events, validate_learning_events
 from .policy import policy_decision_for
 from .promotion import (
+    analyze_learning_lifecycle,
     build_review_packet,
     promote_learning_event,
     validate_promoted_concept_markdown,
@@ -66,6 +68,8 @@ def run_evals(
             result = _run_policy_case(case, run_id)
         elif case.suite == "learning_promotion":
             result = _run_learning_promotion_case(case, run_id)
+        elif case.suite == "learning_lifecycle":
+            result = _run_learning_lifecycle_case(case, run_id)
         elif case.suite in {"engineering_loop", "noc_shadow", "grounding"} and case.inputs.get("context_pack"):
             result = _run_context_case(case, run_id, store)
         else:
@@ -256,6 +260,57 @@ def _run_learning_promotion_case(case: EvalCase, run_id: str) -> EvalResult:
         failures.append(f"target prefix mismatch: {result.target_concept_id} does not start with {case.expected['target_prefix']}")
     if result.wrote:
         failures.append("learning promotion eval must not write files")
+    return EvalResult(run_id, case.id, case.suite, not failures, 1.0 if not failures else 0.0, metrics, failures)
+
+
+def _run_learning_lifecycle_case(case: EvalCase, run_id: str) -> EvalResult:
+    mode = str(case.inputs.get("mode") or "lifecycle")
+    failures: list[str] = []
+    metrics: dict[str, Any] = {"mode": mode}
+    path_value = case.inputs.get("path")
+    paths = [Path(str(path_value))] if path_value else None
+    if mode in {"import_valid", "import_reject"}:
+        events = load_learning_events(paths)
+        findings = validate_learning_events(events)
+        metrics["event_count"] = len(events)
+        metrics["findings"] = findings
+        expected_valid = bool(case.expected.get("valid", True))
+        actual_valid = not findings
+        if actual_valid != expected_valid:
+            failures.append(f"import validation mismatch: {actual_valid} != {expected_valid}")
+        contains = case.expected.get("finding_contains")
+        if contains and not any(str(contains) in finding.get("message", "") for finding in findings):
+            failures.append(f"expected finding containing {contains!r}")
+    elif mode == "promote_imported_summary":
+        if not paths:
+            failures.append("promote_imported_summary requires path")
+        else:
+            event = load_learning_events(paths)[0]
+            result = promote_learning_event(
+                str(event["id"]),
+                reviewer=str(case.inputs.get("reviewer") or "eval-reviewer"),
+                promotion_kind="summary",
+                rationale="Deterministic import promotion eval.",
+                paths=paths,
+                dry_run=True,
+            )
+            metrics["target_concept_id"] = result.target_concept_id
+            metrics["wrote"] = result.wrote
+            if result.wrote:
+                failures.append("promotion eval must be dry-run only")
+            if not str(result.target_concept_id or "").startswith(str(case.expected.get("target_prefix", "curated/summaries/"))):
+                failures.append("promoted summary target prefix mismatch")
+    elif mode == "source_truth_outprioritizes_summary":
+        metrics["a0_rank"] = tier_rank("A0")
+        metrics["a2_rank"] = tier_rank("A2")
+        if not tier_rank("A0") < tier_rank("A2"):
+            failures.append("A0 must outrank A2")
+    else:
+        report = analyze_learning_lifecycle(paths=paths)
+        metrics.update(report["summary"])
+        expected_critical = int(case.expected.get("critical_count", 0))
+        if report["summary"].get("critical_count") != expected_critical:
+            failures.append(f"critical lifecycle finding mismatch: {report['summary'].get('critical_count')} != {expected_critical}")
     return EvalResult(run_id, case.id, case.suite, not failures, 1.0 if not failures else 0.0, metrics, failures)
 
 

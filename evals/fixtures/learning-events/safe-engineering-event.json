@@ -1,0 +1,23 @@
+{
+  "event_type": "engineering_loop_run_summary",
+  "event_time": "2026-06-17T00:00:00Z",
+  "producer": "engineering_loop",
+  "subject": "engineering_loop:import-fixture-safe",
+  "summary": "Sanitized import fixture for a local Engineering Loop run summary.",
+  "status": "proposed",
+  "authority_tier": "A4",
+  "data_classes": ["sanitized_trace_summary", "source_ref", "okf_concept"],
+  "citations": [
+    {
+      "concept_id": "generated/services/engineering-loop",
+      "source_uri": "repo://AS215932/engineering-loop/README.md@fixture"
+    }
+  ],
+  "context_pack_ids": ["ctx_fixture_import_safe"],
+  "policy_decision_ids": ["pol_fixture_import_safe"],
+  "eval_case_ids": [],
+  "metrics": {"gate_status": "passed", "vector_scores_null": true},
+  "lessons": ["Imported learning artifacts must stay sanitized and reviewable."],
+  "promotion": {"review_required": true, "target": "AS215932/knowledge"},
+  "metadata": {"fixture": true}
+}

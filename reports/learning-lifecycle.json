@@ -1,0 +1,38 @@
+{
+  "findings": [
+    {
+      "code": "needs_review",
+      "event_id": "learn_2fa7fb02a0865688f757d95d1cd5cc64",
+      "message": "learning event has not been reviewed",
+      "severity": "info"
+    },
+    {
+      "code": "needs_review",
+      "event_id": "learn_3e656ad8594fc91d25b01dac2e52e77a",
+      "message": "learning event has not been reviewed",
+      "severity": "info"
+    },
+    {
+      "code": "needs_review",
+      "event_id": "learn_8f0d873eaa16fbe6d0a61fc3b0cc7e15",
+      "message": "learning event has not been reviewed",
+      "severity": "info"
+    },
+    {
+      "code": "needs_review",
+      "event_id": "learn_9954c430371823cd6b8ffc498691b779",
+      "message": "learning event has not been reviewed",
+      "severity": "info"
+    }
+  ],
+  "summary": {
+    "approved_count": 0,
+    "critical_count": 0,
+    "event_count": 4,
+    "needs_re_review_count": 0,
+    "needs_review_count": 4,
+    "rejected_count": 0,
+    "review_count": 0,
+    "warning_count": 0
+  }
+}

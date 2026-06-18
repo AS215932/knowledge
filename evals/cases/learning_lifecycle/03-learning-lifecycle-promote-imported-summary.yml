@@ -1,0 +1,14 @@
+id: learning-lifecycle-003-promote-imported-summary
+task: Promote an imported proposed learning event into an A2 summary preview
+suite: learning_lifecycle
+role: human_review
+inputs:
+  mode: promote_imported_summary
+  path: evals/fixtures/learning-events/safe-engineering-event.json
+  reviewer: eval-reviewer
+expected:
+  target_prefix: curated/summaries/
+forbidden: {}
+must_pass: true
+metrics:
+  dry_run_only: true

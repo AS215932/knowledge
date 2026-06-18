@@ -1,0 +1,13 @@
+id: learning-lifecycle-001-import-safe
+task: Validate a safe imported learning-event artifact fixture
+suite: learning_lifecycle
+role: human_review
+inputs:
+  mode: import_valid
+  path: evals/fixtures/learning-events/safe-engineering-event.json
+expected:
+  valid: true
+forbidden: {}
+must_pass: true
+metrics:
+  import_fixture: true

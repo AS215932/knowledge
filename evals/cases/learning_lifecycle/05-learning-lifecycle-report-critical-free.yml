@@ -1,0 +1,11 @@
+id: learning-lifecycle-005-report-critical-free
+task: Verify committed learning lifecycle report has no critical findings
+suite: learning_lifecycle
+role: human_review
+inputs:
+  mode: lifecycle_report
+expected:
+  critical_count: 0
+forbidden: {}
+must_pass: true
+metrics: {}
