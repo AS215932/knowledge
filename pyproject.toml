@@ -23,6 +23,7 @@ packages = ["src/hyrule_knowledge"]
 
 [dependency-groups]
 dev = [
+    "mcp>=1.27.0",
     "mypy>=1.11",
     "pytest>=8",
     "ruff>=0.6",

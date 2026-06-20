@@ -96,6 +96,8 @@ Humans can browse `okf/index.md`. Agents should first read `okf/index.md`, then 
 
 Authority tiers are ordered A0 source truth, A1 reviewed OKF, A2 reviewed trace summaries, A3 observations, A4 hypotheses, A5 vector hints. Vectors are deliberately not implemented in this tranche; retrieval score objects include null vector fields for future compatibility only.
 
+The optional MCP server is available through the `mcp` extra and exposes read-only `knowledge_*` tools for search, resolve, claims, context packs, deployment pins, endpoint schemas, policy decisions, runbooks, conflicts, and staleness checks. It supports stdio for local clients and loopback HTTP transports (`streamable-http` at `/mcp` or legacy `sse` at `/sse`) for deployment on the `loop` VM. The HTTP server also exposes `GET /health`.
+
 Useful read-only commands:
 
 ```bash
@@ -111,5 +113,14 @@ uv run hyrule-knowledge ledger --list
 uv run hyrule-knowledge ledger --review engineering_loop:fixture-run-summary --promotion-kind summary
 uv run hyrule-knowledge ledger promote-pr engineering_loop:fixture-run-summary --reviewer svag --promotion-kind summary --rationale "reviewed"
 uv run hyrule-knowledge ledger lifecycle --write
-uv run hyrule-knowledge mcp --transport stdio
+uv run --extra mcp hyrule-knowledge mcp --transport stdio
+uv run --extra mcp hyrule-knowledge mcp --transport streamable-http --host 127.0.0.1 --port 8767
+```
+
+Containerized loopback deployment uses the checked-in `Dockerfile`:
+
+```bash
+docker build -t as215932/knowledge-mcp:local .
+docker run --rm -p 127.0.0.1:8767:8767 as215932/knowledge-mcp:local
+curl http://127.0.0.1:8767/health
 ```
