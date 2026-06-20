@@ -236,7 +236,8 @@ def _attach_health_route(app: Any, mcp: Any, db_path: str, transport: str) -> An
     json_response = getattr(responses, "JSONResponse")
 
     async def health(_request: Any) -> Any:
-        return json_response(_health_payload(mcp, db_path, transport))
+        payload = _health_payload(mcp, db_path, transport)
+        return json_response(payload, status_code=200 if payload.get("status") == "ok" else 503)
 
     app.add_route("/health", health, methods=["GET"])
     return app

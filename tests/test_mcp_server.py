@@ -63,6 +63,7 @@ def test_mcp_http_health_payload_and_route() -> None:
 
     server = mcp_server.build_mcp(str(db_path), host="127.0.0.1", port=8767)
     payload = mcp_server._health_payload(server, str(db_path), "streamable-http")
+    degraded = mcp_server._health_payload(server, str(db_path.with_name("missing.sqlite")), "streamable-http")
 
     assert payload["status"] == "ok"
     assert payload["service"] == "as215932-knowledge-mcp"
@@ -70,6 +71,7 @@ def test_mcp_http_health_payload_and_route() -> None:
     assert payload["read_only"] is True
     assert payload["tool_count"] >= 10
     assert payload["concept_count"] > 0
+    assert degraded["status"] == "degraded"
 
     app = mcp_server._attach_health_route(server.streamable_http_app(), server, str(db_path), "streamable-http")
     assert any(getattr(route, "path", None) == "/health" for route in app.routes)

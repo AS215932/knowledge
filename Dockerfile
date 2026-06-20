@@ -26,6 +26,6 @@ RUN uv sync --frozen --no-dev --extra mcp
 EXPOSE 8767
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD python -c "import os, urllib.request; urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get(\"HYRULE_KNOWLEDGE_MCP_PORT\", \"8767\")}/health', timeout=3).read()"
+    CMD python -c "import json, os, urllib.request; payload=json.loads(urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get(\"HYRULE_KNOWLEDGE_MCP_PORT\", \"8767\")}/health', timeout=3).read()); raise SystemExit(0 if payload.get('status') == 'ok' else 1)"
 
 CMD ["hyrule-knowledge-mcp"]
