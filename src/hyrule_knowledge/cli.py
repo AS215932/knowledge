@@ -770,7 +770,30 @@ def cmd_eval(args: argparse.Namespace) -> int:
 def cmd_mcp(args: argparse.Namespace) -> int:
     from .mcp_server import main as mcp_main
 
-    return mcp_main(["--transport", args.transport, "--db", str(load_config(Path(args.config)).exports_dir / "knowledge.sqlite")])
+    db_path = args.db or str(load_config(Path(args.config)).exports_dir / "knowledge.sqlite")
+    mcp_args = [
+        "--transport",
+        args.transport,
+        "--db",
+        db_path,
+        "--host",
+        args.host,
+        "--port",
+        str(args.port),
+        "--log-level",
+        args.log_level,
+        "--mount-path",
+        args.mount_path,
+        "--sse-path",
+        args.sse_path,
+        "--message-path",
+        args.message_path,
+        "--mcp-path",
+        args.mcp_path,
+    ]
+    if args.stateless_http:
+        mcp_args.append("--stateless-http")
+    return mcp_main(mcp_args)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -907,7 +930,16 @@ def build_parser() -> argparse.ArgumentParser:
     ledger.set_defaults(func=cmd_ledger)
 
     mcp = subparsers.add_parser("mcp")
-    mcp.add_argument("--transport", default="stdio", choices=["stdio"])
+    mcp.add_argument("--transport", default="stdio", choices=["stdio", "sse", "streamable-http", "http"])
+    mcp.add_argument("--db", help="SQLite export path (default: configured exports/knowledge.sqlite)")
+    mcp.add_argument("--host", default="127.0.0.1")
+    mcp.add_argument("--port", type=int, default=8767)
+    mcp.add_argument("--log-level", default="INFO")
+    mcp.add_argument("--mount-path", default="/")
+    mcp.add_argument("--sse-path", default="/sse")
+    mcp.add_argument("--message-path", default="/messages/")
+    mcp.add_argument("--mcp-path", default="/mcp")
+    mcp.add_argument("--stateless-http", action="store_true")
     mcp.set_defaults(func=cmd_mcp)
 
     export = subparsers.add_parser("export")

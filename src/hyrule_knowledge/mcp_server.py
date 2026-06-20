@@ -1,16 +1,19 @@
 # mypy: disable-error-code=untyped-decorator
-"""Stdio MCP adapter for the AS215932 knowledge service.
+"""MCP adapter for the AS215932 knowledge service.
 
 The core retrieval/context-pack code is transport-independent. This module is a
-thin optional adapter; if the optional ``mcp`` dependency is not installed, the
-normal CLI and library remain usable.
+thin optional adapter for stdio, streamable HTTP, and SSE MCP transports; if the
+optional ``mcp`` dependency is not installed, the normal CLI and library remain
+usable.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+from importlib import import_module
 from typing import Any
 
 from .authority import AuthorityTier
@@ -32,13 +35,33 @@ def _service(db_path: str | None = None) -> tuple[KnowledgeStore, KnowledgeRetri
     return store, KnowledgeRetriever(store)
 
 
-def build_mcp(db_path: str | None = None) -> Any:
+def build_mcp(
+    db_path: str | None = None,
+    *,
+    host: str = "127.0.0.1",
+    port: int = 8767,
+    log_level: str = "INFO",
+    sse_path: str = "/sse",
+    message_path: str = "/messages/",
+    streamable_http_path: str = "/mcp",
+    stateless_http: bool = False,
+) -> Any:
     try:
-        from mcp.server.fastmcp import FastMCP  # type: ignore[import-not-found]
+        fastmcp = import_module("mcp.server.fastmcp")
+        fastmcp_class = getattr(fastmcp, "FastMCP")
     except Exception as exc:  # pragma: no cover - optional dependency
         raise RuntimeError("optional dependency `mcp` is required for `hyrule-knowledge mcp`; install with the mcp extra") from exc
 
-    mcp = FastMCP("AS215932 Knowledge")
+    mcp = fastmcp_class(
+        "AS215932 Knowledge",
+        host=host,
+        port=port,
+        log_level=log_level,
+        sse_path=sse_path,
+        message_path=message_path,
+        streamable_http_path=streamable_http_path,
+        stateless_http=stateless_http,
+    )
 
     @mcp.tool()
     def knowledge_resolve(reference: str, authority_min: str = "A5") -> dict[str, Any]:
@@ -169,17 +192,98 @@ def build_mcp(db_path: str | None = None) -> Any:
     return mcp
 
 
+def _env_int(name: str, default: int) -> int:
+    value = os.environ.get(name)
+    if value is None or value.strip() == "":
+        return default
+    try:
+        return int(value)
+    except ValueError:
+        return default
+
+
+def _tool_names(mcp: Any) -> list[str]:
+    manager = getattr(mcp, "_tool_manager", None)
+    tools = getattr(manager, "_tools", {})
+    if isinstance(tools, dict):
+        return sorted(str(name) for name in tools)
+    return []
+
+
+def _health_payload(mcp: Any, db_path: str, transport: str) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "status": "ok",
+        "service": "as215932-knowledge-mcp",
+        "transport": transport,
+        "db_path": db_path,
+        "read_only": True,
+        "tool_count": len(_tool_names(mcp)),
+        "tools": _tool_names(mcp),
+    }
+    try:
+        with KnowledgeStore(db_path) as store:
+            payload["manifest"] = store.manifest()
+            payload["concept_count"] = int(store.conn.execute("SELECT COUNT(*) FROM concepts").fetchone()[0])
+            payload["claim_count"] = int(store.conn.execute("SELECT COUNT(*) FROM claims").fetchone()[0])
+    except Exception as exc:  # pragma: no cover - defensive health reporting
+        payload["status"] = "degraded"
+        payload["db_error"] = str(exc)
+    return payload
+
+
+def _attach_health_route(app: Any, mcp: Any, db_path: str, transport: str) -> Any:
+    responses = import_module("starlette.responses")
+    json_response = getattr(responses, "JSONResponse")
+
+    async def health(_request: Any) -> Any:
+        return json_response(_health_payload(mcp, db_path, transport))
+
+    app.add_route("/health", health, methods=["GET"])
+    return app
+
+
+def _run_http(mcp: Any, *, db_path: str, transport: str, host: str, port: int, mount_path: str | None, log_level: str) -> None:
+    uvicorn = import_module("uvicorn")
+    if transport == "sse":
+        app = mcp.sse_app(mount_path)
+    else:
+        app = mcp.streamable_http_app()
+    app = _attach_health_route(app, mcp, db_path, transport)
+    uvicorn.run(app, host=host, port=port, log_level=log_level.lower())
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="hyrule-knowledge-mcp")
-    parser.add_argument("--transport", default="stdio", choices=["stdio"])
-    parser.add_argument("--db", default="exports/knowledge.sqlite")
+    parser.add_argument("--transport", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_TRANSPORT", "stdio"), choices=["stdio", "sse", "streamable-http", "http"])
+    parser.add_argument("--db", default=os.environ.get("HYRULE_KNOWLEDGE_DB", "exports/knowledge.sqlite"))
+    parser.add_argument("--host", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_BIND", "127.0.0.1"))
+    parser.add_argument("--port", type=int, default=_env_int("HYRULE_KNOWLEDGE_MCP_PORT", 8767))
+    parser.add_argument("--log-level", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_LOG_LEVEL", "INFO"))
+    parser.add_argument("--mount-path", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_MOUNT_PATH", "/"))
+    parser.add_argument("--sse-path", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_SSE_PATH", "/sse"))
+    parser.add_argument("--message-path", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_MESSAGE_PATH", "/messages/"))
+    parser.add_argument("--mcp-path", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_PATH", "/mcp"))
+    parser.add_argument("--stateless-http", action="store_true", default=os.environ.get("HYRULE_KNOWLEDGE_MCP_STATELESS_HTTP", "0") in {"1", "true", "yes", "on"})
     args = parser.parse_args(argv)
+    transport = "streamable-http" if args.transport == "http" else args.transport
     try:
-        mcp = build_mcp(args.db)
+        mcp = build_mcp(
+            args.db,
+            host=args.host,
+            port=args.port,
+            log_level=args.log_level,
+            sse_path=args.sse_path,
+            message_path=args.message_path,
+            streamable_http_path=args.mcp_path,
+            stateless_http=args.stateless_http,
+        )
     except RuntimeError as exc:
         print(json.dumps({"error": str(exc)}), file=sys.stderr)
         return 1
-    mcp.run(transport=args.transport)
+    if transport == "stdio":
+        mcp.run(transport="stdio")
+    else:
+        _run_http(mcp, db_path=args.db, transport=transport, host=args.host, port=args.port, mount_path=args.mount_path, log_level=args.log_level)
     return 0
 
 
