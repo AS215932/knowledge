@@ -61,6 +61,12 @@
       "severity": "warning"
     },
     {
+      "code": "no_inbound_links",
+      "concept_id": "generated/enriched/services",
+      "message": "Concept has no inbound graph edges.",
+      "severity": "warning"
+    },
+    {
       "code": "shallow_source_doc",
       "concept_id": "generated/source-docs/as215932/engineering-loop/pyproject-toml",
       "message": "Source document concept is shallow.",
@@ -230,14 +236,14 @@
     }
   ],
   "summary": {
-    "concept_count": 868,
+    "concept_count": 869,
     "concepts_by_authority": {
-      "advisory": 11,
+      "advisory": 12,
       "canonical": 760,
       "evidence": 97
     },
     "concepts_by_truth_owner": {
-      "derived": 1,
+      "derived": 2,
       "external": 95,
       "observed": 2,
       "okf": 10,
@@ -261,6 +267,7 @@
       "Organization": 1,
       "Policy": 2,
       "Project": 2,
+      "Reference": 1,
       "Repository": 10,
       "Rollout Summary": 1,
       "Router": 4,
@@ -275,9 +282,9 @@
     "edge_count": 1894,
     "endpoint_count": 306,
     "host_count": 23,
-    "llm_enriched_count": 0,
-    "llm_enrichment_run_count": 0,
-    "llm_enrichment_run_status": "not_run",
+    "llm_enriched_count": 1,
+    "llm_enrichment_run_count": 1,
+    "llm_enrichment_run_status": "proposed_output_present",
     "observed_count": 2,
     "schema_count": 219,
     "source_file_ref_count": 249,
@@ -300,11 +307,11 @@
       "docker_ipv6": "ok",
       "engineering_loop": "ok",
       "hyrule_mcp": "ok",
-      "icinga": "degraded",
+      "icinga": "ok",
       "knowledge_mcp": "ok",
       "noc_agent": "ok",
-      "prometheus": "degraded"
+      "prometheus": "ok"
     },
-    "warning_count": 38
+    "warning_count": 39
   }
 }
