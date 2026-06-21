@@ -218,22 +218,28 @@
     },
     {
       "code": "no_inbound_links",
+      "concept_id": "observed/latest/as215932-core-safe-health-2026-06-21",
+      "message": "Concept has no inbound graph edges.",
+      "severity": "warning"
+    },
+    {
+      "code": "no_inbound_links",
       "concept_id": "observed/latest/engineering-loop-knowledge-mcp-rollout-2026-06-21",
       "message": "Concept has no inbound graph edges.",
       "severity": "warning"
     }
   ],
   "summary": {
-    "concept_count": 867,
+    "concept_count": 868,
     "concepts_by_authority": {
       "advisory": 11,
       "canonical": 760,
-      "evidence": 96
+      "evidence": 97
     },
     "concepts_by_truth_owner": {
       "derived": 1,
       "external": 95,
-      "observed": 1,
+      "observed": 2,
       "okf": 10,
       "repo": 760
     },
@@ -251,7 +257,7 @@
       "Lesson": 1,
       "Monitoring Inventory": 1,
       "Network Prefix": 6,
-      "Observation": 1,
+      "Observation": 2,
       "Organization": 1,
       "Policy": 2,
       "Project": 2,
@@ -272,7 +278,7 @@
     "llm_enriched_count": 0,
     "llm_enrichment_run_count": 0,
     "llm_enrichment_run_status": "not_run",
-    "observed_count": 1,
+    "observed_count": 2,
     "schema_count": 219,
     "source_file_ref_count": 249,
     "source_files_skipped": "Not enumerated in quality report; see knowledge.config.yml include/exclude patterns and ingestion logs.",
@@ -291,10 +297,14 @@
       "AS215932/noc-agent"
     ],
     "telemetry_source_status": {
+      "docker_ipv6": "ok",
       "engineering_loop": "ok",
-      "icinga": "ok",
-      "knowledge_mcp": "ok"
+      "hyrule_mcp": "ok",
+      "icinga": "degraded",
+      "knowledge_mcp": "ok",
+      "noc_agent": "ok",
+      "prometheus": "degraded"
     },
-    "warning_count": 37
+    "warning_count": 38
   }
 }

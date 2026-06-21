@@ -2,7 +2,7 @@
 
 * [Generated knowledge](generated/) - Deterministic concepts derived from source repositories and GitHub metadata.
 * [Curated knowledge](curated/) - Human-authored institutional knowledge owned by this OKF repository.
-* [Observed evidence](observed/) - Manual/local safe-health runtime observations, evidence-only and time-bounded.
+* [Observed evidence](observed/) - Manual/local read-only runtime observations, evidence-only and time-bounded.
 * `exports/knowledge.sqlite` - Read-only machine store with concepts, edges, claims, policy decisions, context packs, eval cases/results, and SQLite FTS.
 * `evals/` - Deterministic retrieval/grounding/policy fixture baseline for agents.
 * `ledger/fixtures/` - Sanitized learning-ledger fixtures only; no committed live traces.

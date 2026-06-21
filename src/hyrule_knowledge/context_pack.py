@@ -169,8 +169,29 @@ def intended_state(store: KnowledgeStore, scope: str) -> dict[str, Any]:
 
 def observed_state(store: KnowledgeStore, scope: str, *, window_hours: int = 24) -> dict[str, Any]:
     del window_hours  # observations are freshness-bound by their claims in this tranche
-    claims = [claim for claim in store.claims(authority_min=AuthorityTier.A3, freshness="current", limit=1000) if scope in json.dumps(claim, sort_keys=True)]
+    scope_variants = {scope, scope.replace("-", "_"), scope.replace("_", "-")}
+    rows = store.conn.execute(
+        """
+        SELECT * FROM claims
+        WHERE concept_id LIKE 'observed/%' AND freshness_status != 'expired'
+        ORDER BY subject, predicate, object
+        LIMIT 10000
+        """
+    ).fetchall()
+    observed_claims = [store._claim_from_row(row) for row in rows]
+    claims = [claim for claim in observed_claims if _observed_claim_matches_scope(claim, scope, scope_variants)]
     return {"scope": scope, "status": "ok" if claims else "not_collected", "claims": claims}
+
+
+def _observed_claim_matches_scope(claim: dict[str, Any], scope: str, scope_variants: set[str]) -> bool:
+    fields = [
+        str(claim.get("object") or ""),
+        str(claim.get("predicate") or ""),
+        json.dumps(claim.get("metadata") or {}, sort_keys=True),
+    ]
+    if scope.startswith("observed/"):
+        fields.extend([str(claim.get("concept_id") or ""), str(claim.get("subject") or ""), str(claim.get("source_uri") or "")])
+    return any(variant in field for variant in scope_variants for field in fields)
 
 
 def diff_intended_observed(store: KnowledgeStore, scope: str) -> dict[str, Any]:

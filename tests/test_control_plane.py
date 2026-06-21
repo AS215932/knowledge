@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from hyrule_knowledge.authority import AuthorityTier, tier_allows
-from hyrule_knowledge.context_pack import build_context_pack, endpoint_schema
+from hyrule_knowledge.context_pack import build_context_pack, endpoint_schema, observed_state
 from hyrule_knowledge.evals import load_eval_cases, run_evals
 from hyrule_knowledge.policy import policy_decision_for
 from hyrule_knowledge.retrieval import KnowledgeRetriever
@@ -45,6 +45,13 @@ def test_context_pack_has_policy_decision_sections_and_citations() -> None:
     assert pack.included_refs
     assert all(ref["retrieval_scores"]["vector"] is None for ref in pack.included_refs)
     assert all(ref["source_refs"] for ref in pack.included_refs)
+
+
+def test_observed_state_finds_a3_claims_after_source_truth_claims() -> None:
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        result = observed_state(store, "knowledge-mcp")
+    assert result["status"] == "ok"
+    assert any(claim["object"] == "knowledge_mcp:ok" for claim in result["claims"])
 
 
 def test_policy_evaluator_safety_boundaries() -> None:

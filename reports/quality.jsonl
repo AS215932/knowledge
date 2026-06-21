@@ -34,4 +34,5 @@
 {"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-web-yml","message":"Source document concept is shallow.","severity":"warning"}
 {"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/network-operations/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}
 {"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/noc-agent/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"observed/latest/engineering-loop-knowledge-mcp-rollout-2026-06-21","message":"Concept has no inbound graph edges.","severity":"warning"}
