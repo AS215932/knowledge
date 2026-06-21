@@ -4,3 +4,4 @@ Observations are manual/local and time-bounded. Do not commit secrets, logs, pac
 
 * 2026-06-21T16:10:28Z - Added sanitized Engineering Loop / Knowledge MCP rollout evidence after NetOps #284 and canary #21 merged.
 * 2026-06-21T17:58:26Z - Added broader sanitized core automation safe-health evidence for loop, noc, mon, Knowledge MCP, NOC Agent, Hyrule MCP, Docker IPv6, Prometheus, and Icinga.
+* 2026-06-21T21:12:38Z - Refreshed sanitized core automation safe-health evidence after live monitoring remediation; Prometheus has zero down targets and Icinga has no unhandled problem services.

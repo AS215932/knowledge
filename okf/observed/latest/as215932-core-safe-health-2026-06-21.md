@@ -19,39 +19,42 @@ source_refs:
 - url: manual://loop/as215932-core-safe-health/2026-06-21
 - url: manual://noc/as215932-core-safe-health/2026-06-21
 - url: manual://mon/as215932-core-safe-health/2026-06-21
-last_verified_at: '2026-06-21T17:58:26Z'
+- url: https://github.com/AS215932/network-operations/commit/153a7055ff6a39b976571bc5f2ba6dc9ba861866
+- url: https://github.com/AS215932/network-operations/issues/214
+last_verified_at: '2026-06-21T21:12:38Z'
 confidence: medium
 dispute_policy: evidence_only
-observed_at: '2026-06-21T17:58:26Z'
-expires_at: '2026-06-22T17:58:26Z'
+observed_at: '2026-06-21T21:12:38Z'
+expires_at: '2026-06-22T21:12:38Z'
 collection_profile: as215932-core-safe-health
 observation_source: manual-local-readonly
-observation_status: degraded
-payload_json: '{"collection_window":{"ended_at":"2026-06-21T17:58:26Z","started_at":"2026-06-21T17:52:31Z"},"expires_at":"2026-06-22T17:58:26Z","observed_at":"2026-06-21T17:58:26Z","profile":"as215932-core-safe-health","sources":{"docker_ipv6":{"bridge_has_fixed_subnet":true,"daemon_ipv6":true,"default_bridge_ipv6_ping_dns":"ok","dns_count":1,"fixed_cidr_v6":"2a0c:b641:b50:f0::/64","ip6tables":false,"ip_masq":false,"status":"ok"},"engineering_loop":{"runtime_head":"d4781edbef0cab9ca983f622b4aa2a960df16a97","status":"ok","timer_state":"active","vault_agent_state":"active"},"hyrule_mcp":{"health_http_status":200,"health_status":"ok","runtime_head":"05b1245710e6a67ad40ccd62c033755f48ad4958","service_state":"active","status":"ok","transport":"streamable-http"},"icinga":{"selected_services":[{"host":"loop","output":"loop idle (approved queue is empty)","service":"engineering-loop","state":0},{"host":"loop","output":"UNKNOWN: query returned no data","service":"knowledge-mcp-service","state":3},{"host":"noc","output":"HTTP OK","service":"noc-agent-config-health","state":0},{"host":"noc","output":"HTTP OK","service":"noc-agent-health","state":0},{"host":"noc","output":"OK - status=ok mailbox=INBOX count=106","service":"noc-agent-mail-health","state":0},{"host":"noc","output":"OK - status=ok hyrule_ready=true xo_ready=true","service":"noc-agent-mcp-health","state":0},{"host":"noc","output":"OK - primary=openrouter:deepseek/deepseek-v4-pro status=ok quota=ok","service":"noc-agent-model-health","state":0}],"service_count":149,"service_state":"active","service_states":{"ok":144,"unknown":4,"warning":1},"status":"degraded","unhandled_problem_services":4},"knowledge_mcp":{"claim_count":4569,"concept_count":867,"container_revision":"69e9a30bcb11a6242f6d4adc4587e48ce20e5754","health_status":"ok","observation_count_before_ingest":1,"read_only":true,"run_id":"local-20260621165518","runtime_head":"69e9a30bcb11a6242f6d4adc4587e48ce20e5754","service_state":"active","status":"ok","tool_count":14,"transport":"streamable-http"},"noc_agent":{"config_disabled_count":0,"config_missing_count":0,"config_status":"ok","configured_model_count":2,"health_http_status":200,"health_status":"ok","mail_message_count":106,"mail_status":"ok","missing_credentials_count":0,"model_status":"ok","provider_status":{"openrouter":"ok"},"quota_monitoring":"ok","runtime_head":"2ba3fab7af61ad51a125fb8c85f021bb82555bf3","service_state":"active","status":"ok","vault_agent_state":"active"},"prometheus":{"down_series":2,"query_status":"success","ready_http_status":200,"service_state":"active","status":"degraded","up_series":54}}}'
+observation_status: ok
+payload_json: '{"collection_window":{"ended_at":"2026-06-21T21:12:38Z","started_at":"2026-06-21T21:05:54Z"},"expires_at":"2026-06-22T21:12:38Z","observed_at":"2026-06-21T21:12:38Z","profile":"as215932-core-safe-health","sources":{"docker_ipv6":{"bridge_has_fixed_subnet":true,"daemon_ipv6":true,"default_bridge_ipv6_ping_dns":"ok","dns_count":1,"fixed_cidr_v6":"2a0c:b641:b50:f0::/64","ip6tables":false,"ip_masq":false,"status":"ok"},"engineering_loop":{"runtime_head":"d4781edbef0cab9ca983f622b4aa2a960df16a97","status":"ok","timer_state":"active","vault_agent_state":"active"},"hyrule_mcp":{"health_http_status":200,"health_status":"ok","runtime_head":"05b1245710e6a67ad40ccd62c033755f48ad4958","service_state":"active","status":"ok","tool_count":34,"transport":"streamable-http"},"icinga":{"selected_services":[{"host":"loop","output":"OK: up=1","service":"node-up","state":0},{"host":"loop","output":"OK: free_ratio=0.827","service":"disk disk /","state":0},{"host":"loop","output":"loop idle (approved queue is empty)","service":"engineering-loop","state":0},{"host":"loop","output":"OK: active=1","service":"engineering-loop-timer","state":0},{"host":"loop","output":"OK: active=1","service":"knowledge-mcp-service","state":0},{"host":"noc","output":"HTTP OK","service":"noc-agent-health","state":0},{"host":"noc","output":"OK - status=ok hyrule_ready=true hyrule_tools=34 xo_ready=true xo_tools=40","service":"noc-agent-mcp-health","state":0},{"host":"noc","output":"OK - primary=openrouter:deepseek/deepseek-v4-pro status=ok quota=ok","service":"noc-agent-model-health","state":0},{"acknowledged":true,"handled":true,"host":"rtr","output":"WARNING: free_ratio=0.113 (< 0.2)","service":"disk disk /","state":1}],"service_count":149,"service_state":"active","service_states":{"critical":0,"ok":148,"unknown":0,"warning":1},"status":"ok","unhandled_problem_services":0},"knowledge_mcp":{"claim_count":4584,"concept_count":868,"container_revision":"67b338757efe9b496c4e154fbb0212563b1b96e8","health_status":"ok","observation_count_before_ingest":2,"read_only":true,"run_id":"local-20260621180213","runtime_head":"67b338757efe9b496c4e154fbb0212563b1b96e8","service_state":"active","status":"ok","tool_count":14,"transport":"streamable-http"},"noc_agent":{"bot_service_state":"active","config_disabled_count":0,"config_missing_count":0,"config_status":"ok","configured_model_count":2,"health_http_status":200,"health_status":"ok","mail_message_count":106,"mail_status":"ok","missing_credentials_count":0,"model_status":"ok","provider_status":{"openrouter":"ok"},"quota_monitoring":"ok","runtime_head":"2ba3fab7af61ad51a125fb8c85f021bb82555bf3","service_state":"active","status":"ok","vault_agent_state":"active"},"prometheus":{"down_series":0,"loop_node_up":true,"query_status":"success","ready_http_status":200,"service_state":"active","status":"ok","up_series":55,"vault_internal_success":true,"vector_up":true}}}'
 ---
 
 # AS215932 core automation safe-health snapshot
 
 This file is sanitized observed evidence only. It does not define intended state and must lose to source repositories when facts conflict.
 
-Collection window: `2026-06-21T17:52:31Z` to `2026-06-21T17:58:26Z`. Evidence expires at `2026-06-22T17:58:26Z`.
+Collection window: `2026-06-21T21:05:54Z` to `2026-06-21T21:12:38Z`. Evidence expires at `2026-06-22T21:12:38Z`.
 
 # Source summary
 
 | Source | Status | Sanitized evidence |
 | --- | --- | --- |
 | `engineering_loop` | `ok` | timer `active`; Vault Agent `active`; runtime `d4781edbef0cab9ca983f622b4aa2a960df16a97` |
-| `knowledge_mcp` | `ok` | service `active`; HTTP health `ok`; `streamable-http`; read-only; 14 tools; 867 concepts; 4569 claims |
+| `knowledge_mcp` | `ok` | service `active`; HTTP health `ok`; `streamable-http`; read-only; 14 tools; 868 concepts; 4584 claims |
 | `docker_ipv6` | `ok` | Docker IPv6 enabled; routed bridge `2a0c:b641:b50:f0::/64`; IPv6 ping from default bridge to AS215932 resolver `ok` |
 | `noc_agent` | `ok` | service `active`; config `ok`; mail `ok`; model/quota health `ok`; no missing credentials reported by health endpoint |
-| `hyrule_mcp` | `ok` | service `active`; loopback health `ok`; `streamable-http` |
-| `prometheus` | `degraded` | service `active`; ready endpoint HTTP 200; `up` query succeeded with 54 series and 2 down series |
-| `icinga` | `degraded` | service `active`; 149 services; 144 OK, 1 WARNING, 4 UNKNOWN; selected NOC Agent checks OK; `loop!knowledge-mcp-service` UNKNOWN at collection time |
+| `hyrule_mcp` | `ok` | service `active`; loopback health `ok`; `streamable-http`; 34 tools via NOC Agent MCP health |
+| `prometheus` | `ok` | service `active`; ready endpoint HTTP 200; `up` query succeeded with 55 series and 0 down series; Vector and Vault internal probes healthy |
+| `icinga` | `ok` | service `active`; 149 services; 148 OK, 1 acknowledged/handled WARNING, 0 UNKNOWN/CRITICAL; loop and selected NOC Agent checks OK |
 
 # Interpretation boundaries
 
-- `prometheus` and `icinga` degraded statuses are observed monitoring evidence only; they do not prove intended state drift by themselves.
-- Direct Knowledge MCP and Docker IPv6 checks were OK during the same window even though the selected Icinga Knowledge MCP service was UNKNOWN.
+- Monitoring remediation after NetOps #288 is reflected here as observed evidence only; source repositories still define intended state.
+- `netproxy` monitoring targets are intentionally disabled because that VM is not live yet and remains tracked for rollout separately.
+- The remaining `rtr!disk /` warning was acknowledged/handled at collection time and is not a current unhandled core automation blocker.
 - Provider model health is summarized without token values, authorization headers, raw logs, or raw API responses.
 
 # Sanitized payload
@@ -59,11 +62,11 @@ Collection window: `2026-06-21T17:52:31Z` to `2026-06-21T17:58:26Z`. Evidence ex
 ```json
 {
   "collection_window": {
-    "ended_at": "2026-06-21T17:58:26Z",
-    "started_at": "2026-06-21T17:52:31Z"
+    "ended_at": "2026-06-21T21:12:38Z",
+    "started_at": "2026-06-21T21:05:54Z"
   },
-  "expires_at": "2026-06-22T17:58:26Z",
-  "observed_at": "2026-06-21T17:58:26Z",
+  "expires_at": "2026-06-22T21:12:38Z",
+  "observed_at": "2026-06-21T21:12:38Z",
   "profile": "as215932-core-safe-health",
   "sources": {
     "docker_ipv6": {
@@ -88,10 +91,23 @@ Collection window: `2026-06-21T17:52:31Z` to `2026-06-21T17:58:26Z`. Evidence ex
       "runtime_head": "05b1245710e6a67ad40ccd62c033755f48ad4958",
       "service_state": "active",
       "status": "ok",
+      "tool_count": 34,
       "transport": "streamable-http"
     },
     "icinga": {
       "selected_services": [
+        {
+          "host": "loop",
+          "output": "OK: up=1",
+          "service": "node-up",
+          "state": 0
+        },
+        {
+          "host": "loop",
+          "output": "OK: free_ratio=0.827",
+          "service": "disk disk /",
+          "state": 0
+        },
         {
           "host": "loop",
           "output": "loop idle (approved queue is empty)",
@@ -100,14 +116,14 @@ Collection window: `2026-06-21T17:52:31Z` to `2026-06-21T17:58:26Z`. Evidence ex
         },
         {
           "host": "loop",
-          "output": "UNKNOWN: query returned no data",
-          "service": "knowledge-mcp-service",
-          "state": 3
+          "output": "OK: active=1",
+          "service": "engineering-loop-timer",
+          "state": 0
         },
         {
-          "host": "noc",
-          "output": "HTTP OK",
-          "service": "noc-agent-config-health",
+          "host": "loop",
+          "output": "OK: active=1",
+          "service": "knowledge-mcp-service",
           "state": 0
         },
         {
@@ -118,13 +134,7 @@ Collection window: `2026-06-21T17:52:31Z` to `2026-06-21T17:58:26Z`. Evidence ex
         },
         {
           "host": "noc",
-          "output": "OK - status=ok mailbox=INBOX count=106",
-          "service": "noc-agent-mail-health",
-          "state": 0
-        },
-        {
-          "host": "noc",
-          "output": "OK - status=ok hyrule_ready=true xo_ready=true",
+          "output": "OK - status=ok hyrule_ready=true hyrule_tools=34 xo_ready=true xo_tools=40",
           "service": "noc-agent-mcp-health",
           "state": 0
         },
@@ -133,33 +143,43 @@ Collection window: `2026-06-21T17:52:31Z` to `2026-06-21T17:58:26Z`. Evidence ex
           "output": "OK - primary=openrouter:deepseek/deepseek-v4-pro status=ok quota=ok",
           "service": "noc-agent-model-health",
           "state": 0
+        },
+        {
+          "acknowledged": true,
+          "handled": true,
+          "host": "rtr",
+          "output": "WARNING: free_ratio=0.113 (< 0.2)",
+          "service": "disk disk /",
+          "state": 1
         }
       ],
       "service_count": 149,
       "service_state": "active",
       "service_states": {
-        "ok": 144,
-        "unknown": 4,
+        "critical": 0,
+        "ok": 148,
+        "unknown": 0,
         "warning": 1
       },
-      "status": "degraded",
-      "unhandled_problem_services": 4
+      "status": "ok",
+      "unhandled_problem_services": 0
     },
     "knowledge_mcp": {
-      "claim_count": 4569,
-      "concept_count": 867,
-      "container_revision": "69e9a30bcb11a6242f6d4adc4587e48ce20e5754",
+      "claim_count": 4584,
+      "concept_count": 868,
+      "container_revision": "67b338757efe9b496c4e154fbb0212563b1b96e8",
       "health_status": "ok",
-      "observation_count_before_ingest": 1,
+      "observation_count_before_ingest": 2,
       "read_only": true,
-      "run_id": "local-20260621165518",
-      "runtime_head": "69e9a30bcb11a6242f6d4adc4587e48ce20e5754",
+      "run_id": "local-20260621180213",
+      "runtime_head": "67b338757efe9b496c4e154fbb0212563b1b96e8",
       "service_state": "active",
       "status": "ok",
       "tool_count": 14,
       "transport": "streamable-http"
     },
     "noc_agent": {
+      "bot_service_state": "active",
       "config_disabled_count": 0,
       "config_missing_count": 0,
       "config_status": "ok",
@@ -180,12 +200,15 @@ Collection window: `2026-06-21T17:52:31Z` to `2026-06-21T17:58:26Z`. Evidence ex
       "vault_agent_state": "active"
     },
     "prometheus": {
-      "down_series": 2,
+      "down_series": 0,
+      "loop_node_up": true,
       "query_status": "success",
       "ready_http_status": 200,
       "service_state": "active",
-      "status": "degraded",
-      "up_series": 54
+      "status": "ok",
+      "up_series": 55,
+      "vault_internal_success": true,
+      "vector_up": true
     }
   }
 }
