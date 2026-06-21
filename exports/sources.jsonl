@@ -958,4 +958,6 @@
 {"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"manual://loop/as215932-core-safe-health/2026-06-21"}
 {"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"manual://noc/as215932-core-safe-health/2026-06-21"}
 {"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"manual://mon/as215932-core-safe-health/2026-06-21"}
+{"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"https://github.com/AS215932/network-operations/commit/153a7055ff6a39b976571bc5f2ba6dc9ba861866"}
+{"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"https://github.com/AS215932/network-operations/issues/214"}
 {"concept_id":"observed/latest/engineering-loop-knowledge-mcp-rollout-2026-06-21","url":"manual://loop/engineering-loop-knowledge-mcp-rollout/2026-06-21"}
