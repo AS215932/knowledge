@@ -1,14 +1,15 @@
 {
-  "concept_count": 865,
+  "concept_count": 867,
   "concepts_by_authority": {
-    "advisory": 10,
+    "advisory": 11,
     "canonical": 760,
-    "evidence": 95
+    "evidence": 96
   },
   "concepts_by_truth_owner": {
     "derived": 1,
     "external": 95,
-    "okf": 9,
+    "observed": 1,
+    "okf": 10,
     "repo": 760
   },
   "concepts_by_type": {
@@ -25,10 +26,12 @@
     "Lesson": 1,
     "Monitoring Inventory": 1,
     "Network Prefix": 6,
+    "Observation": 1,
     "Organization": 1,
     "Policy": 2,
     "Project": 2,
     "Repository": 10,
+    "Rollout Summary": 1,
     "Router": 4,
     "Runbook": 6,
     "Service": 7,
@@ -44,11 +47,11 @@
   "llm_enriched_count": 0,
   "llm_enrichment_run_count": 0,
   "llm_enrichment_run_status": "not_run",
-  "observed_count": 0,
+  "observed_count": 1,
   "schema_count": 219,
-  "source_file_ref_count": 242,
+  "source_file_ref_count": 249,
   "source_files_skipped": "Not enumerated in quality report; see knowledge.config.yml include/exclude patterns and ingestion logs.",
-  "source_repo_count": 10,
+  "source_repo_count": 11,
   "source_repos": [
     "AS215932/.github",
     "AS215932/as215932.net",
@@ -58,13 +61,14 @@
     "AS215932/hyrule-mcp",
     "AS215932/hyrule-network-proxy",
     "AS215932/hyrule-web",
+    "AS215932/knowledge",
     "AS215932/network-operations",
     "AS215932/noc-agent"
   ],
   "telemetry_source_status": {
-    "hyrule_mcp": "not_collected",
-    "icinga": "not_collected",
-    "prometheus": "not_collected"
+    "engineering_loop": "ok",
+    "icinga": "ok",
+    "knowledge_mcp": "ok"
   },
-  "warning_count": 35
+  "warning_count": 37
 }

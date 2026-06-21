@@ -1,23 +1,23 @@
 # Knowledge coverage report
 
-* Concepts: **865**
+* Concepts: **867**
 * Edges: **1894**
 * Critical findings: **0**
-* Warnings: **35**
-* Source repos indexed: **10**
-* Source files with refs: **242**
+* Warnings: **37**
+* Source repos indexed: **11**
+* Source files with refs: **249**
 * API endpoints: **306**
 * API schemas: **219**
 * Infrastructure hosts/routers: **23**
-* Observed concepts: **0**
+* Observed concepts: **1**
 * LLM enriched concepts: **0**
 * LLM enrichment run status: **not_run**
 
 # Telemetry source status
 
-* `prometheus`: `not_collected`
-* `icinga`: `not_collected`
-* `hyrule_mcp`: `not_collected`
+* `engineering_loop`: `ok`
+* `icinga`: `ok`
+* `knowledge_mcp`: `ok`
 
 # Source repositories
 
@@ -29,6 +29,7 @@
 * `AS215932/hyrule-mcp`
 * `AS215932/hyrule-network-proxy`
 * `AS215932/hyrule-web`
+* `AS215932/knowledge`
 * `AS215932/network-operations`
 * `AS215932/noc-agent`
 
@@ -49,10 +50,12 @@ Source files skipped: Not enumerated in quality report; see knowledge.config.yml
 * `Lesson`: 1
 * `Monitoring Inventory`: 1
 * `Network Prefix`: 6
+* `Observation`: 1
 * `Organization`: 1
 * `Policy`: 2
 * `Project`: 2
 * `Repository`: 10
+* `Rollout Summary`: 1
 * `Router`: 4
 * `Runbook`: 6
 * `Service`: 7
@@ -67,5 +70,5 @@ No critical findings.
 
 # Warning summary
 
-* `no_inbound_links`: 9
+* `no_inbound_links`: 11
 * `shallow_source_doc`: 26
