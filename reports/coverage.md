@@ -4,8 +4,8 @@
 * Edges: **1894**
 * Critical findings: **0**
 * Warnings: **37**
-* Source repos indexed: **10**
-* Source files with refs: **242**
+* Source repos indexed: **11**
+* Source files with refs: **249**
 * API endpoints: **306**
 * API schemas: **219**
 * Infrastructure hosts/routers: **23**
@@ -15,9 +15,7 @@
 
 # Telemetry source status
 
-* `prometheus`: `not_collected`
-* `icinga`: `not_collected`
-* `hyrule_mcp`: `not_collected`
+* `observation`: `ok`
 
 # Source repositories
 
@@ -29,6 +27,7 @@
 * `AS215932/hyrule-mcp`
 * `AS215932/hyrule-network-proxy`
 * `AS215932/hyrule-web`
+* `AS215932/knowledge`
 * `AS215932/network-operations`
 * `AS215932/noc-agent`
 
@@ -46,7 +45,6 @@ Source files skipped: Not enumerated in quality report; see knowledge.config.yml
 * `GitHub Issue`: 79
 * `GitHub Pull Request`: 6
 * `Infrastructure Host`: 19
-* `Learning Summary`: 1
 * `Lesson`: 1
 * `Monitoring Inventory`: 1
 * `Network Prefix`: 6
@@ -55,6 +53,7 @@ Source files skipped: Not enumerated in quality report; see knowledge.config.yml
 * `Policy`: 2
 * `Project`: 2
 * `Repository`: 10
+* `Rollout Summary`: 1
 * `Router`: 4
 * `Runbook`: 6
 * `Service`: 7

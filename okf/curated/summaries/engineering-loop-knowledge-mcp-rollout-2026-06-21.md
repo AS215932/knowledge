@@ -1,5 +1,5 @@
 ---
-type: Learning Summary
+type: Rollout Summary
 title: Engineering Loop and Knowledge MCP rollout evidence 2026-06-21
 description: Source-cited rollout summary for Knowledge MCP deployment, Engineering Loop notification remediation, and canary verification.
 tags:
@@ -56,7 +56,7 @@ last_verified_at: '2026-06-21T16:10:28Z'
 confidence: medium
 dispute_policy: adjudicate
 review_status: proposed
-authority_tier: A3
+authority_tier: A4
 ---
 
 # Summary

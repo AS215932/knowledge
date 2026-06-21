@@ -20,6 +20,7 @@ expires_at: '2026-06-22T16:10:28Z'
 collection_profile: rollout-safe-health
 observation_source: manual-local
 observation_status: ok
+payload_json: '{"observed_at":"2026-06-21T16:10:28Z","profile":"rollout-safe-health","sources":{"engineering_loop":{"runtime_head":"d4781edbef0cab9ca983f622b4aa2a960df16a97","status":"ok","timer_state":"active","vault_agent_state":"active"},"icinga":{"check":"loop!engineering-loop","output":"loop idle (approved queue is empty)","state":0,"status":"ok"},"knowledge_mcp":{"claim_count":4562,"concept_count":865,"read_only":true,"status":"ok","tool_count":14,"transport":"streamable-http"}}}'
 ---
 
 # Engineering Loop / Knowledge MCP rollout live evidence
@@ -48,6 +49,7 @@ This file is sanitized observed evidence only. It does not define intended state
   "sources": {
     "engineering_loop": {
       "runtime_head": "d4781edbef0cab9ca983f622b4aa2a960df16a97",
+      "status": "ok",
       "timer_state": "active",
       "vault_agent_state": "active"
     },
