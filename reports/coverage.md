@@ -15,7 +15,9 @@
 
 # Telemetry source status
 
-* `observation`: `ok`
+* `engineering_loop`: `ok`
+* `icinga`: `ok`
+* `knowledge_mcp`: `ok`
 
 # Source repositories
 
