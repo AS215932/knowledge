@@ -76,14 +76,34 @@ def call_openrouter(source_pack: dict[str, Any], config: LLMConfig) -> dict[str,
             raw = response.read().decode("utf-8")
     except urllib.error.URLError as exc:
         raise LLMError(f"OpenRouter request failed: {exc}") from exc
-    data = json.loads(raw)
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise LLMError("OpenRouter response was not valid JSON") from exc
     content = data["choices"][0]["message"]["content"]
-    parsed = json.loads(content)
-    if not isinstance(parsed, dict):
-        raise LLMError("OpenRouter content was not a JSON object")
-    result: dict[str, Any] = parsed
+    result = parse_json_object_response(content)
     validate_enrichment_json(result, _allowed_citations(source_pack))
     return result
+
+
+def parse_json_object_response(content: Any) -> dict[str, Any]:
+    if not isinstance(content, str):
+        raise LLMError("OpenRouter message content was not text")
+    text = content.strip()
+    if text.startswith("```json") or text.startswith("```"):
+        lines = text.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise LLMError("OpenRouter message content was not a JSON object") from exc
+    if not isinstance(parsed, dict):
+        raise LLMError("OpenRouter content was not a JSON object")
+    return parsed
 
 
 def _allowed_citations(source_pack: dict[str, Any]) -> set[str]:
@@ -103,6 +123,8 @@ def _allowed_citations(source_pack: dict[str, Any]) -> set[str]:
                             allowed.add(f"{repo}:{path}")
                         elif repo:
                             allowed.add(str(repo))
+                        if ref.get("url"):
+                            allowed.add(str(ref["url"]))
     return allowed
 
 

@@ -9,7 +9,7 @@ import pytest
 from hyrule_knowledge.extractors.ansible import extract_hosts
 from hyrule_knowledge.extractors.api import extract_api
 from hyrule_knowledge.extractors.workflows import extract_workflows
-from hyrule_knowledge.llm import LLMError, validate_enrichment_json
+from hyrule_knowledge.llm import LLMError, parse_json_object_response, validate_enrichment_json
 from hyrule_knowledge.models import RepoSnapshot
 from hyrule_knowledge.observe import collect_safe_health
 from hyrule_knowledge.quality import evaluate_quality
@@ -162,12 +162,23 @@ def test_quality_uses_latest_observed_at_for_telemetry_status(tmp_path: Path) ->
     assert report["telemetry_source_status"] == {"new_source": "ok"}
 
 
+def test_llm_enrichment_parser_accepts_json_code_fence() -> None:
+    assert parse_json_object_response('```json\n{"sections": []}\n```') == {"sections": []}
+
+
 def test_llm_enrichment_validation_rejects_missing_or_unknown_citations() -> None:
     valid = {
         "sections": [{"heading": "Summary", "body": "Supported.", "citations": ["generated/services/hyrule-cloud"]}],
-        "claims": [{"text": "Supported claim.", "citations": ["AS215932/hyrule-cloud:README.md"]}],
+        "claims": [{"text": "Supported claim.", "citations": ["https://github.com/AS215932/hyrule-cloud/blob/main/README.md"]}],
     }
-    validate_enrichment_json(valid, {"generated/services/hyrule-cloud", "AS215932/hyrule-cloud:README.md"})
+    validate_enrichment_json(
+        valid,
+        {
+            "generated/services/hyrule-cloud",
+            "AS215932/hyrule-cloud:README.md",
+            "https://github.com/AS215932/hyrule-cloud/blob/main/README.md",
+        },
+    )
     with pytest.raises(LLMError):
         validate_enrichment_json({"sections": [{"heading": "Bad", "body": "Unsupported.", "citations": []}]}, {"x"})
     with pytest.raises(LLMError):

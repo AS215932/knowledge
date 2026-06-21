@@ -8,6 +8,7 @@
 {"code":"no_inbound_links","concept_id":"curated/policies/source-of-truth-and-canonicality","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"curated/strategy/hyrule-cloud-business-context","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"curated/summaries/engineering-loop-knowledge-mcp-rollout-2026-06-21","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"generated/enriched/services","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/engineering-loop/pyproject-toml","message":"Source document concept is shallow.","severity":"warning"}
 {"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-001-initial-schema-py","message":"Source document concept is shallow.","severity":"warning"}
 {"code":"shallow_source_doc","concept_id":"generated/source-docs/as215932/hyrule-cloud/alembic-versions-002-security-hotfix-py","message":"Source document concept is shallow.","severity":"warning"}
