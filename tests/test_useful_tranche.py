@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import subprocess
 from pathlib import Path
 
@@ -107,6 +108,58 @@ def test_quality_detects_missing_org(tmp_path: Path) -> None:
     report, findings = evaluate_quality(root, exports)
     assert report["critical_count"] > 0
     assert any(finding.code == "missing_top_level" for finding in findings)
+
+
+def test_quality_uses_latest_observed_at_for_telemetry_status(tmp_path: Path) -> None:
+    root = tmp_path / "okf"
+    latest = root / "observed/latest"
+    latest.mkdir(parents=True)
+    exports = tmp_path / "exports"
+    exports.mkdir()
+    (exports / "edges.jsonl").write_text("", encoding="utf-8")
+    observation_rows = []
+    for name, observed_at, source, status in [
+        ("z-old", "2026-01-01T00:00:00Z", "old_source", "degraded"),
+        ("a-new", "2026-01-02T00:00:00Z", "new_source", "ok"),
+    ]:
+        payload = {"observed_at": observed_at, "sources": {source: {"status": status}}}
+        payload_json = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+        observation_rows.append(
+            {
+                "concept_id": f"observed/latest/{name}",
+                "observed_at": observed_at,
+                "expires_at": "2026-01-03T00:00:00Z",
+                "source": "test",
+                "status": status,
+                "payload_json": payload_json,
+            }
+        )
+        (latest / f"{name}.md").write_text(
+            "---\n"
+            "type: Observation\n"
+            f"title: {name}\n"
+            "truth_owner: observed\n"
+            "authority: evidence\n"
+            "source_refs:\n"
+            "- url: manual://test\n"
+            f"last_verified_at: '{observed_at}'\n"
+            "confidence: medium\n"
+            "dispute_policy: evidence_only\n"
+            f"observed_at: '{observed_at}'\n"
+            "expires_at: '2026-01-03T00:00:00Z'\n"
+            "collection_profile: test\n"
+            "observation_source: test\n"
+            f"observation_status: {status}\n"
+            f"payload_json: '{payload_json}'\n"
+            "---\n\n# Observation\n",
+            encoding="utf-8",
+        )
+    (exports / "observations.jsonl").write_text(
+        "".join(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n" for row in observation_rows),
+        encoding="utf-8",
+    )
+    report, _ = evaluate_quality(root, exports)
+    assert report["telemetry_source_status"] == {"new_source": "ok"}
 
 
 def test_llm_enrichment_validation_rejects_missing_or_unknown_citations() -> None:

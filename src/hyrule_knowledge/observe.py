@@ -13,6 +13,7 @@ from typing import Any
 
 from .models import Concept, ObservationMetadata, SourceRef
 from .okf_writer import dump_concept
+from .validator import parse_frontmatter
 
 
 def collect_safe_health(bundle_root: Path, profile: str = "safe-health") -> Path:
@@ -163,13 +164,42 @@ def _write_observed_indexes(bundle_root: Path) -> None:
     latest = observed / "latest"
     latest.mkdir(parents=True, exist_ok=True)
     (observed / "index.md").write_text(
-        "# Observed evidence\n\n* [Latest](latest/) - Latest manually collected safe-health observations.\n",
+        "# Observed evidence\n\n"
+        "Manual/local read-only observations are written here. `uv run hyrule-knowledge observe --profile safe-health` can write the default `safe-health.md` snapshot when local environment variables are configured.\n\n"
+        "Observed concepts are evidence-only, expire quickly, and must not be treated as canonical intended state.\n\n"
+        "* [Latest observations](latest/) - Most recent sanitized snapshots.\n"
+        "* [Update log](log.md) - Human-readable observation ingestion log.\n",
         encoding="utf-8",
     )
+    entries = _latest_observation_index_entries(latest)
+    if not entries:
+        entries = ["* No observation snapshots have been collected yet."]
     (latest / "index.md").write_text(
-        "# Latest observations\n\n* [Safe health](safe-health.md) - Latest safe health observation snapshot.\n",
+        "# Latest observations\n\n"
+        + "\n".join(entries)
+        + "\n\nRun `uv run hyrule-knowledge observe --profile safe-health` locally to write or refresh `safe-health.md` here.\n",
         encoding="utf-8",
     )
     log = observed / "log.md"
     if not log.exists():
-        log.write_text("# Observed Evidence Update Log\n", encoding="utf-8")
+        log.write_text(
+            "# Observed Evidence Update Log\n\n"
+            "Observations are manual/local and time-bounded. Do not commit secrets, logs, packet captures, or raw command output here.\n",
+            encoding="utf-8",
+        )
+
+
+def _latest_observation_index_entries(latest: Path) -> list[str]:
+    entries: list[str] = []
+    for path in sorted(latest.glob("*.md")):
+        if path.name == "index.md":
+            continue
+        try:
+            frontmatter, _ = parse_frontmatter(path)
+            title = str(frontmatter.get("title") or path.stem)
+            description = str(frontmatter.get("description") or "Observation snapshot.")
+        except Exception:  # pragma: no cover - index best-effort for manual files
+            title = path.stem
+            description = "Observation snapshot."
+        entries.append(f"* [{title}]({path.name}) - {description}")
+    return entries

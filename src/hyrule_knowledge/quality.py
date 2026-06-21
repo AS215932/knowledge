@@ -151,7 +151,7 @@ def quality_check(bundle_root: Path, reports_dir: Path = Path("reports"), export
 def _telemetry_status(observation_rows: list[dict[str, Any]]) -> dict[str, str]:
     if not observation_rows:
         return {"prometheus": "not_collected", "icinga": "not_collected", "hyrule_mcp": "not_collected"}
-    latest = observation_rows[-1]
+    latest = max(observation_rows, key=lambda row: str(row.get("observed_at") or ""))
     raw = latest.get("payload_json") or "{}"
     try:
         payload = json.loads(str(raw))

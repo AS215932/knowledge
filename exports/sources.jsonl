@@ -954,4 +954,8 @@
 {"commit":"98e5010648e34ac0ea6ad8e6a925fef76d0dbea9","concept_id":"generated/workflows/noc-agent/github-workflows-pr-agent-yml","path":".github/workflows/pr-agent.yml","repo":"AS215932/noc-agent","url":"https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/.github/workflows/pr-agent.yml"}
 {"commit":"98e5010648e34ac0ea6ad8e6a925fef76d0dbea9","concept_id":"generated/workflows/noc-agent/github-workflows-request-promotion-yml","path":".github/workflows/request-promotion.yml","repo":"AS215932/noc-agent","url":"https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/.github/workflows/request-promotion.yml"}
 {"commit":"98e5010648e34ac0ea6ad8e6a925fef76d0dbea9","concept_id":"generated/workflows/noc-agent/github-workflows-semgrep-yml","path":".github/workflows/semgrep.yml","repo":"AS215932/noc-agent","url":"https://github.com/AS215932/noc-agent/blob/98e5010648e34ac0ea6ad8e6a925fef76d0dbea9/.github/workflows/semgrep.yml"}
+{"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"manual://as215932-core-safe-health/2026-06-21"}
+{"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"manual://loop/as215932-core-safe-health/2026-06-21"}
+{"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"manual://noc/as215932-core-safe-health/2026-06-21"}
+{"concept_id":"observed/latest/as215932-core-safe-health-2026-06-21","url":"manual://mon/as215932-core-safe-health/2026-06-21"}
 {"concept_id":"observed/latest/engineering-loop-knowledge-mcp-rollout-2026-06-21","url":"manual://loop/engineering-loop-knowledge-mcp-rollout/2026-06-21"}

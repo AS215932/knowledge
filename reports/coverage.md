@@ -1,23 +1,27 @@
 # Knowledge coverage report
 
-* Concepts: **867**
+* Concepts: **868**
 * Edges: **1894**
 * Critical findings: **0**
-* Warnings: **37**
+* Warnings: **38**
 * Source repos indexed: **11**
 * Source files with refs: **249**
 * API endpoints: **306**
 * API schemas: **219**
 * Infrastructure hosts/routers: **23**
-* Observed concepts: **1**
+* Observed concepts: **2**
 * LLM enriched concepts: **0**
 * LLM enrichment run status: **not_run**
 
 # Telemetry source status
 
+* `docker_ipv6`: `ok`
 * `engineering_loop`: `ok`
-* `icinga`: `ok`
+* `hyrule_mcp`: `ok`
+* `icinga`: `degraded`
 * `knowledge_mcp`: `ok`
+* `noc_agent`: `ok`
+* `prometheus`: `degraded`
 
 # Source repositories
 
@@ -50,7 +54,7 @@ Source files skipped: Not enumerated in quality report; see knowledge.config.yml
 * `Lesson`: 1
 * `Monitoring Inventory`: 1
 * `Network Prefix`: 6
-* `Observation`: 1
+* `Observation`: 2
 * `Organization`: 1
 * `Policy`: 2
 * `Project`: 2
@@ -70,5 +74,5 @@ No critical findings.
 
 # Warning summary
 
-* `no_inbound_links`: 11
+* `no_inbound_links`: 12
 * `shallow_source_doc`: 26
