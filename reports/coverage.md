@@ -1,15 +1,15 @@
 # Knowledge coverage report
 
-* Concepts: **865**
+* Concepts: **867**
 * Edges: **1894**
 * Critical findings: **0**
-* Warnings: **35**
+* Warnings: **37**
 * Source repos indexed: **10**
 * Source files with refs: **242**
 * API endpoints: **306**
 * API schemas: **219**
 * Infrastructure hosts/routers: **23**
-* Observed concepts: **0**
+* Observed concepts: **1**
 * LLM enriched concepts: **0**
 * LLM enrichment run status: **not_run**
 
@@ -46,9 +46,11 @@ Source files skipped: Not enumerated in quality report; see knowledge.config.yml
 * `GitHub Issue`: 79
 * `GitHub Pull Request`: 6
 * `Infrastructure Host`: 19
+* `Learning Summary`: 1
 * `Lesson`: 1
 * `Monitoring Inventory`: 1
 * `Network Prefix`: 6
+* `Observation`: 1
 * `Organization`: 1
 * `Policy`: 2
 * `Project`: 2
@@ -67,5 +69,5 @@ No critical findings.
 
 # Warning summary
 
-* `no_inbound_links`: 9
+* `no_inbound_links`: 11
 * `shallow_source_doc`: 26

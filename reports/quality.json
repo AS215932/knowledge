@@ -55,6 +55,12 @@
       "severity": "warning"
     },
     {
+      "code": "no_inbound_links",
+      "concept_id": "curated/summaries/engineering-loop-knowledge-mcp-rollout-2026-06-21",
+      "message": "Concept has no inbound graph edges.",
+      "severity": "warning"
+    },
+    {
       "code": "shallow_source_doc",
       "concept_id": "generated/source-docs/as215932/engineering-loop/pyproject-toml",
       "message": "Source document concept is shallow.",
@@ -209,19 +215,26 @@
       "concept_id": "generated/source-docs/as215932/noc-agent/pyproject-toml",
       "message": "Source document concept is shallow.",
       "severity": "warning"
+    },
+    {
+      "code": "no_inbound_links",
+      "concept_id": "observed/latest/engineering-loop-knowledge-mcp-rollout-2026-06-21",
+      "message": "Concept has no inbound graph edges.",
+      "severity": "warning"
     }
   ],
   "summary": {
-    "concept_count": 865,
+    "concept_count": 867,
     "concepts_by_authority": {
-      "advisory": 10,
+      "advisory": 11,
       "canonical": 760,
-      "evidence": 95
+      "evidence": 96
     },
     "concepts_by_truth_owner": {
       "derived": 1,
       "external": 95,
-      "okf": 9,
+      "observed": 1,
+      "okf": 10,
       "repo": 760
     },
     "concepts_by_type": {
@@ -235,9 +248,11 @@
       "GitHub Issue": 79,
       "GitHub Pull Request": 6,
       "Infrastructure Host": 19,
+      "Learning Summary": 1,
       "Lesson": 1,
       "Monitoring Inventory": 1,
       "Network Prefix": 6,
+      "Observation": 1,
       "Organization": 1,
       "Policy": 2,
       "Project": 2,
@@ -257,7 +272,7 @@
     "llm_enriched_count": 0,
     "llm_enrichment_run_count": 0,
     "llm_enrichment_run_status": "not_run",
-    "observed_count": 0,
+    "observed_count": 1,
     "schema_count": 219,
     "source_file_ref_count": 242,
     "source_files_skipped": "Not enumerated in quality report; see knowledge.config.yml include/exclude patterns and ingestion logs.",
@@ -279,6 +294,6 @@
       "icinga": "not_collected",
       "prometheus": "not_collected"
     },
-    "warning_count": 35
+    "warning_count": 37
   }
 }
