@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import sqlite3
 import tempfile
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -135,6 +136,7 @@ def write_exports(
     edges: list[Edge] | None = None,
     source_shas: dict[str, str] | None = None,
     run_id: str | None = None,
+    claim_extracted_at: str | None = None,
 ) -> None:
     concepts = load_okf_concepts(bundle_root)
     concepts_public = [{key: value for key, value in row.items() if key not in {"body", "frontmatter"}} for row in concepts]
@@ -151,7 +153,14 @@ def write_exports(
     quality_rows = _quality_rows()
     observation_rows = _observation_rows(concepts)
     enrichment_rows = _enrichment_rows(concepts)
-    claim_rows = [claim.as_json() for claim in compile_claims(concepts, edge_rows, extracted_at=_claim_extracted_at(concepts))]
+    active_claim_extracted_at = _claim_extracted_at(
+        run_id=run_id,
+        claim_extracted_at=claim_extracted_at,
+    )
+    claim_rows = [
+        claim.as_json()
+        for claim in compile_claims(concepts, edge_rows, extracted_at=active_claim_extracted_at)
+    ]
     context_pack_rows = read_jsonl(Path("reports/context-packs.jsonl"))
     policy_decision_rows = read_jsonl(Path("reports/policy-decisions.jsonl"))
     eval_case_rows = read_jsonl(Path("reports/eval-cases.jsonl")) or read_jsonl(Path("exports/eval-cases.jsonl"))
@@ -191,6 +200,7 @@ def write_exports(
         "policy_version": "knowledge_policy_v1",
         "source_shas": source_shas or {},
         "run_id": run_id,
+        "claim_extracted_at": active_claim_extracted_at,
     }
     (exports_dir / "manifest.json").write_text(_json_dump(manifest) + "\n", encoding="utf-8")
     write_sqlite(
@@ -222,9 +232,26 @@ def _learning_review_rows() -> list[dict[str, Any]]:
     return rows
 
 
-def _claim_extracted_at(concepts: list[dict[str, Any]]) -> str:
-    values = [str(concept.get("last_verified_at")) for concept in concepts if concept.get("last_verified_at")]
-    return max(values) if values else "1970-01-01T00:00:00Z"
+def _claim_extracted_at(*, run_id: str | None, claim_extracted_at: str | None = None) -> str:
+    if claim_extracted_at:
+        return str(claim_extracted_at)
+    parsed_run_timestamp = _claim_extracted_at_from_run_id(run_id)
+    if parsed_run_timestamp:
+        return parsed_run_timestamp
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _claim_extracted_at_from_run_id(run_id: str | None) -> str | None:
+    if not run_id or not run_id.startswith("local-"):
+        return None
+    raw = run_id.removeprefix("local-")
+    if len(raw) != 14 or not raw.isdigit():
+        return None
+    try:
+        parsed = datetime.strptime(raw, "%Y%m%d%H%M%S").replace(tzinfo=UTC)
+    except ValueError:
+        return None
+    return parsed.isoformat().replace("+00:00", "Z")
 
 
 def write_sqlite(
@@ -530,6 +557,7 @@ def exports_match(bundle_root: Path, exports_dir: Path) -> bool:
             edges=edge_objects,
             source_shas=current_manifest.get("source_shas", {}),
             run_id=current_manifest.get("run_id"),
+            claim_extracted_at=current_manifest.get("claim_extracted_at"),
         )
         after = {
             path.relative_to(tmp).as_posix(): path.read_bytes()
