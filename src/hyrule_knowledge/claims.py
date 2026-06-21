@@ -363,7 +363,8 @@ def _observation_claims(concept: dict[str, Any], extracted_at: str) -> list[Know
     if expires_at:
         try:
             expires_dt = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
-            if expires_dt < datetime.now(UTC):
+            extracted_dt = datetime.fromisoformat(extracted_at.replace("Z", "+00:00"))
+            if expires_dt < extracted_dt:
                 freshness = "expired"
         except ValueError:
             freshness = "unknown"
