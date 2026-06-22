@@ -64,6 +64,20 @@ def test_context_pack_includes_reviewed_services_enrichment() -> None:
     assert "source repositories remain authoritative" in advisory.body
 
 
+def test_context_pack_includes_reviewed_services_enrichment_for_plural_overview() -> None:
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Explain the AS215932 services overview",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+        )
+    refs = {ref["concept_id"]: ref for ref in pack.included_refs}
+    assert refs["generated/enriched/services"]["metadata"]["review_status"] == "reviewed"
+    advisory = {section.name: section for section in pack.sections}["advisory_synthesis"]
+    assert advisory.refs == ["generated/enriched/services"]
+
+
 def test_context_pack_constrained_chars_preserve_source_truth_before_advisory() -> None:
     with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
         pack = build_context_pack(
