@@ -62,7 +62,7 @@ def build_context_pack(
         dict.fromkeys(
             [
                 *_endpoint_source_ids(parsed, store=store, authority_min=authority_min),
-                *_named_exact_source_ids(task, store=store, authority_min=authority_min),
+                *_named_exact_source_ids(task, parsed=parsed, store=store, authority_min=authority_min),
                 *_protected_source_ids(parsed, task=task),
             ]
         )
@@ -235,10 +235,13 @@ def _endpoint_source_ids(parsed: ParsedTask, *, store: KnowledgeStore, authority
     return list(dict.fromkeys(ids))
 
 
-def _named_exact_source_ids(task: str, *, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
+def _named_exact_source_ids(task: str, *, parsed: ParsedTask, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
     ids: list[str] = []
+    service_display_tokens = _service_display_tokens(parsed.services)
     for token in task.replace("`", " ").split():
         clean = token.strip(".,;:()[]{}<>").removesuffix(".md")
+        if clean.lower() in service_display_tokens:
+            continue
         if not _looks_like_exact_identifier(clean):
             continue
         for concept_id in store.exact_candidates(clean, limit=5):
@@ -256,6 +259,24 @@ def _looks_like_exact_identifier(token: str) -> bool:
     if token.startswith(("generated/", "curated/", "observed/")):
         return True
     return sum(1 for char in token if char.isupper()) >= 2
+
+
+def _service_display_tokens(services: list[str]) -> set[str]:
+    tokens_by_service = {
+        "as215932-net": {"as215932", "as215932.net"},
+        "engineering-loop": {"engineering", "loop"},
+        "hyrule-business": {"hyrule", "business"},
+        "hyrule-cloud": {"hyrule", "cloud"},
+        "hyrule-mcp": {"hyrule", "mcp"},
+        "hyrule-network-proxy": {"hyrule", "network", "proxy"},
+        "hyrule-web": {"hyrule", "web"},
+        "network-operations": {"network", "operations"},
+        "noc-agent": {"noc", "agent"},
+    }
+    tokens: set[str] = set()
+    for service in services:
+        tokens.update(tokens_by_service.get(service, set()))
+    return tokens
 
 
 def _protected_source_ids(parsed: ParsedTask, *, task: str) -> list[str]:
