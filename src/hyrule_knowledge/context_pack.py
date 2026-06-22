@@ -62,6 +62,7 @@ def build_context_pack(
         dict.fromkeys(
             [
                 *_endpoint_source_ids(parsed, store=store, authority_min=authority_min),
+                *_named_exact_source_ids(task, store=store, authority_min=authority_min),
                 *_protected_source_ids(parsed, task=task),
             ]
         )
@@ -180,7 +181,9 @@ def _relevant_enrichment_ids(task: str, *, parsed: ParsedTask, store: KnowledgeS
         "services": {
             "portfolio",
             "landscape",
-            "overview",
+            "portfolio overview",
+            "project overview",
+            "service overview",
             "relationship",
             "relationships",
             "relate",
@@ -230,6 +233,29 @@ def _endpoint_source_ids(parsed: ParsedTask, *, store: KnowledgeStore, authority
                 if concept_id:
                     ids.append(concept_id)
     return list(dict.fromkeys(ids))
+
+
+def _named_exact_source_ids(task: str, *, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
+    ids: list[str] = []
+    for token in task.replace("`", " ").split():
+        clean = token.strip(".,;:()[]{}<>").removesuffix(".md")
+        if not _looks_like_exact_identifier(clean):
+            continue
+        for concept_id in store.exact_candidates(clean, limit=5):
+            if concept_id.startswith("generated/enriched/"):
+                continue
+            concept = store.concept(concept_id)
+            if concept is None:
+                continue
+            if tier_allows(authority_from_concept(concept), authority_min):
+                ids.append(concept_id)
+    return list(dict.fromkeys(ids))
+
+
+def _looks_like_exact_identifier(token: str) -> bool:
+    if token.startswith(("generated/", "curated/", "observed/")):
+        return True
+    return sum(1 for char in token if char.isupper()) >= 2
 
 
 def _protected_source_ids(parsed: ParsedTask, *, task: str) -> list[str]:
