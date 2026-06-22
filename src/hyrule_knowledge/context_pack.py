@@ -75,6 +75,8 @@ def build_context_pack(
         else []
     )
     candidates = _prioritize_protected_source_candidates(candidates, protected_source_ids)
+    if reserve_enrichment_slots:
+        candidates = candidates[:base_limit]
     candidates = _append_enrichment_candidates(candidates, enrichment_ids, store=store, authority_min=authority_min)[:max_result_refs]
     included_refs = [candidate.as_json() for candidate in candidates]
     claims = _claims_for_candidates(store, [candidate.concept_id for candidate in candidates])

@@ -139,6 +139,25 @@ def test_context_pack_tight_budget_preserves_explicit_enrichment_ref(tmp_path: P
     assert advisory.refs == ["generated/enriched/services"]
 
 
+def test_context_pack_explicit_enrichment_survives_protected_source_overfetch(tmp_path: Path) -> None:
+    policy = default_policy()
+    policy["defaults"]["max_result_refs"] = 2
+    policy_path = tmp_path / "knowledge-policy.yml"
+    policy_path.write_text(json.dumps(policy), encoding="utf-8")
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Explain generated/enriched/services for Hyrule Cloud",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+            policy_path=policy_path,
+        )
+    refs = [ref["concept_id"] for ref in pack.included_refs]
+    assert refs == ["generated/services/hyrule-cloud", "generated/enriched/services"]
+    advisory = {section.name: section for section in pack.sections}["advisory_synthesis"]
+    assert advisory.refs == ["generated/enriched/services"]
+
+
 def test_context_pack_tight_budget_preserves_exact_service_ref(tmp_path: Path) -> None:
     policy = default_policy()
     policy["defaults"]["max_result_refs"] = 1
