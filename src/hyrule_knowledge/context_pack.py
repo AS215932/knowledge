@@ -60,18 +60,21 @@ def build_context_pack(
     max_result_refs = max(0, int(decision.constraints.get("max_result_refs", 40)))
     reserve_enrichment_slots = _should_reserve_enrichment_slots(task, parsed=parsed, enrichment_ids=enrichment_ids)
     base_limit = max(0, max_result_refs - len(enrichment_ids)) if reserve_enrichment_slots else max_result_refs
+    protected_source_ids = _protected_source_ids(parsed)
+    candidate_fetch_limit = base_limit + len(protected_source_ids) if base_limit else 0
     candidates = (
         retriever.query(
             task,
             authority_min=authority_min,
             freshness="current",
-            limit=base_limit,
+            limit=candidate_fetch_limit,
             graph_depth=2,
             edge_types=DEFAULT_CONTEXT_EDGE_TYPES,
         )
-        if base_limit
+        if candidate_fetch_limit
         else []
     )
+    candidates = _prioritize_protected_source_candidates(candidates, protected_source_ids)
     candidates = _append_enrichment_candidates(candidates, enrichment_ids, store=store, authority_min=authority_min)[:max_result_refs]
     included_refs = [candidate.as_json() for candidate in candidates]
     claims = _claims_for_candidates(store, [candidate.concept_id for candidate in candidates])
@@ -155,12 +158,7 @@ def _snapshot_id(store: KnowledgeStore) -> str:
 
 def _relevant_enrichment_ids(task: str, *, parsed: ParsedTask, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
     lower = task.lower()
-    explicit_ids: list[str] = []
-    for token in task.replace("`", " ").split():
-        clean = token.strip(".,;:()[]{}<>").removesuffix(".md")
-        if clean.startswith("generated/enriched/"):
-            explicit_ids.append(clean)
-    ids = list(explicit_ids)
+    ids = _explicit_enrichment_ids(task, parsed=parsed)
     precise_source_task = bool(parsed.endpoints or parsed.methods)
     enrichment_targets = {
         "services": {
@@ -193,11 +191,56 @@ def _relevant_enrichment_ids(task: str, *, parsed: ParsedTask, store: KnowledgeS
     return out
 
 
+def _explicit_enrichment_ids(task: str, *, parsed: ParsedTask) -> list[str]:
+    ids = [concept_id for concept_id in parsed.concept_ids if concept_id.startswith("generated/enriched/")]
+    for token in task.replace("`", " ").split():
+        clean = token.strip(".,;:()[]{}<>").removesuffix(".md")
+        if clean.startswith("generated/enriched/"):
+            ids.append(clean)
+    return list(dict.fromkeys(ids))
+
+
+def _has_exact_source_entity(parsed: ParsedTask) -> bool:
+    return bool(_protected_source_ids(parsed) or parsed.endpoints or parsed.methods or parsed.policies)
+
+
+def _protected_source_ids(parsed: ParsedTask) -> list[str]:
+    ids: list[str] = []
+    for concept_id in parsed.concept_ids:
+        if not concept_id.startswith("generated/enriched/"):
+            ids.append(concept_id)
+    for service in parsed.services:
+        if service == "network-operations":
+            ids.append("generated/projects/network-operations")
+        elif service == "hyrule-business":
+            ids.append("generated/projects/hyrule-business")
+        elif service == "as215932-net":
+            ids.append("generated/services/as215932-net")
+        else:
+            ids.append(f"generated/services/{service}")
+    for host in parsed.hosts:
+        ids.append(f"generated/infrastructure/hosts/{'host-log' if host == 'log' else host}")
+    return list(dict.fromkeys(ids))
+
+
+def _prioritize_protected_source_candidates(candidates: list[RetrievalCandidate], protected_source_ids: list[str]) -> list[RetrievalCandidate]:
+    if not protected_source_ids:
+        return candidates
+    priority = {concept_id: index for index, concept_id in enumerate(protected_source_ids)}
+    original = {candidate.concept_id: index for index, candidate in enumerate(candidates)}
+    return sorted(candidates, key=lambda candidate: (0 if candidate.concept_id in priority else 1, priority.get(candidate.concept_id, 0), original[candidate.concept_id]))
+
+
 def _should_reserve_enrichment_slots(task: str, *, parsed: ParsedTask, enrichment_ids: list[str]) -> bool:
-    if not enrichment_ids or parsed.endpoints or parsed.methods:
+    if not enrichment_ids:
+        return False
+    explicit_enrichment_ids = _explicit_enrichment_ids(task, parsed=parsed)
+    if explicit_enrichment_ids:
+        return True
+    if _has_exact_source_entity(parsed):
         return False
     lower = task.lower()
-    return "generated/enriched/" in lower or any(
+    return any(
         term in lower
         for term in {
             "architecture",
