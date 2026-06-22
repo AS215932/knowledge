@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +26,7 @@ from .retrieval import (
 from .store import KnowledgeStore
 
 DEFAULT_MAX_CHARS = 24_000
+_ENDPOINT_PAIR_RE = re.compile(r"\b(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s+(/v[0-9][A-Za-z0-9_/{}/.-]*)", re.I)
 
 
 def build_context_pack(
@@ -227,14 +229,20 @@ def _has_exact_source_entity(parsed: ParsedTask, *, task: str) -> bool:
 
 def _endpoint_source_ids(parsed: ParsedTask, *, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
     ids: list[str] = []
-    for endpoint in parsed.endpoints:
-        for method in parsed.methods or [""]:
-            subject = f"endpoint:{method}:{endpoint}" if method else endpoint
-            for claim in store.claims(subject=subject, authority_min=authority_min, limit=20):
-                concept_id = str(claim.get("concept_id") or "")
-                if concept_id:
-                    ids.append(concept_id)
+    pairs = _endpoint_pairs(parsed)
+    if not pairs:
+        pairs = [(method, endpoint) for endpoint in parsed.endpoints for method in parsed.methods or [""]]
+    for method, endpoint in pairs:
+        subject = f"endpoint:{method}:{endpoint}" if method else endpoint
+        for claim in store.claims(subject=subject, authority_min=authority_min, limit=20):
+            concept_id = str(claim.get("concept_id") or "")
+            if concept_id:
+                ids.append(concept_id)
     return list(dict.fromkeys(ids))
+
+
+def _endpoint_pairs(parsed: ParsedTask) -> list[tuple[str, str]]:
+    return [(match.group(1).upper(), match.group(2)) for match in _ENDPOINT_PAIR_RE.finditer(parsed.query)]
 
 
 def _named_exact_source_ids(task: str, *, parsed: ParsedTask, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:

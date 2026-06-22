@@ -134,6 +134,28 @@ def test_context_pack_tight_budget_schema_overview_keeps_exact_schema(tmp_path: 
     assert not any("No A0/A1 source-backed context" in item for item in pack.unresolved_questions)
 
 
+def test_context_pack_endpoint_protection_preserves_method_route_pairs(tmp_path: Path) -> None:
+    policy = default_policy()
+    policy["defaults"]["max_result_refs"] = 2
+    policy_path = tmp_path / "knowledge-policy.yml"
+    policy_path.write_text(json.dumps(policy), encoding="utf-8")
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Compare GET /v1/mail/accounts and POST /v1/me/api-keys",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+            policy_path=policy_path,
+        )
+    refs = [ref["concept_id"] for ref in pack.included_refs]
+    assert refs == [
+        "generated/api/hyrule-cloud/hyrule-cloud-get-v1-mail-accounts-hyrule-cloud-api-mail-py-117",
+        "generated/api/hyrule-cloud/hyrule-cloud-post-v1-me-api-keys-hyrule-cloud-api-auth-py-1025",
+    ]
+    assert "generated/api/hyrule-cloud/hyrule-cloud-post-v1-mail-accounts-hyrule-cloud-api-mail-py-107" not in refs
+    assert not any("No authoritative endpoint claim" in item for item in pack.unresolved_questions)
+
+
 def test_context_pack_tight_budget_endpoint_outranks_named_service(tmp_path: Path) -> None:
     policy = default_policy()
     policy["defaults"]["max_result_refs"] = 1
