@@ -50,16 +50,21 @@ def build_context_pack(
 
     retriever = KnowledgeRetriever(store)
     enrichment_ids = _relevant_enrichment_ids(task, store=store, authority_min=authority_min)
-    max_result_refs = int(decision.constraints.get("max_result_refs", 40))
-    candidates = retriever.query(
-        task,
-        authority_min=authority_min,
-        freshness="current",
-        limit=max(1, max_result_refs - len(enrichment_ids)),
-        graph_depth=2,
-        edge_types=DEFAULT_CONTEXT_EDGE_TYPES,
+    max_result_refs = max(0, int(decision.constraints.get("max_result_refs", 40)))
+    base_limit = max(0, max_result_refs - len(enrichment_ids))
+    candidates = (
+        retriever.query(
+            task,
+            authority_min=authority_min,
+            freshness="current",
+            limit=base_limit,
+            graph_depth=2,
+            edge_types=DEFAULT_CONTEXT_EDGE_TYPES,
+        )
+        if base_limit
+        else []
     )
-    candidates = _append_enrichment_candidates(candidates, enrichment_ids, store=store, authority_min=authority_min)
+    candidates = _append_enrichment_candidates(candidates, enrichment_ids, store=store, authority_min=authority_min)[:max_result_refs]
     parsed = parse_task(task)
     included_refs = [candidate.as_json() for candidate in candidates]
     claims = _claims_for_candidates(store, [candidate.concept_id for candidate in candidates])

@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from hyrule_knowledge.authority import AuthorityTier, tier_allows
 from hyrule_knowledge.context_pack import build_context_pack, endpoint_schema, observed_state
 from hyrule_knowledge.evals import load_eval_cases, run_evals
-from hyrule_knowledge.policy import policy_decision_for
+from hyrule_knowledge.policy import default_policy, policy_decision_for
 from hyrule_knowledge.retrieval import KnowledgeRetriever
 from hyrule_knowledge.store import KnowledgeStore
 
@@ -61,6 +62,23 @@ def test_context_pack_includes_reviewed_services_enrichment() -> None:
     advisory = {section.name: section for section in pack.sections}["advisory_synthesis"]
     assert "generated/enriched/services" in advisory.refs
     assert "source repositories remain authoritative" in advisory.body
+
+
+def test_context_pack_enrichment_respects_max_result_refs(tmp_path: Path) -> None:
+    policy = default_policy()
+    policy["defaults"]["max_result_refs"] = 1
+    policy_path = tmp_path / "knowledge-policy.yml"
+    policy_path.write_text(json.dumps(policy), encoding="utf-8")
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Explain the AS215932 service and project landscape for an engineering task",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+            policy_path=policy_path,
+        )
+    assert len(pack.included_refs) <= 1
+    assert [ref["concept_id"] for ref in pack.included_refs] == ["generated/enriched/services"]
 
 
 def test_observed_state_finds_a3_claims_after_source_truth_claims() -> None:
