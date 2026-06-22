@@ -58,7 +58,7 @@ def build_context_pack(
     parsed = parse_task(task)
     enrichment_ids = _relevant_enrichment_ids(task, parsed=parsed, store=store, authority_min=authority_min)
     max_result_refs = max(0, int(decision.constraints.get("max_result_refs", 40)))
-    protected_source_ids = _protected_source_ids(parsed)
+    protected_source_ids = _protected_source_ids(parsed, task=task)
     reserve_enrichment_slots = _should_reserve_enrichment_slots(
         task,
         parsed=parsed,
@@ -80,6 +80,7 @@ def build_context_pack(
         if candidate_fetch_limit
         else []
     )
+    candidates = _ensure_protected_source_candidates(candidates, protected_source_ids, store=store, authority_min=authority_min)
     candidates = _prioritize_protected_source_candidates(candidates, protected_source_ids)
     if reserve_enrichment_slots:
         candidates = candidates[:base_limit]
@@ -208,11 +209,11 @@ def _explicit_enrichment_ids(task: str, *, parsed: ParsedTask) -> list[str]:
     return list(dict.fromkeys(ids))
 
 
-def _has_exact_source_entity(parsed: ParsedTask) -> bool:
-    return bool(_protected_source_ids(parsed) or parsed.endpoints or parsed.methods or parsed.policies)
+def _has_exact_source_entity(parsed: ParsedTask, *, task: str) -> bool:
+    return bool(_protected_source_ids(parsed, task=task) or parsed.endpoints or parsed.methods or parsed.policies)
 
 
-def _protected_source_ids(parsed: ParsedTask) -> list[str]:
+def _protected_source_ids(parsed: ParsedTask, *, task: str) -> list[str]:
     ids: list[str] = []
     for concept_id in parsed.concept_ids:
         if not concept_id.startswith("generated/enriched/"):
@@ -226,9 +227,80 @@ def _protected_source_ids(parsed: ParsedTask) -> list[str]:
             ids.append("generated/services/as215932-net")
         else:
             ids.append(f"generated/services/{service}")
+    service_name_host_aliases = _service_name_host_aliases(parsed.services)
+    lower = task.lower()
     for host in parsed.hosts:
+        if host in service_name_host_aliases and not _host_explicitly_requested(host, lower):
+            continue
         ids.append(f"generated/infrastructure/hosts/{'host-log' if host == 'log' else host}")
     return list(dict.fromkeys(ids))
+
+
+def _service_name_host_aliases(services: list[str]) -> set[str]:
+    aliases_by_service = {
+        "engineering-loop": {"loop"},
+        "hyrule-network-proxy": {"proxy"},
+        "hyrule-web": {"web"},
+        "noc-agent": {"noc"},
+    }
+    aliases: set[str] = set()
+    for service in services:
+        aliases.update(aliases_by_service.get(service, set()))
+    return aliases
+
+
+def _host_explicitly_requested(host: str, lower_task: str) -> bool:
+    normalized = "host-log" if host == "log" else host
+    return any(
+        phrase in lower_task
+        for phrase in {
+            f"host {host}",
+            f"{host} host",
+            f"{host} vm",
+            f"vm {host}",
+            f"generated/infrastructure/hosts/{normalized}",
+        }
+    )
+
+
+def _ensure_protected_source_candidates(
+    candidates: list[RetrievalCandidate],
+    protected_source_ids: list[str],
+    *,
+    store: KnowledgeStore,
+    authority_min: AuthorityTier,
+) -> list[RetrievalCandidate]:
+    seen = {candidate.concept_id for candidate in candidates}
+    out = list(candidates)
+    for concept_id in protected_source_ids:
+        if concept_id in seen:
+            continue
+        concept = store.concept(concept_id)
+        if concept is None:
+            continue
+        tier = authority_from_concept(concept)
+        if not tier_allows(tier, authority_min):
+            continue
+        claims = store.claims(concept_id=concept_id, authority_min=AuthorityTier.A5, freshness="include_expired", limit=5)
+        out.append(
+            RetrievalCandidate(
+                concept_id=concept_id,
+                title=str(concept.get("title") or concept_id),
+                concept_type=str(concept.get("type") or ""),
+                authority_tier=tier,
+                reason="protected-exact",
+                scores=RetrievalScores(exact=1.0, vector=None),
+                source_refs=concept.get("source_refs") or [],
+                excerpt=_body_excerpt(str(concept.get("body") or "")),
+                metadata={
+                    "claim_count": len(claims),
+                    "freshness_status": "expired" if any(claim.get("freshness_status") == "expired" for claim in claims) else "current",
+                    "protected_source": True,
+                },
+            )
+        )
+        seen.add(concept_id)
+    return out
 
 
 def _prioritize_protected_source_candidates(candidates: list[RetrievalCandidate], protected_source_ids: list[str]) -> list[RetrievalCandidate]:
@@ -270,7 +342,7 @@ def _should_reserve_enrichment_slots(
     )
     if not landscape_or_overview:
         return False
-    if _has_exact_source_entity(parsed):
+    if _has_exact_source_entity(parsed, task=task):
         return max_result_refs > len(protected_source_ids)
     return True
 

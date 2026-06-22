@@ -139,6 +139,26 @@ def test_context_pack_tight_budget_preserves_explicit_enrichment_ref(tmp_path: P
     assert advisory.refs == ["generated/enriched/services"]
 
 
+def test_context_pack_landscape_enrichment_ignores_service_name_host_aliases(tmp_path: Path) -> None:
+    policy = default_policy()
+    policy["defaults"]["max_result_refs"] = 3
+    policy_path = tmp_path / "knowledge-policy.yml"
+    policy_path.write_text(json.dumps(policy), encoding="utf-8")
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Explain the service landscape for Hyrule Cloud and Hyrule Web",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+            policy_path=policy_path,
+        )
+    refs = [ref["concept_id"] for ref in pack.included_refs]
+    assert set(refs) == {"generated/services/hyrule-cloud", "generated/services/hyrule-web", "generated/enriched/services"}
+    assert "generated/infrastructure/hosts/web" not in refs
+    advisory = {section.name: section for section in pack.sections}["advisory_synthesis"]
+    assert advisory.refs == ["generated/enriched/services"]
+
+
 def test_context_pack_landscape_enrichment_uses_remaining_budget_after_exact_service(tmp_path: Path) -> None:
     policy = default_policy()
     policy["defaults"]["max_result_refs"] = 2
