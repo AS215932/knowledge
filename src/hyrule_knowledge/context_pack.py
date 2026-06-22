@@ -58,7 +58,14 @@ def build_context_pack(
     parsed = parse_task(task)
     enrichment_ids = _relevant_enrichment_ids(task, parsed=parsed, store=store, authority_min=authority_min)
     max_result_refs = max(0, int(decision.constraints.get("max_result_refs", 40)))
-    protected_source_ids = _protected_source_ids(parsed, task=task)
+    protected_source_ids = list(
+        dict.fromkeys(
+            [
+                *_endpoint_source_ids(parsed, store=store, authority_min=authority_min),
+                *_protected_source_ids(parsed, task=task),
+            ]
+        )
+    )
     reserve_enrichment_slots = _should_reserve_enrichment_slots(
         task,
         parsed=parsed,
@@ -211,6 +218,18 @@ def _explicit_enrichment_ids(task: str, *, parsed: ParsedTask) -> list[str]:
 
 def _has_exact_source_entity(parsed: ParsedTask, *, task: str) -> bool:
     return bool(_protected_source_ids(parsed, task=task) or parsed.endpoints or parsed.methods or parsed.policies)
+
+
+def _endpoint_source_ids(parsed: ParsedTask, *, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
+    ids: list[str] = []
+    for endpoint in parsed.endpoints:
+        for method in parsed.methods or [""]:
+            subject = f"endpoint:{method}:{endpoint}" if method else endpoint
+            for claim in store.claims(subject=subject, authority_min=authority_min, limit=20):
+                concept_id = str(claim.get("concept_id") or "")
+                if concept_id:
+                    ids.append(concept_id)
+    return list(dict.fromkeys(ids))
 
 
 def _protected_source_ids(parsed: ParsedTask, *, task: str) -> list[str]:
