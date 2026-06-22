@@ -417,8 +417,8 @@ def _engineering_sections(
 ) -> list[ContextPackSection]:
     return [
         ContextPackSection("task_summary", f"Task: {task}", []),
-        ContextPackSection("advisory_synthesis", _format_advisory_enrichment(included_refs), _ref_ids(_advisory_enrichment_refs(included_refs), None)),
         ContextPackSection("target_repo_source_truth", _format_refs(included_refs, {"A0"}), _ref_ids(included_refs, {"A0"})),
+        ContextPackSection("advisory_synthesis", _format_advisory_enrichment(included_refs), _ref_ids(_advisory_enrichment_refs(included_refs), None)),
         ContextPackSection("related_services_and_hosts", _format_claims(claims, {"deployed_on", "targets_host", "member_of_group", "has_address"}), _claim_refs(claims)),
         ContextPackSection("api_schema_or_deployment_context", _format_claims(claims, {"uses_schema", "has_field", "pinned_to", "defined_in"}), _claim_refs(claims)),
         ContextPackSection("applicable_policies", _format_refs([ref for ref in included_refs if ref.get("type") in {"Policy", "Domain Policy"}], None), _ref_ids(included_refs, None)),

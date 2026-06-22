@@ -64,6 +64,26 @@ def test_context_pack_includes_reviewed_services_enrichment() -> None:
     assert "source repositories remain authoritative" in advisory.body
 
 
+def test_context_pack_constrained_chars_preserve_source_truth_before_advisory() -> None:
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Explain the AS215932 service and project landscape for an engineering task",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+            max_chars=350,
+        )
+    sections = {section.name: section for section in pack.sections}
+    target = sections["target_repo_source_truth"]
+    assert target.body != "[omitted: context budget exhausted]"
+    assert "generated/" in target.body
+    advisory_body = sections["advisory_synthesis"].body.strip()
+    assert advisory_body in {
+        "[omitted: context budget exhausted]",
+        "[truncated]",
+    } or "generated/enriched/services" in advisory_body
+
+
 def test_context_pack_enrichment_respects_max_result_refs(tmp_path: Path) -> None:
     policy = default_policy()
     policy["defaults"]["max_result_refs"] = 1
