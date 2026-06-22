@@ -58,9 +58,15 @@ def build_context_pack(
     parsed = parse_task(task)
     enrichment_ids = _relevant_enrichment_ids(task, parsed=parsed, store=store, authority_min=authority_min)
     max_result_refs = max(0, int(decision.constraints.get("max_result_refs", 40)))
-    reserve_enrichment_slots = _should_reserve_enrichment_slots(task, parsed=parsed, enrichment_ids=enrichment_ids)
-    base_limit = max(0, max_result_refs - len(enrichment_ids)) if reserve_enrichment_slots else max_result_refs
     protected_source_ids = _protected_source_ids(parsed)
+    reserve_enrichment_slots = _should_reserve_enrichment_slots(
+        task,
+        parsed=parsed,
+        enrichment_ids=enrichment_ids,
+        protected_source_ids=protected_source_ids,
+        max_result_refs=max_result_refs,
+    )
+    base_limit = max(0, max_result_refs - len(enrichment_ids)) if reserve_enrichment_slots else max_result_refs
     candidate_fetch_limit = base_limit + len(protected_source_ids) if base_limit else 0
     candidates = (
         retriever.query(
@@ -233,16 +239,21 @@ def _prioritize_protected_source_candidates(candidates: list[RetrievalCandidate]
     return sorted(candidates, key=lambda candidate: (0 if candidate.concept_id in priority else 1, priority.get(candidate.concept_id, 0), original[candidate.concept_id]))
 
 
-def _should_reserve_enrichment_slots(task: str, *, parsed: ParsedTask, enrichment_ids: list[str]) -> bool:
+def _should_reserve_enrichment_slots(
+    task: str,
+    *,
+    parsed: ParsedTask,
+    enrichment_ids: list[str],
+    protected_source_ids: list[str],
+    max_result_refs: int,
+) -> bool:
     if not enrichment_ids:
         return False
     explicit_enrichment_ids = _explicit_enrichment_ids(task, parsed=parsed)
     if explicit_enrichment_ids:
         return True
-    if _has_exact_source_entity(parsed):
-        return False
     lower = task.lower()
-    return any(
+    landscape_or_overview = any(
         term in lower
         for term in {
             "architecture",
@@ -257,6 +268,11 @@ def _should_reserve_enrichment_slots(task: str, *, parsed: ParsedTask, enrichmen
             "system map",
         }
     )
+    if not landscape_or_overview:
+        return False
+    if _has_exact_source_entity(parsed):
+        return max_result_refs > len(protected_source_ids)
+    return True
 
 
 def _append_enrichment_candidates(
