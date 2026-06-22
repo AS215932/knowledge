@@ -15,7 +15,13 @@ from .contracts import (
     RetrievalScores,
 )
 from .policy import evaluate_policy, load_policy
-from .retrieval import DEFAULT_CONTEXT_EDGE_TYPES, RETRIEVAL_VERSION, KnowledgeRetriever, parse_task
+from .retrieval import (
+    DEFAULT_CONTEXT_EDGE_TYPES,
+    RETRIEVAL_VERSION,
+    KnowledgeRetriever,
+    ParsedTask,
+    parse_task,
+)
 from .store import KnowledgeStore
 
 DEFAULT_MAX_CHARS = 24_000
@@ -49,9 +55,11 @@ def build_context_pack(
         return _denied_pack(task=task, role=role, risk_level=risk_level, token_budget=token_budget, max_chars=max_chars, task_id=task_id, store=store, decision=decision.as_json())
 
     retriever = KnowledgeRetriever(store)
-    enrichment_ids = _relevant_enrichment_ids(task, store=store, authority_min=authority_min)
+    parsed = parse_task(task)
+    enrichment_ids = _relevant_enrichment_ids(task, parsed=parsed, store=store, authority_min=authority_min)
     max_result_refs = max(0, int(decision.constraints.get("max_result_refs", 40)))
-    base_limit = max(0, max_result_refs - len(enrichment_ids))
+    reserve_enrichment_slots = _should_reserve_enrichment_slots(task, parsed=parsed, enrichment_ids=enrichment_ids)
+    base_limit = max(0, max_result_refs - len(enrichment_ids)) if reserve_enrichment_slots else max_result_refs
     candidates = (
         retriever.query(
             task,
@@ -65,7 +73,6 @@ def build_context_pack(
         else []
     )
     candidates = _append_enrichment_candidates(candidates, enrichment_ids, store=store, authority_min=authority_min)[:max_result_refs]
-    parsed = parse_task(task)
     included_refs = [candidate.as_json() for candidate in candidates]
     claims = _claims_for_candidates(store, [candidate.concept_id for candidate in candidates])
     conflicts = find_conflicts(store, claims=claims)
@@ -146,35 +153,36 @@ def _snapshot_id(store: KnowledgeStore) -> str:
     return store.path.name
 
 
-def _relevant_enrichment_ids(task: str, *, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
+def _relevant_enrichment_ids(task: str, *, parsed: ParsedTask, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
     lower = task.lower()
-    ids: list[str] = []
+    explicit_ids: list[str] = []
     for token in task.replace("`", " ").split():
         clean = token.strip(".,;:()[]{}<>").removesuffix(".md")
         if clean.startswith("generated/enriched/"):
-            ids.append(clean)
+            explicit_ids.append(clean)
+    ids = list(explicit_ids)
+    precise_source_task = bool(parsed.endpoints or parsed.methods)
     enrichment_targets = {
         "services": {
-            "service",
-            "services",
-            "project",
-            "projects",
             "portfolio",
             "landscape",
             "overview",
             "relationship",
             "relationships",
             "relate",
-            "map",
+            "system map",
+            "service map",
+            "project map",
         },
-        "infrastructure": {"infrastructure", "host", "hosts", "network", "routing", "monitoring"},
-        "architecture": {"architecture", "system map", "design", "control plane"},
-        "api": {"api", "endpoint", "endpoints", "schema", "schemas", "interface", "interfaces"},
-        "org": {"org", "organization", "organisation", "business", "strategy", "operating model"},
+        "infrastructure": {"infrastructure overview", "host map", "network map", "monitoring overview"},
+        "architecture": {"architecture", "system map", "design overview", "control plane overview"},
+        "api": {"api overview", "api landscape", "endpoint map", "schema overview", "interface overview"},
+        "org": {"org overview", "organization", "organisation", "business overview", "strategy", "operating model"},
     }
-    for target, terms in enrichment_targets.items():
-        if any(term in lower for term in terms):
-            ids.append(f"generated/enriched/{target}")
+    if not precise_source_task:
+        for target, terms in enrichment_targets.items():
+            if any(term in lower for term in terms):
+                ids.append(f"generated/enriched/{target}")
     out: list[str] = []
     for concept_id in dict.fromkeys(ids):
         concept = store.concept(concept_id)
@@ -183,6 +191,27 @@ def _relevant_enrichment_ids(task: str, *, store: KnowledgeStore, authority_min:
         if tier_allows(authority_from_concept(concept), authority_min):
             out.append(concept_id)
     return out
+
+
+def _should_reserve_enrichment_slots(task: str, *, parsed: ParsedTask, enrichment_ids: list[str]) -> bool:
+    if not enrichment_ids or parsed.endpoints or parsed.methods:
+        return False
+    lower = task.lower()
+    return "generated/enriched/" in lower or any(
+        term in lower
+        for term in {
+            "architecture",
+            "landscape",
+            "overview",
+            "operating model",
+            "portfolio",
+            "project map",
+            "relationship",
+            "relationships",
+            "service map",
+            "system map",
+        }
+    )
 
 
 def _append_enrichment_candidates(

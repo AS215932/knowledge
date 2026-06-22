@@ -81,6 +81,25 @@ def test_context_pack_enrichment_respects_max_result_refs(tmp_path: Path) -> Non
     assert [ref["concept_id"] for ref in pack.included_refs] == ["generated/enriched/services"]
 
 
+def test_context_pack_tight_budget_preserves_precise_source_truth(tmp_path: Path) -> None:
+    policy = default_policy()
+    policy["defaults"]["max_result_refs"] = 1
+    policy_path = tmp_path / "knowledge-policy.yml"
+    policy_path.write_text(json.dumps(policy), encoding="utf-8")
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Engineer a safe change to POST /v1/vm/create service endpoint",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+            policy_path=policy_path,
+        )
+    refs = [ref["concept_id"] for ref in pack.included_refs]
+    assert refs == ["generated/api/hyrule-cloud/hyrule-cloud-post-v1-vm-create-hyrule-cloud-api-routes-py-639"]
+    assert not any(ref.startswith("generated/enriched/") for ref in refs)
+    assert not any("No authoritative endpoint claim" in item for item in pack.unresolved_questions)
+
+
 def test_observed_state_finds_a3_claims_after_source_truth_claims() -> None:
     with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
         result = observed_state(store, "knowledge-mcp")
