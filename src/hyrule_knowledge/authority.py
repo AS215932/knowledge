@@ -52,7 +52,8 @@ def authority_from_concept(concept: dict[str, Any]) -> AuthorityTier:
 
     Generated concepts are derivative files, but repo-owned generated concepts
     may emit A0 claims because their claims point back to repo source refs.
-    Proposed curated/enriched knowledge remains A4 until reviewed.
+    Proposed curated knowledge remains A4 until reviewed. Generated enriched
+    references remain A4 advisory even after review unless promoted into curated OKF.
     """
     concept_id = str(concept.get("id") or "")
     concept_type = str(concept.get("type") or "")

@@ -47,6 +47,22 @@ def test_context_pack_has_policy_decision_sections_and_citations() -> None:
     assert all(ref["source_refs"] for ref in pack.included_refs)
 
 
+def test_context_pack_includes_reviewed_services_enrichment() -> None:
+    with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
+        pack = build_context_pack(
+            task="Explain the AS215932 service and project landscape for an engineering task",
+            role="engineering_loop",
+            store=store,
+            risk_level="low",
+        )
+    refs = {ref["concept_id"]: ref for ref in pack.included_refs}
+    assert refs["generated/enriched/services"]["authority_tier"] == "A4"
+    assert refs["generated/enriched/services"]["metadata"]["review_status"] == "reviewed"
+    advisory = {section.name: section for section in pack.sections}["advisory_synthesis"]
+    assert "generated/enriched/services" in advisory.refs
+    assert "source repositories remain authoritative" in advisory.body
+
+
 def test_observed_state_finds_a3_claims_after_source_truth_claims() -> None:
     with KnowledgeStore(Path("exports/knowledge.sqlite")) as store:
         result = observed_state(store, "knowledge-mcp")

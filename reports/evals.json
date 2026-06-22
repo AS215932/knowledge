@@ -7,6 +7,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -20,7 +21,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -31,6 +32,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -44,7 +46,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -55,6 +57,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -68,7 +71,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -79,6 +82,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -92,7 +96,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -103,6 +107,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -116,7 +121,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -127,6 +132,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -140,7 +146,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -151,6 +157,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -164,7 +171,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -175,6 +182,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -188,7 +196,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -199,6 +207,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -212,7 +221,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -223,6 +232,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -236,7 +246,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -247,6 +257,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -260,7 +271,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -271,6 +282,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -284,7 +296,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -295,6 +307,7 @@
         "included_ref_count": 40,
         "policy_result": "allow",
         "section_names": [
+          "advisory_synthesis",
           "api_schema_or_deployment_context",
           "applicable_policies",
           "forbidden_actions",
@@ -308,7 +321,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -331,7 +344,32 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "score": 1.0,
+      "suite": "grounding"
+    },
+    {
+      "case_id": "grounding-009-service-landscape-enrichment",
+      "failure_reasons": [],
+      "metrics": {
+        "included_ref_count": 40,
+        "policy_result": "allow",
+        "section_names": [
+          "advisory_synthesis",
+          "api_schema_or_deployment_context",
+          "applicable_policies",
+          "forbidden_actions",
+          "known_conflicts_or_staleness",
+          "related_runbooks_lessons",
+          "related_services_and_hosts",
+          "target_repo_source_truth",
+          "task_summary",
+          "unresolved_questions"
+        ],
+        "vector_scores_null": true
+      },
+      "passed": true,
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -344,7 +382,7 @@
         "mode": "import_valid"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -368,7 +406,7 @@
         "mode": "import_reject"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -381,7 +419,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -394,7 +432,7 @@
         "mode": "source_truth_outprioritizes_summary"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -413,7 +451,7 @@
         "warning_count": 0
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -430,7 +468,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -447,7 +485,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -464,7 +502,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -487,7 +525,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -510,7 +548,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -533,7 +571,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -556,7 +594,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -595,7 +633,7 @@
           "reasons": [
             "engineering_loop may perform read-only action knowledge.search"
           ],
-          "requested_at": "2026-06-17T23:55:35Z",
+          "requested_at": "2026-06-22T12:33:15Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -603,7 +641,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "policy"
     },
@@ -642,7 +680,7 @@
           "reasons": [
             "engineering_loop may perform read-only action knowledge.context_pack.generate"
           ],
-          "requested_at": "2026-06-17T23:55:35Z",
+          "requested_at": "2026-06-22T12:33:15Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -650,7 +688,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "policy"
     },
@@ -689,7 +727,7 @@
           "reasons": [
             "noc_shadow may perform read-only action knowledge.claims"
           ],
-          "requested_at": "2026-06-17T23:55:35Z",
+          "requested_at": "2026-06-22T12:33:15Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -697,7 +735,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "policy"
     },
@@ -736,7 +774,7 @@
           "reasons": [
             "production-sensitive action requires human control: production.restart_service"
           ],
-          "requested_at": "2026-06-17T23:55:35Z",
+          "requested_at": "2026-06-22T12:33:15Z",
           "result": "require_human",
           "risk_level": "high",
           "target": null
@@ -744,7 +782,7 @@
         "policy_result": "require_human"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "policy"
     },
@@ -783,7 +821,7 @@
           "reasons": [
             "action denied for actor noc_shadow: production.modify_firewall"
           ],
-          "requested_at": "2026-06-17T23:55:35Z",
+          "requested_at": "2026-06-22T12:33:15Z",
           "result": "deny",
           "risk_level": "high",
           "target": null
@@ -791,7 +829,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "policy"
     },
@@ -832,7 +870,7 @@
           "reasons": [
             "request includes denied data classes: secret"
           ],
-          "requested_at": "2026-06-17T23:55:35Z",
+          "requested_at": "2026-06-22T12:33:15Z",
           "result": "deny",
           "risk_level": "low",
           "target": null
@@ -840,7 +878,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "policy"
     },
@@ -879,7 +917,7 @@
           "reasons": [
             "no allow rule matched for actor=general action=unknown.do_thing"
           ],
-          "requested_at": "2026-06-17T23:55:35Z",
+          "requested_at": "2026-06-22T12:33:15Z",
           "result": "deny",
           "risk_level": "low",
           "target": null
@@ -887,7 +925,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "policy"
     },
@@ -913,7 +951,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -939,7 +977,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -965,7 +1003,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -977,9 +1015,9 @@
         "recall_at_5": true,
         "required_claim_match": true,
         "retrieved_refs": [
-          "generated/services/hyrule-cloud",
           "generated/deployments/hyrule-cloud-on-api",
           "generated/infrastructure/hosts/api",
+          "generated/services/hyrule-cloud",
           "generated/projects/network-operations",
           "generated/api/hyrule-cloud/hyrule-cloud-delete-v1-mail-accounts-mailbox-id-aliases-alias-id-hyrule-cloud-api-mail-py-187",
           "generated/api/hyrule-cloud/hyrule-cloud-delete-v1-mail-accounts-mailbox-id-api-keys-key-id-hyrule-cloud-api-mail-py-217",
@@ -991,7 +1029,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1017,7 +1055,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1031,7 +1069,7 @@
         "retrieved_refs": [
           "generated/infrastructure/hosts/host-log",
           "generated/projects/network-operations",
-          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-vpn-yml",
+          "generated/source-docs/as215932/hyrule-network-proxy/agents",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-ci-pr-yml",
           "generated/infrastructure/dns-zones/deploy-hyrule-host",
           "generated/infrastructure/hosts/noc",
@@ -1043,7 +1081,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1058,18 +1096,18 @@
           "generated/infrastructure/hosts/noc",
           "generated/services/noc-agent",
           "generated/deployments/noc-agent-on-noc",
-          "generated/api/noc-agent/noc-agent-post-control-status-app-main-py-907",
           "generated/api/noc-agent/noc-agent-post-mail-poll-app-main-py-723",
           "generated/api/noc-agent/noc-agent-post-webhook-alertmanager-app-main-py-686",
           "generated/api/noc-agent/noc-agent-post-task-app-main-py-758",
           "generated/source-docs/as215932/noc-agent/pyproject-toml",
+          "generated/deployments/hyrule-mcp-on-noc",
           "generated/services/hyrule-mcp",
-          "generated/deployments/hyrule-mcp-on-noc"
+          "generated/source-docs/as215932/noc-agent/readme"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1084,18 +1122,18 @@
           "generated/infrastructure/hosts/noc",
           "generated/services/noc-agent",
           "generated/deployments/noc-agent-on-noc",
-          "generated/api/noc-agent/noc-agent-post-control-proactive-ack-app-main-py-1043",
           "generated/api/noc-agent/noc-agent-post-control-cases-investigate-app-main-py-890",
           "generated/api/noc-agent/noc-agent-post-control-status-app-main-py-907",
           "generated/api/noc-agent/noc-agent-post-mail-poll-app-main-py-723",
           "generated/api/noc-agent/noc-agent-post-webhook-alertmanager-app-main-py-686",
           "generated/api/noc-agent/noc-agent-post-task-app-main-py-758",
-          "generated/source-docs/as215932/noc-agent/pyproject-toml"
+          "generated/source-docs/as215932/noc-agent/pyproject-toml",
+          "generated/services/hyrule-mcp"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1109,19 +1147,19 @@
         "retrieved_refs": [
           "generated/services/hyrule-mcp",
           "generated/deployments/hyrule-mcp-on-noc",
-          "generated/services/noc-agent",
-          "generated/schemas/hyrule-mcp/ToolResult",
-          "generated/schemas/hyrule-mcp/McpToolError",
           "generated/source-docs/as215932/hyrule-mcp/testing",
           "generated/schemas/hyrule-mcp/TruncatedText",
           "generated/schemas/hyrule-mcp/AuditEvent",
           "generated/source-docs/as215932/hyrule-mcp/pyproject-toml",
-          "generated/schemas/hyrule-mcp/RollbackGuard"
+          "generated/schemas/hyrule-mcp/RollbackGuard",
+          "generated/source-docs/as215932/hyrule-mcp/readme",
+          "generated/infrastructure/hosts/noc",
+          "generated/projects/network-operations"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1147,7 +1185,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1173,7 +1211,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1189,17 +1227,17 @@
           "generated/infrastructure/hosts/netproxy",
           "generated/deployments/hyrule-network-proxy-on-netproxy",
           "generated/infrastructure/hosts/proxy",
-          "generated/api/hyrule-network-proxy/hyrule-network-proxy-any-get-healthz-internal-server-server-go-31",
-          "generated/api/hyrule-network-proxy/hyrule-network-proxy-any-get-readyz-internal-server-server-go-32",
           "generated/source-docs/as215932/hyrule-network-proxy/go-mod",
           "generated/workflows/hyrule-network-proxy/github-workflows-ci-yml",
           "generated/projects/network-operations",
-          "generated/source-docs/as215932/hyrule-network-proxy/readme"
+          "generated/source-docs/as215932/hyrule-network-proxy/readme",
+          "generated/source-docs/as215932/hyrule-network-proxy/agents",
+          "generated/api/hyrule-network-proxy/hyrule-network-proxy-any-get-healthz-internal-server-server-go-31"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1211,21 +1249,21 @@
         "recall_at_5": true,
         "required_claim_match": true,
         "retrieved_refs": [
-          "generated/infrastructure/hosts/loop",
           "generated/services/engineering-loop",
-          "generated/schemas/engineering-loop/EvalInput",
+          "generated/infrastructure/hosts/loop",
           "generated/source-docs/as215932/engineering-loop/skills-role-systems-engineer-skill",
           "generated/source-docs/as215932/engineering-loop/skills-monitoring-onboarding-skill",
           "generated/source-docs/as215932/engineering-loop/docs-agent-loops-acceptance-gates",
           "generated/source-docs/as215932/engineering-loop/docs-agent-loops-senior-systems-engineer",
           "generated/source-docs/as215932/engineering-loop/skills-readme",
           "generated/deployments/engineering-loop-on-loop",
-          "generated/source-docs/as215932/engineering-loop/configs-loop-hyrule-engineering-loop-service"
+          "generated/source-docs/as215932/engineering-loop/configs-loop-hyrule-engineering-loop-service",
+          "generated/source-docs/as215932/engineering-loop/docs-engineering-loop-templates-pr-contract"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1251,7 +1289,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1270,14 +1308,14 @@
           "generated/source-docs/as215932/network-operations/docs-ci-security-model",
           "generated/source-docs/as215932/engineering-loop/docs-engineering-loop-v2-roadmap",
           "generated/source-docs/as215932/network-operations/docs-engineering-loop-v2-roadmap",
-          "generated/source-docs/as215932/network-operations/readme",
           "generated/source-docs/as215932/network-operations/docs-netops-testing-strategy",
+          "generated/source-docs/as215932/network-operations/readme",
           "generated/schemas/hyrule-cloud/DNSPropagationRequest"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_223f6cc273f9ccacf44fef611ebe5cc2",
+      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
       "score": 1.0,
       "suite": "retrieval"
     }
@@ -1291,8 +1329,8 @@
       },
       "grounding": {
         "failed": 0,
-        "passed": 8,
-        "total": 8
+        "passed": 9,
+        "total": 9
       },
       "learning_lifecycle": {
         "failed": 0,
@@ -1321,7 +1359,7 @@
       }
     },
     "failed": 0,
-    "passed": 48,
-    "total": 48
+    "passed": 49,
+    "total": 49
   }
 }
