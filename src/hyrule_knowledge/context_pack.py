@@ -258,7 +258,9 @@ def _named_exact_source_ids(task: str, *, parsed: ParsedTask, store: KnowledgeSt
 def _looks_like_exact_identifier(token: str) -> bool:
     if token.startswith(("generated/", "curated/", "observed/")):
         return True
-    return sum(1 for char in token if char.isupper()) >= 2
+    if token.isupper():
+        return False
+    return sum(1 for char in token if char.isupper()) >= 2 and any(char.islower() for char in token)
 
 
 def _service_display_tokens(services: list[str]) -> set[str]:
@@ -266,7 +268,7 @@ def _service_display_tokens(services: list[str]) -> set[str]:
         "as215932-net": {"as215932", "as215932.net"},
         "engineering-loop": {"engineering", "loop"},
         "hyrule-business": {"hyrule", "business"},
-        "hyrule-cloud": {"hyrule", "cloud"},
+        "hyrule-cloud": {"hyrule", "cloud", "api"},
         "hyrule-mcp": {"hyrule", "mcp"},
         "hyrule-network-proxy": {"hyrule", "network", "proxy"},
         "hyrule-web": {"hyrule", "web"},
@@ -305,6 +307,7 @@ def _protected_source_ids(parsed: ParsedTask, *, task: str) -> list[str]:
 def _service_name_host_aliases(services: list[str]) -> set[str]:
     aliases_by_service = {
         "engineering-loop": {"loop"},
+        "hyrule-cloud": {"api"},
         "hyrule-network-proxy": {"proxy"},
         "hyrule-web": {"web"},
         "noc-agent": {"noc"},
