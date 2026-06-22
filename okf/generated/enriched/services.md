@@ -95,7 +95,10 @@ source_refs:
 last_verified_at: '2026-06-21T22:14:20Z'
 confidence: medium
 dispute_policy: repo_wins
-review_status: proposed
+review_status: reviewed
+reviewed_by: svag
+reviewed_at: '2026-06-22T12:23:49Z'
+review_note: Human-approved as useful advisory synthesis; repo source truth continues to win on conflict.
 enrichment:
   mode: llm
   provider: openrouter
@@ -109,7 +112,7 @@ enrichment_json: '{"generated_at":"2026-06-21T22:14:20Z","input_hash":"1faf01faf
 
 # LLM enrichment
 
-Review status: proposed. Treat this as advisory until human-reviewed.
+Review status: reviewed by `svag` on 2026-06-22. Treat this as advisory synthesis; cited repo source truth continues to win on conflict.
 
 # Overview of AS215932 (Hyrule Networks)
 

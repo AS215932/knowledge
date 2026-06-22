@@ -1,13 +1,13 @@
 # Eval report
 
-* Total: **48**
-* Passed: **48**
+* Total: **49**
+* Passed: **49**
 * Failed: **0**
 
 # Suites
 
 * `engineering_loop`: 6/6 passed
-* `grounding`: 8/8 passed
+* `grounding`: 9/9 passed
 * `learning_lifecycle`: 5/5 passed
 * `learning_promotion`: 3/3 passed
 * `noc_shadow`: 4/4 passed

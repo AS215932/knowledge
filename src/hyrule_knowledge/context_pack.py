@@ -3,16 +3,30 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
-from .authority import AuthorityTier
-from .contracts import ContextPack, ContextPackSection, PolicyRequest
+from .authority import AuthorityTier, authority_from_concept, tier_allows
+from .contracts import (
+    ContextPack,
+    ContextPackSection,
+    PolicyRequest,
+    RetrievalCandidate,
+    RetrievalScores,
+)
 from .policy import evaluate_policy, load_policy
-from .retrieval import DEFAULT_CONTEXT_EDGE_TYPES, RETRIEVAL_VERSION, KnowledgeRetriever, parse_task
+from .retrieval import (
+    DEFAULT_CONTEXT_EDGE_TYPES,
+    RETRIEVAL_VERSION,
+    KnowledgeRetriever,
+    ParsedTask,
+    parse_task,
+)
 from .store import KnowledgeStore
 
 DEFAULT_MAX_CHARS = 24_000
+_ENDPOINT_PAIR_RE = re.compile(r"\b(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s+(/v[0-9][A-Za-z0-9_/{}/.-]*)", re.I)
 
 
 def build_context_pack(
@@ -43,15 +57,44 @@ def build_context_pack(
         return _denied_pack(task=task, role=role, risk_level=risk_level, token_budget=token_budget, max_chars=max_chars, task_id=task_id, store=store, decision=decision.as_json())
 
     retriever = KnowledgeRetriever(store)
-    candidates = retriever.query(
-        task,
-        authority_min=authority_min,
-        freshness="current",
-        limit=int(decision.constraints.get("max_result_refs", 40)),
-        graph_depth=2,
-        edge_types=DEFAULT_CONTEXT_EDGE_TYPES,
-    )
     parsed = parse_task(task)
+    enrichment_ids = _relevant_enrichment_ids(task, parsed=parsed, store=store, authority_min=authority_min)
+    max_result_refs = max(0, int(decision.constraints.get("max_result_refs", 40)))
+    protected_source_ids = list(
+        dict.fromkeys(
+            [
+                *_endpoint_source_ids(parsed, store=store, authority_min=authority_min),
+                *_named_exact_source_ids(task, parsed=parsed, store=store, authority_min=authority_min),
+                *_protected_source_ids(parsed, task=task),
+            ]
+        )
+    )
+    reserve_enrichment_slots = _should_reserve_enrichment_slots(
+        task,
+        parsed=parsed,
+        enrichment_ids=enrichment_ids,
+        protected_source_ids=protected_source_ids,
+        max_result_refs=max_result_refs,
+    )
+    base_limit = max(0, max_result_refs - len(enrichment_ids)) if reserve_enrichment_slots else max_result_refs
+    candidate_fetch_limit = base_limit + len(protected_source_ids) if base_limit else 0
+    candidates = (
+        retriever.query(
+            task,
+            authority_min=authority_min,
+            freshness="current",
+            limit=candidate_fetch_limit,
+            graph_depth=2,
+            edge_types=DEFAULT_CONTEXT_EDGE_TYPES,
+        )
+        if candidate_fetch_limit
+        else []
+    )
+    candidates = _ensure_protected_source_candidates(candidates, protected_source_ids, store=store, authority_min=authority_min)
+    candidates = _prioritize_protected_source_candidates(candidates, protected_source_ids)
+    if reserve_enrichment_slots:
+        candidates = candidates[:base_limit]
+    candidates = _append_enrichment_candidates(candidates, enrichment_ids, store=store, authority_min=authority_min)[:max_result_refs]
     included_refs = [candidate.as_json() for candidate in candidates]
     claims = _claims_for_candidates(store, [candidate.concept_id for candidate in candidates])
     conflicts = find_conflicts(store, claims=claims)
@@ -130,6 +173,305 @@ def _snapshot_id(store: KnowledgeStore) -> str:
     if source_shas:
         return json.dumps(source_shas, sort_keys=True)
     return store.path.name
+
+
+def _relevant_enrichment_ids(task: str, *, parsed: ParsedTask, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
+    lower = task.lower()
+    ids = _explicit_enrichment_ids(task, parsed=parsed)
+    precise_source_task = bool(parsed.endpoints or parsed.methods)
+    enrichment_targets = {
+        "services": {
+            "portfolio",
+            "landscape",
+            "portfolio overview",
+            "project overview",
+            "projects overview",
+            "service overview",
+            "services overview",
+            "relationship",
+            "relationships",
+            "relate",
+            "system map",
+            "service map",
+            "project map",
+        },
+        "infrastructure": {"infrastructure overview", "host map", "network map", "monitoring overview"},
+        "architecture": {"architecture", "system map", "design overview", "control plane overview"},
+        "api": {"api overview", "api landscape", "endpoint map", "schema overview", "interface overview"},
+        "org": {"org overview", "organization", "organisation", "business overview", "strategy", "operating model"},
+    }
+    if not precise_source_task:
+        for target, terms in enrichment_targets.items():
+            if any(term in lower for term in terms):
+                ids.append(f"generated/enriched/{target}")
+    out: list[str] = []
+    for concept_id in dict.fromkeys(ids):
+        concept = store.concept(concept_id)
+        if concept is None:
+            continue
+        if tier_allows(authority_from_concept(concept), authority_min):
+            out.append(concept_id)
+    return out
+
+
+def _explicit_enrichment_ids(task: str, *, parsed: ParsedTask) -> list[str]:
+    ids = [concept_id for concept_id in parsed.concept_ids if concept_id.startswith("generated/enriched/")]
+    for token in task.replace("`", " ").split():
+        clean = token.strip(".,;:()[]{}<>").removesuffix(".md")
+        if clean.startswith("generated/enriched/"):
+            ids.append(clean)
+    return list(dict.fromkeys(ids))
+
+
+def _has_exact_source_entity(parsed: ParsedTask, *, task: str) -> bool:
+    return bool(_protected_source_ids(parsed, task=task) or parsed.endpoints or parsed.methods or parsed.policies)
+
+
+def _endpoint_source_ids(parsed: ParsedTask, *, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
+    ids: list[str] = []
+    pairs = _endpoint_pairs(parsed)
+    if not pairs:
+        pairs = [(method, endpoint) for endpoint in parsed.endpoints for method in parsed.methods or [""]]
+    for method, endpoint in pairs:
+        subject = f"endpoint:{method}:{endpoint}" if method else endpoint
+        for claim in store.claims(subject=subject, authority_min=authority_min, limit=20):
+            concept_id = str(claim.get("concept_id") or "")
+            if concept_id:
+                ids.append(concept_id)
+    return list(dict.fromkeys(ids))
+
+
+def _endpoint_pairs(parsed: ParsedTask) -> list[tuple[str, str]]:
+    return [(match.group(1).upper(), match.group(2)) for match in _ENDPOINT_PAIR_RE.finditer(parsed.query)]
+
+
+def _named_exact_source_ids(task: str, *, parsed: ParsedTask, store: KnowledgeStore, authority_min: AuthorityTier) -> list[str]:
+    ids: list[str] = []
+    service_display_tokens = _service_display_tokens(parsed.services)
+    for token in task.replace("`", " ").split():
+        clean = token.strip(".,;:()[]{}<>").removesuffix(".md")
+        if clean.lower() in service_display_tokens:
+            continue
+        if not _looks_like_exact_identifier(clean):
+            continue
+        for concept_id in store.exact_candidates(clean, limit=5):
+            if concept_id.startswith("generated/enriched/"):
+                continue
+            concept = store.concept(concept_id)
+            if concept is None:
+                continue
+            if tier_allows(authority_from_concept(concept), authority_min):
+                ids.append(concept_id)
+    return list(dict.fromkeys(ids))
+
+
+def _looks_like_exact_identifier(token: str) -> bool:
+    if token.startswith(("generated/", "curated/", "observed/")):
+        return True
+    if token.isupper():
+        return False
+    return sum(1 for char in token if char.isupper()) >= 2 and any(char.islower() for char in token)
+
+
+def _service_display_tokens(services: list[str]) -> set[str]:
+    tokens_by_service = {
+        "as215932-net": {"as215932", "as215932.net"},
+        "engineering-loop": {"engineering", "loop"},
+        "hyrule-business": {"hyrule", "business"},
+        "hyrule-cloud": {"hyrule", "cloud", "api"},
+        "hyrule-mcp": {"hyrule", "mcp"},
+        "hyrule-network-proxy": {"hyrule", "network", "proxy"},
+        "hyrule-web": {"hyrule", "web"},
+        "network-operations": {"network", "operations"},
+        "noc-agent": {"noc", "agent"},
+    }
+    tokens: set[str] = set()
+    for service in services:
+        tokens.update(tokens_by_service.get(service, set()))
+    return tokens
+
+
+def _protected_source_ids(parsed: ParsedTask, *, task: str) -> list[str]:
+    ids: list[str] = []
+    for concept_id in parsed.concept_ids:
+        if not concept_id.startswith("generated/enriched/"):
+            ids.append(concept_id)
+    for service in parsed.services:
+        if service == "network-operations":
+            ids.append("generated/projects/network-operations")
+        elif service == "hyrule-business":
+            ids.append("generated/projects/hyrule-business")
+        elif service == "as215932-net":
+            ids.append("generated/services/as215932-net")
+        else:
+            ids.append(f"generated/services/{service}")
+    service_name_host_aliases = _service_name_host_aliases(parsed.services)
+    lower = task.lower()
+    for host in parsed.hosts:
+        if host in service_name_host_aliases and not _host_explicitly_requested(host, lower):
+            continue
+        ids.append(f"generated/infrastructure/hosts/{'host-log' if host == 'log' else host}")
+    return list(dict.fromkeys(ids))
+
+
+def _service_name_host_aliases(services: list[str]) -> set[str]:
+    aliases_by_service = {
+        "engineering-loop": {"loop"},
+        "hyrule-cloud": {"api"},
+        "hyrule-network-proxy": {"proxy"},
+        "hyrule-web": {"web"},
+        "noc-agent": {"noc"},
+    }
+    aliases: set[str] = set()
+    for service in services:
+        aliases.update(aliases_by_service.get(service, set()))
+    return aliases
+
+
+def _host_explicitly_requested(host: str, lower_task: str) -> bool:
+    normalized = "host-log" if host == "log" else host
+    return any(
+        phrase in lower_task
+        for phrase in {
+            f"host {host}",
+            f"{host} host",
+            f"{host} vm",
+            f"vm {host}",
+            f"generated/infrastructure/hosts/{normalized}",
+        }
+    )
+
+
+def _ensure_protected_source_candidates(
+    candidates: list[RetrievalCandidate],
+    protected_source_ids: list[str],
+    *,
+    store: KnowledgeStore,
+    authority_min: AuthorityTier,
+) -> list[RetrievalCandidate]:
+    seen = {candidate.concept_id for candidate in candidates}
+    out = list(candidates)
+    for concept_id in protected_source_ids:
+        if concept_id in seen:
+            continue
+        concept = store.concept(concept_id)
+        if concept is None:
+            continue
+        tier = authority_from_concept(concept)
+        if not tier_allows(tier, authority_min):
+            continue
+        claims = store.claims(concept_id=concept_id, authority_min=AuthorityTier.A5, freshness="include_expired", limit=5)
+        out.append(
+            RetrievalCandidate(
+                concept_id=concept_id,
+                title=str(concept.get("title") or concept_id),
+                concept_type=str(concept.get("type") or ""),
+                authority_tier=tier,
+                reason="protected-exact",
+                scores=RetrievalScores(exact=1.0, vector=None),
+                source_refs=concept.get("source_refs") or [],
+                excerpt=_body_excerpt(str(concept.get("body") or "")),
+                metadata={
+                    "claim_count": len(claims),
+                    "freshness_status": "expired" if any(claim.get("freshness_status") == "expired" for claim in claims) else "current",
+                    "protected_source": True,
+                },
+            )
+        )
+        seen.add(concept_id)
+    return out
+
+
+def _prioritize_protected_source_candidates(candidates: list[RetrievalCandidate], protected_source_ids: list[str]) -> list[RetrievalCandidate]:
+    if not protected_source_ids:
+        return candidates
+    priority = {concept_id: index for index, concept_id in enumerate(protected_source_ids)}
+    original = {candidate.concept_id: index for index, candidate in enumerate(candidates)}
+    return sorted(candidates, key=lambda candidate: (0 if candidate.concept_id in priority else 1, priority.get(candidate.concept_id, 0), original[candidate.concept_id]))
+
+
+def _should_reserve_enrichment_slots(
+    task: str,
+    *,
+    parsed: ParsedTask,
+    enrichment_ids: list[str],
+    protected_source_ids: list[str],
+    max_result_refs: int,
+) -> bool:
+    if not enrichment_ids:
+        return False
+    explicit_enrichment_ids = _explicit_enrichment_ids(task, parsed=parsed)
+    if explicit_enrichment_ids:
+        return True
+    lower = task.lower()
+    landscape_or_overview = any(
+        term in lower
+        for term in {
+            "architecture",
+            "landscape",
+            "overview",
+            "operating model",
+            "portfolio",
+            "project map",
+            "relationship",
+            "relationships",
+            "service map",
+            "system map",
+        }
+    )
+    if not landscape_or_overview:
+        return False
+    if _has_exact_source_entity(parsed, task=task):
+        return max_result_refs > len(protected_source_ids)
+    return True
+
+
+def _append_enrichment_candidates(
+    candidates: list[RetrievalCandidate],
+    enrichment_ids: list[str],
+    *,
+    store: KnowledgeStore,
+    authority_min: AuthorityTier,
+) -> list[RetrievalCandidate]:
+    seen = {candidate.concept_id for candidate in candidates}
+    out = list(candidates)
+    for concept_id in enrichment_ids:
+        if concept_id in seen:
+            continue
+        concept = store.concept(concept_id)
+        if concept is None:
+            continue
+        tier = authority_from_concept(concept)
+        if not tier_allows(tier, authority_min):
+            continue
+        claims = store.claims(concept_id=concept_id, authority_min=AuthorityTier.A5, freshness="include_expired", limit=5)
+        out.append(
+            RetrievalCandidate(
+                concept_id=concept_id,
+                title=str(concept.get("title") or concept_id),
+                concept_type=str(concept.get("type") or ""),
+                authority_tier=tier,
+                reason="advisory-enrichment",
+                scores=RetrievalScores(exact=1.0, vector=None),
+                source_refs=concept.get("source_refs") or [],
+                excerpt=_body_excerpt(str(concept.get("body") or "")),
+                metadata={
+                    "claim_count": len(claims),
+                    "freshness_status": "expired" if any(claim.get("freshness_status") == "expired" for claim in claims) else "current",
+                    "review_status": concept.get("review_status"),
+                    "enriched": True,
+                },
+            )
+        )
+        seen.add(concept_id)
+    return out
+
+
+def _body_excerpt(body: str, limit: int = 800) -> str:
+    text = " ".join(line.strip() for line in body.splitlines() if line.strip())
+    if len(text) <= limit:
+        return text
+    return text[: limit - 3].rstrip() + "..."
 
 
 def _claims_for_candidates(store: KnowledgeStore, concept_ids: list[str]) -> list[dict[str, Any]]:
@@ -245,6 +587,7 @@ def _engineering_sections(
     return [
         ContextPackSection("task_summary", f"Task: {task}", []),
         ContextPackSection("target_repo_source_truth", _format_refs(included_refs, {"A0"}), _ref_ids(included_refs, {"A0"})),
+        ContextPackSection("advisory_synthesis", _format_advisory_enrichment(included_refs), _ref_ids(_advisory_enrichment_refs(included_refs), None)),
         ContextPackSection("related_services_and_hosts", _format_claims(claims, {"deployed_on", "targets_host", "member_of_group", "has_address"}), _claim_refs(claims)),
         ContextPackSection("api_schema_or_deployment_context", _format_claims(claims, {"uses_schema", "has_field", "pinned_to", "defined_in"}), _claim_refs(claims)),
         ContextPackSection("applicable_policies", _format_refs([ref for ref in included_refs if ref.get("type") in {"Policy", "Domain Policy"}], None), _ref_ids(included_refs, None)),
@@ -266,6 +609,17 @@ def _noc_shadow_sections(task: str, included_refs: list[dict[str, Any]], claims:
         ContextPackSection("forbidden_actions", "No live MCP/Prometheus/Icinga/Discord/OpenRouter calls in shadow evals. Production actions are denied or require human approval.", []),
         ContextPackSection("unresolved_questions", _format_list(unresolved, "No unresolved questions detected."), []),
     ]
+
+
+def _advisory_enrichment_refs(refs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [ref for ref in refs if str(ref.get("concept_id") or "").startswith("generated/enriched/")]
+
+
+def _format_advisory_enrichment(refs: list[dict[str, Any]]) -> str:
+    selected = _advisory_enrichment_refs(refs)
+    if not selected:
+        return "No advisory enrichment retrieved."
+    return _format_refs(selected, None) + "\n\nAdvisory synthesis only; cited source repositories remain authoritative on conflict."
 
 
 def _format_refs(refs: list[dict[str, Any]], tiers: set[str] | None) -> str:
