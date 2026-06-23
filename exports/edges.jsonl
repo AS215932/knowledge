@@ -587,8 +587,10 @@
 {"confidence":"high","edge_type":"deploys-service","origin":"derived","source":"generated/deployments/hyrule-network-proxy-on-netproxy","target":"generated/services/hyrule-network-proxy"}
 {"confidence":"high","edge_type":"targets-host","origin":"derived","source":"generated/deployments/hyrule-web-on-web","target":"generated/infrastructure/hosts/web"}
 {"confidence":"high","edge_type":"deploys-service","origin":"derived","source":"generated/deployments/hyrule-web-on-web","target":"generated/services/hyrule-web"}
+{"confidence":"high","edge_type":"targets-host","origin":"derived","source":"generated/deployments/knowledge-mcp-on-loop","target":"generated/infrastructure/hosts/loop"}
 {"confidence":"high","edge_type":"targets-host","origin":"derived","source":"generated/deployments/noc-agent-on-noc","target":"generated/infrastructure/hosts/noc"}
 {"confidence":"high","edge_type":"deploys-service","origin":"derived","source":"generated/deployments/noc-agent-on-noc","target":"generated/services/noc-agent"}
+{"confidence":"high","edge_type":"targets-host","origin":"derived","source":"generated/deployments/noc-knowledge-on-noc","target":"generated/infrastructure/hosts/noc"}
 {"confidence":"high","edge_type":"has-policy","origin":"derived","source":"generated/org/as215932","target":"generated/infrastructure/domain-policy"}
 {"confidence":"high","edge_type":"contains-service","origin":"derived","source":"generated/org/as215932","target":"generated/projects/hyrule-business"}
 {"confidence":"high","edge_type":"contains-service","origin":"derived","source":"generated/org/as215932","target":"generated/projects/network-operations"}
@@ -616,7 +618,9 @@
 {"confidence":"high","edge_type":"owns-deployment-pin","origin":"derived","source":"generated/projects/network-operations","target":"generated/deployments/hyrule-mcp-on-noc"}
 {"confidence":"high","edge_type":"owns-deployment-pin","origin":"derived","source":"generated/projects/network-operations","target":"generated/deployments/hyrule-network-proxy-on-netproxy"}
 {"confidence":"high","edge_type":"owns-deployment-pin","origin":"derived","source":"generated/projects/network-operations","target":"generated/deployments/hyrule-web-on-web"}
+{"confidence":"high","edge_type":"owns-deployment-pin","origin":"derived","source":"generated/projects/network-operations","target":"generated/deployments/knowledge-mcp-on-loop"}
 {"confidence":"high","edge_type":"owns-deployment-pin","origin":"derived","source":"generated/projects/network-operations","target":"generated/deployments/noc-agent-on-noc"}
+{"confidence":"high","edge_type":"owns-deployment-pin","origin":"derived","source":"generated/projects/network-operations","target":"generated/deployments/noc-knowledge-on-noc"}
 {"confidence":"high","edge_type":"owns-dns-zone","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/dns-zones/0-5-b-0-1-4-6-b-c-0-a-2-ip6-arpa"}
 {"confidence":"high","edge_type":"owns-dns-zone","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/dns-zones/as215932-net"}
 {"confidence":"high","edge_type":"owns-dns-zone","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/dns-zones/deploy-hyrule-host"}
@@ -648,6 +652,7 @@
 {"confidence":"high","edge_type":"owns-prefix","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/prefixes/as215932-prefix"}
 {"confidence":"high","edge_type":"owns-prefix","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/prefixes/customer-subnet"}
 {"confidence":"high","edge_type":"owns-prefix","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/prefixes/infra-subnet"}
+{"confidence":"high","edge_type":"owns-prefix","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/prefixes/loop-docker-subnet"}
 {"confidence":"high","edge_type":"owns-prefix","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/prefixes/router-loopback-subnet"}
 {"confidence":"high","edge_type":"owns-prefix","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/prefixes/vpn-clients-subnet"}
 {"confidence":"high","edge_type":"owns-prefix","origin":"derived","source":"generated/projects/network-operations","target":"generated/infrastructure/prefixes/wg-link-prefix"}

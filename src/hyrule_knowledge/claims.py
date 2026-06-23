@@ -157,8 +157,28 @@ def _deployment_claims(concept: dict[str, Any], extracted_at: str) -> list[Knowl
         claims.append(_claim(concept, subject=f"deployment:{deployment_slug}", predicate="targets_host", object_value=f"host:{host}", extracted_at=extracted_at))
     claims.append(_claim(concept, subject=f"deployment:{deployment_slug}", predicate="deploys_service", object_value=f"service:{service_slug}", extracted_at=extracted_at))
     if pin_value:
-        claims.append(_claim(concept, subject=f"service:{service_slug}", predicate="pinned_to", object_value=pin_value, extracted_at=extracted_at, metadata={"pin_name": pin_name}))
+        claims.append(
+            _claim(
+                concept,
+                subject=f"service:{service_slug}",
+                predicate="pinned_to",
+                object_value=pin_value,
+                extracted_at=extracted_at,
+                source_ref_index=_deployment_pin_source_ref_index(concept, host),
+                metadata={"pin_name": pin_name},
+            )
+        )
     return claims
+
+
+def _deployment_pin_source_ref_index(concept: dict[str, Any], host: str) -> int:
+    host_vars_path = f"ansible/inventory/host_vars/{host}.yml"
+    refs = concept.get("source_refs") or []
+    if isinstance(refs, list):
+        for index, ref in enumerate(refs, start=1):
+            if isinstance(ref, dict) and ref.get("path") == host_vars_path:
+                return index
+    return 1
 
 
 def _host_claims(concept: dict[str, Any], extracted_at: str) -> list[KnowledgeClaim]:

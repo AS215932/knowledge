@@ -1,0 +1,17 @@
+id: retrieval-016-openrouter-key-ownership
+suite: retrieval
+task: Find OpenRouter key ownership policy
+role: engineering_loop
+inputs:
+  query: Which OpenRouter API-key should Knowledge Loop LLM enrichment use versus the CI/CD PR-Agent GitHub Actions secret and the Engineering Loop runtime key?
+  authority_min: A5
+  limit: 10
+expected:
+  refs_any:
+  - curated/policies/openrouter-key-ownership
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

@@ -3,7 +3,7 @@ type: Router
 title: rtr
 description: Router `rtr` with address `2a0c:b641:b50:2::1` and groups `linux, public_facing,
   routers`.
-resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml
+resource: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml
 tags:
 - host
 - infrastructure
@@ -11,19 +11,19 @@ tags:
 - public_facing
 - router
 - routers
-timestamp: '2026-06-17T08:13:24Z'
+timestamp: '2026-06-23T09:21:09Z'
 truth_owner: repo
 authority: canonical
 source_refs:
 - repo: AS215932/network-operations
   path: ansible/inventory/hosts.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml
 - repo: AS215932/network-operations
   path: ansible/inventory/host_vars/rtr.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/rtr.yml
-last_verified_at: '2026-06-17T10:33:31Z'
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/host_vars/rtr.yml
+last_verified_at: '2026-06-23T10:06:29Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -53,7 +53,7 @@ No app version pins found in host vars.
 
 # Inbound firewall rules
 
-* `tcp+udp` port `53` from `['{{ infra_subnet }}', '{{ customer_subnet }}', '{{ vpn_clients_subnet }}', '{{ peers.rtr.underlay }}']` — DNS recursion from overlay + rtr's own (underlay src, VRF)
+* `tcp+udp` port `53` from `['{{ infra_subnet }}', '{{ customer_subnet }}', '{{ vpn_clients_subnet }}', '{{ loop_docker_subnet }}', '{{ peers.rtr.underlay }}']` — DNS recursion from overlay + rtr's own (underlay src, VRF)
 * `tcp` port `9100` from `{{ peers.mon.ipv6 }}` — node_exporter scrape
 * `tcp` port `9342` from `{{ peers.mon.ipv6 }}` — frr_exporter scrape
 * `tcp` port `179` from `['{{ peers.cr1_nl1.loopback }}', '{{ peers.cr1_de1.loopback }}', '{{ peers.cr1_ch1.loopback }}']` — iBGP from cr1-* loopbacks
@@ -86,7 +86,7 @@ iifname { overlay, wg0, wg1, wg2 } meta l4proto 89 accept comment "OSPF6 on over
 ` |
 | `firewall_input_policy` | `drop` |
 | `firewall_log_only` | `False` |
-| `frr_clear_bgp_cmd` | `vtysh -c 'clear bgp vrf overlay ipv6 unicast * soft'` |
+| `frr_clear_bgp_cmds` | `["vtysh -c 'clear bgp vrf overlay ipv6 unicast * soft in'", "vtysh -c 'clear bgp vrf overlay ipv6 unicast * soft out'"]` |
 | `logs_agent_disk_buffer_bytes` | `300000000` |
 | `logs_register` | `True` |
 | `logs_role` | `router` |
@@ -106,5 +106,5 @@ iifname { overlay, wg0, wg1, wg2 } meta l4proto 89 accept comment "OSPF6 on over
 
 # Citations
 
-[1] [Ansible inventory](https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml)
-[2] [ansible/inventory/host_vars/rtr.yml](https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/rtr.yml)
+[1] [Ansible inventory](https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml)
+[2] [ansible/inventory/host_vars/rtr.yml](https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/host_vars/rtr.yml)

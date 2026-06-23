@@ -3,21 +3,21 @@ type: Network Prefix
 title: 'as215932_prefix: 2a0c:b641:b50::/44'
 description: Network prefix `2a0c:b641:b50::/44` from `ansible/inventory/group_vars/all.yml`
   (`as215932_prefix`).
-resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/group_vars/all.yml
+resource: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/group_vars/all.yml
 tags:
 - as215932
 - infrastructure
 - ipv6
 - prefix
-timestamp: '2026-06-17T08:13:24Z'
+timestamp: '2026-06-23T09:21:09Z'
 truth_owner: repo
 authority: canonical
 source_refs:
 - repo: AS215932/network-operations
   path: ansible/inventory/group_vars/all.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/group_vars/all.yml
-last_verified_at: '2026-06-17T10:33:31Z'
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/group_vars/all.yml
+last_verified_at: '2026-06-23T10:06:29Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations

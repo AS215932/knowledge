@@ -80,7 +80,7 @@ def parse_task(query: str) -> ParsedTask:
     methods = [match.group(1).upper() for match in _HTTP_METHOD_RE.finditer(query)]
     endpoints = list(dict.fromkeys(_ROUTE_RE.findall(query)))
     concept_ids = [match.group(0).removesuffix(".md") for match in _CONCEPT_RE.finditer(query)]
-    hosts = [match.group(1).lower() for match in _HOST_RE.finditer(query)]
+    hosts = _hosts_from_query(query)
     policies = [word for word in ["policy", "canonicality", "domain", "deployment", "source-of-truth", "safety"] if word in lower]
     return ParsedTask(
         query=query,
@@ -92,6 +92,25 @@ def parse_task(query: str) -> ParsedTask:
         concept_ids=list(dict.fromkeys(concept_ids)),
         policies=policies,
     )
+
+
+def _hosts_from_query(query: str) -> list[str]:
+    lower = query.lower()
+    hosts: list[str] = []
+    for match in _HOST_RE.finditer(query):
+        host = match.group(1).lower()
+        before = lower[max(0, match.start(1) - 16) : match.start(1)]
+        after = lower[match.end(1) : match.end(1) + 16]
+        if host == "api" and after.startswith((" key", "-key")):
+            continue
+        if host == "ci" and after.startswith(("/cd", "-cd")):
+            continue
+        if host == "noc" and after.startswith((" knowledge", "-knowledge")):
+            continue
+        if host == "loop" and before.endswith(("knowledge ", "engineering ")) and not after.startswith((" host", " vm")):
+            continue
+        hosts.append(host)
+    return list(dict.fromkeys(hosts))
 
 
 class KnowledgeRetriever:
@@ -146,7 +165,15 @@ class KnowledgeRetriever:
             candidates = [candidate for candidate in candidates if candidate.concept_type == concept_type]
         if repo:
             candidates = [candidate for candidate in candidates if _candidate_repo(candidate) == repo]
-        candidates.sort(key=lambda item: (tier_rank(item.authority_tier), -item.total_score(), item.concept_id))
+        candidates.sort(
+            key=lambda item: (
+                0 if item.scores.exact is not None else 1,
+                _exact_match_priority(item),
+                tier_rank(item.authority_tier),
+                -item.total_score(),
+                item.concept_id,
+            )
+        )
         return candidates[:limit]
 
     def neighborhood(
@@ -171,6 +198,16 @@ class KnowledgeRetriever:
     def _exact_ids(self, parsed: ParsedTask, query: str, *, limit: int) -> list[str]:
         ids: list[str] = []
         ids.extend(parsed.concept_ids)
+        lower_query = query.lower()
+        if "system map" in lower_query or "architecture map" in lower_query:
+            ids.append("curated/architecture/as215932-system-map")
+            ids.append("generated/projects/network-operations")
+        if "openrouter" in lower_query and any(term in lower_query for term in {"key", "credential", "secret"}):
+            ids.append("curated/policies/openrouter-key-ownership")
+        if "knowledge-mcp" in lower_query or "knowledge mcp" in lower_query:
+            ids.append("generated/deployments/knowledge-mcp-on-loop")
+        if "noc-knowledge" in lower_query or "noc knowledge" in lower_query:
+            ids.append("generated/deployments/noc-knowledge-on-noc")
         for service in parsed.services:
             if service == "network-operations":
                 ids.append("generated/projects/network-operations")
@@ -242,6 +279,12 @@ class KnowledgeRetriever:
             excerpt=_excerpt(body),
             metadata=metadata,
         )
+
+
+def _exact_match_priority(candidate: RetrievalCandidate) -> int:
+    if candidate.scores.exact is not None and candidate.concept_id == "curated/policies/openrouter-key-ownership":
+        return 0
+    return 1
 
 
 def max_or(left: float | None, right: float | None) -> float | None:

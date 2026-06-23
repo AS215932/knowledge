@@ -3,26 +3,26 @@ type: Infrastructure Host
 title: log
 description: Infrastructure Host `log` with address `2a0c:b641:b50:2::b0` and groups
   `infra_vms, linux`.
-resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml
+resource: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml
 tags:
 - host
 - infra_vms
 - infrastructure
 - linux
 - vm
-timestamp: '2026-06-17T08:13:24Z'
+timestamp: '2026-06-23T09:21:09Z'
 truth_owner: repo
 authority: canonical
 source_refs:
 - repo: AS215932/network-operations
   path: ansible/inventory/hosts.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml
 - repo: AS215932/network-operations
   path: ansible/inventory/host_vars/log.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/log.yml
-last_verified_at: '2026-06-17T10:33:31Z'
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/host_vars/log.yml
+last_verified_at: '2026-06-23T10:06:29Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -100,5 +100,5 @@ No app version pins found in host vars.
 
 # Citations
 
-[1] [Ansible inventory](https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml)
-[2] [ansible/inventory/host_vars/log.yml](https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/log.yml)
+[1] [Ansible inventory](https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml)
+[2] [ansible/inventory/host_vars/log.yml](https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/host_vars/log.yml)

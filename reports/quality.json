@@ -44,6 +44,12 @@
     },
     {
       "code": "no_inbound_links",
+      "concept_id": "curated/policies/openrouter-key-ownership",
+      "message": "Concept has no inbound graph edges.",
+      "severity": "warning"
+    },
+    {
+      "code": "no_inbound_links",
       "concept_id": "curated/policies/source-of-truth-and-canonicality",
       "message": "Concept has no inbound graph edges.",
       "severity": "warning"
@@ -57,6 +63,12 @@
     {
       "code": "no_inbound_links",
       "concept_id": "curated/summaries/engineering-loop-knowledge-mcp-rollout-2026-06-21",
+      "message": "Concept has no inbound graph edges.",
+      "severity": "warning"
+    },
+    {
+      "code": "no_inbound_links",
+      "concept_id": "generated/enriched/infrastructure",
       "message": "Concept has no inbound graph edges.",
       "severity": "warning"
     },
@@ -236,18 +248,18 @@
     }
   ],
   "summary": {
-    "concept_count": 869,
+    "concept_count": 874,
     "concepts_by_authority": {
-      "advisory": 12,
-      "canonical": 760,
+      "advisory": 14,
+      "canonical": 763,
       "evidence": 97
     },
     "concepts_by_truth_owner": {
-      "derived": 2,
+      "derived": 3,
       "external": 95,
       "observed": 2,
-      "okf": 10,
-      "repo": 760
+      "okf": 11,
+      "repo": 763
     },
     "concepts_by_type": {
       "API Endpoint": 306,
@@ -255,19 +267,19 @@
       "Agent Instruction": 5,
       "Architecture": 5,
       "DNS Zone": 5,
-      "Deployment": 6,
+      "Deployment": 8,
       "Domain Policy": 1,
       "GitHub Issue": 79,
       "GitHub Pull Request": 6,
       "Infrastructure Host": 19,
       "Lesson": 1,
       "Monitoring Inventory": 1,
-      "Network Prefix": 6,
+      "Network Prefix": 7,
       "Observation": 2,
       "Organization": 1,
-      "Policy": 2,
+      "Policy": 3,
       "Project": 2,
-      "Reference": 1,
+      "Reference": 2,
       "Repository": 10,
       "Rollout Summary": 1,
       "Router": 4,
@@ -279,15 +291,15 @@
       "Workflow": 32
     },
     "critical_count": 0,
-    "edge_count": 1894,
+    "edge_count": 1899,
     "endpoint_count": 306,
     "host_count": 23,
-    "llm_enriched_count": 1,
-    "llm_enrichment_run_count": 1,
+    "llm_enriched_count": 2,
+    "llm_enrichment_run_count": 2,
     "llm_enrichment_run_status": "proposed_output_present",
     "observed_count": 2,
     "schema_count": 219,
-    "source_file_ref_count": 249,
+    "source_file_ref_count": 251,
     "source_files_skipped": "Not enumerated in quality report; see knowledge.config.yml include/exclude patterns and ingestion logs.",
     "source_repo_count": 11,
     "source_repos": [
@@ -312,6 +324,6 @@
       "noc_agent": "ok",
       "prometheus": "ok"
     },
-    "warning_count": 39
+    "warning_count": 41
   }
 }
