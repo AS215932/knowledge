@@ -135,7 +135,10 @@ source_refs:
 last_verified_at: '2026-06-23T11:19:14Z'
 confidence: medium
 dispute_policy: repo_wins
-review_status: proposed
+review_status: reviewed
+reviewed_by: svag
+reviewed_at: '2026-06-23T14:05:00Z'
+review_note: Human-approved as useful advisory synthesis; repo source truth continues to win on conflict.
 enrichment:
   mode: llm
   provider: openrouter
