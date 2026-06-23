@@ -195,7 +195,20 @@ def _relevant_enrichment_ids(task: str, *, parsed: ParsedTask, store: KnowledgeS
             "service map",
             "project map",
         },
-        "infrastructure": {"infrastructure overview", "host map", "network map", "monitoring overview"},
+        "infrastructure": {
+            "infrastructure",
+            "infrastructure overview",
+            "host map",
+            "network map",
+            "monitoring overview",
+            "monitoring topology",
+            "knowledge mcp deployment",
+            "knowledge mcp infrastructure",
+            "docker ipv6",
+            "routed ipv6",
+            "loopback mcp",
+            "runtime path",
+        },
         "architecture": {"architecture", "system map", "design overview", "control plane overview"},
         "api": {"api overview", "api landscape", "endpoint map", "schema overview", "interface overview"},
         "org": {"org overview", "organization", "organisation", "business overview", "strategy", "operating model"},
@@ -403,24 +416,6 @@ def _should_reserve_enrichment_slots(
     explicit_enrichment_ids = _explicit_enrichment_ids(task, parsed=parsed)
     if explicit_enrichment_ids:
         return True
-    lower = task.lower()
-    landscape_or_overview = any(
-        term in lower
-        for term in {
-            "architecture",
-            "landscape",
-            "overview",
-            "operating model",
-            "portfolio",
-            "project map",
-            "relationship",
-            "relationships",
-            "service map",
-            "system map",
-        }
-    )
-    if not landscape_or_overview:
-        return False
     if _has_exact_source_entity(parsed, task=task):
         return max_result_refs > len(protected_source_ids)
     return True

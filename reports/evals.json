@@ -21,7 +21,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -46,7 +46,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -71,7 +71,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -96,7 +96,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -121,7 +121,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -146,7 +146,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "engineering_loop"
     },
@@ -171,7 +171,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -196,7 +196,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -221,7 +221,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -246,7 +246,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -271,7 +271,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -296,7 +296,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -321,7 +321,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -344,7 +344,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -369,7 +369,32 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
+      "score": 1.0,
+      "suite": "grounding"
+    },
+    {
+      "case_id": "grounding-010-infrastructure-enrichment",
+      "failure_reasons": [],
+      "metrics": {
+        "included_ref_count": 40,
+        "policy_result": "allow",
+        "section_names": [
+          "advisory_synthesis",
+          "api_schema_or_deployment_context",
+          "applicable_policies",
+          "forbidden_actions",
+          "known_conflicts_or_staleness",
+          "related_runbooks_lessons",
+          "related_services_and_hosts",
+          "target_repo_source_truth",
+          "task_summary",
+          "unresolved_questions"
+        ],
+        "vector_scores_null": true
+      },
+      "passed": true,
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "grounding"
     },
@@ -382,7 +407,7 @@
         "mode": "import_valid"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -406,7 +431,7 @@
         "mode": "import_reject"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -419,7 +444,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -432,7 +457,7 @@
         "mode": "source_truth_outprioritizes_summary"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -451,7 +476,7 @@
         "warning_count": 0
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_lifecycle"
     },
@@ -468,7 +493,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -485,7 +510,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -502,7 +527,7 @@
         "wrote": false
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "learning_promotion"
     },
@@ -525,7 +550,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -548,7 +573,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -571,7 +596,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -594,7 +619,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "noc_shadow"
     },
@@ -633,7 +658,7 @@
           "reasons": [
             "engineering_loop may perform read-only action knowledge.search"
           ],
-          "requested_at": "2026-06-22T12:33:15Z",
+          "requested_at": "2026-06-23T12:07:24Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -641,7 +666,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "policy"
     },
@@ -680,7 +705,7 @@
           "reasons": [
             "engineering_loop may perform read-only action knowledge.context_pack.generate"
           ],
-          "requested_at": "2026-06-22T12:33:15Z",
+          "requested_at": "2026-06-23T12:07:24Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -688,7 +713,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "policy"
     },
@@ -727,7 +752,7 @@
           "reasons": [
             "noc_shadow may perform read-only action knowledge.claims"
           ],
-          "requested_at": "2026-06-22T12:33:15Z",
+          "requested_at": "2026-06-23T12:07:24Z",
           "result": "allow",
           "risk_level": "low",
           "target": null
@@ -735,7 +760,7 @@
         "policy_result": "allow"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "policy"
     },
@@ -774,7 +799,7 @@
           "reasons": [
             "production-sensitive action requires human control: production.restart_service"
           ],
-          "requested_at": "2026-06-22T12:33:15Z",
+          "requested_at": "2026-06-23T12:07:24Z",
           "result": "require_human",
           "risk_level": "high",
           "target": null
@@ -782,7 +807,7 @@
         "policy_result": "require_human"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "policy"
     },
@@ -821,7 +846,7 @@
           "reasons": [
             "action denied for actor noc_shadow: production.modify_firewall"
           ],
-          "requested_at": "2026-06-22T12:33:15Z",
+          "requested_at": "2026-06-23T12:07:24Z",
           "result": "deny",
           "risk_level": "high",
           "target": null
@@ -829,7 +854,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "policy"
     },
@@ -870,7 +895,7 @@
           "reasons": [
             "request includes denied data classes: secret"
           ],
-          "requested_at": "2026-06-22T12:33:15Z",
+          "requested_at": "2026-06-23T12:07:24Z",
           "result": "deny",
           "risk_level": "low",
           "target": null
@@ -878,7 +903,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "policy"
     },
@@ -917,7 +942,7 @@
           "reasons": [
             "no allow rule matched for actor=general action=unknown.do_thing"
           ],
-          "requested_at": "2026-06-22T12:33:15Z",
+          "requested_at": "2026-06-23T12:07:24Z",
           "result": "deny",
           "risk_level": "low",
           "target": null
@@ -925,7 +950,7 @@
         "policy_result": "deny"
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "policy"
     },
@@ -951,7 +976,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -977,7 +1002,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1003,7 +1028,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1029,7 +1054,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1043,19 +1068,19 @@
         "retrieved_refs": [
           "generated/projects/network-operations",
           "generated/infrastructure/hosts/api",
-          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-proxy-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-api-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-ci-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-vault-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-netproxy-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-web-yml",
           "generated/source-docs/as215932/network-operations/claude",
-          "generated/deployments/hyrule-cloud-on-api"
+          "generated/deployments/hyrule-cloud-on-api",
+          "generated/services/hyrule-cloud"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1069,19 +1094,19 @@
         "retrieved_refs": [
           "generated/infrastructure/hosts/host-log",
           "generated/projects/network-operations",
+          "generated/infrastructure/dns-zones/deploy-hyrule-host",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-vpn-yml",
           "generated/source-docs/as215932/hyrule-network-proxy/agents",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-ci-pr-yml",
-          "generated/infrastructure/dns-zones/deploy-hyrule-host",
-          "generated/infrastructure/hosts/noc",
           "generated/infrastructure/hosts/ns2",
           "generated/infrastructure/hosts/ci-pr",
           "generated/infrastructure/hosts/extmon",
-          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-proxy-yml"
+          "generated/infrastructure/hosts/vault"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1100,14 +1125,14 @@
           "generated/api/noc-agent/noc-agent-post-webhook-alertmanager-app-main-py-686",
           "generated/api/noc-agent/noc-agent-post-task-app-main-py-758",
           "generated/source-docs/as215932/noc-agent/pyproject-toml",
+          "generated/deployments/noc-knowledge-on-noc",
           "generated/deployments/hyrule-mcp-on-noc",
-          "generated/services/hyrule-mcp",
-          "generated/source-docs/as215932/noc-agent/readme"
+          "generated/services/hyrule-mcp"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1122,18 +1147,18 @@
           "generated/infrastructure/hosts/noc",
           "generated/services/noc-agent",
           "generated/deployments/noc-agent-on-noc",
-          "generated/api/noc-agent/noc-agent-post-control-cases-investigate-app-main-py-890",
-          "generated/api/noc-agent/noc-agent-post-control-status-app-main-py-907",
           "generated/api/noc-agent/noc-agent-post-mail-poll-app-main-py-723",
           "generated/api/noc-agent/noc-agent-post-webhook-alertmanager-app-main-py-686",
           "generated/api/noc-agent/noc-agent-post-task-app-main-py-758",
           "generated/source-docs/as215932/noc-agent/pyproject-toml",
-          "generated/services/hyrule-mcp"
+          "generated/services/hyrule-mcp",
+          "generated/projects/network-operations",
+          "generated/deployments/hyrule-mcp-on-noc"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1147,19 +1172,19 @@
         "retrieved_refs": [
           "generated/services/hyrule-mcp",
           "generated/deployments/hyrule-mcp-on-noc",
-          "generated/source-docs/as215932/hyrule-mcp/testing",
           "generated/schemas/hyrule-mcp/TruncatedText",
           "generated/schemas/hyrule-mcp/AuditEvent",
           "generated/source-docs/as215932/hyrule-mcp/pyproject-toml",
           "generated/schemas/hyrule-mcp/RollbackGuard",
           "generated/source-docs/as215932/hyrule-mcp/readme",
           "generated/infrastructure/hosts/noc",
-          "generated/projects/network-operations"
+          "generated/projects/network-operations",
+          "generated/schemas/hyrule-mcp/McpToolError"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1177,15 +1202,15 @@
           "generated/source-docs/as215932/hyrule-mcp/readme",
           "generated/projects/network-operations",
           "generated/services/noc-agent",
+          "generated/deployments/noc-knowledge-on-noc",
           "generated/deployments/noc-agent-on-noc",
           "generated/schemas/hyrule-mcp/AuditEvent",
-          "generated/schemas/hyrule-mcp/McpToolError",
-          "generated/schemas/hyrule-mcp/RollbackGuard"
+          "generated/schemas/hyrule-mcp/McpToolError"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1211,7 +1236,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1227,17 +1252,17 @@
           "generated/infrastructure/hosts/netproxy",
           "generated/deployments/hyrule-network-proxy-on-netproxy",
           "generated/infrastructure/hosts/proxy",
-          "generated/source-docs/as215932/hyrule-network-proxy/go-mod",
           "generated/workflows/hyrule-network-proxy/github-workflows-ci-yml",
           "generated/projects/network-operations",
           "generated/source-docs/as215932/hyrule-network-proxy/readme",
           "generated/source-docs/as215932/hyrule-network-proxy/agents",
-          "generated/api/hyrule-network-proxy/hyrule-network-proxy-any-get-healthz-internal-server-server-go-31"
+          "generated/api/hyrule-network-proxy/hyrule-network-proxy-any-get-healthz-internal-server-server-go-31",
+          "generated/api/hyrule-network-proxy/hyrule-network-proxy-any-get-readyz-internal-server-server-go-32"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1249,8 +1274,8 @@
         "recall_at_5": true,
         "required_claim_match": true,
         "retrieved_refs": [
-          "generated/services/engineering-loop",
           "generated/infrastructure/hosts/loop",
+          "generated/services/engineering-loop",
           "generated/source-docs/as215932/engineering-loop/skills-role-systems-engineer-skill",
           "generated/source-docs/as215932/engineering-loop/skills-monitoring-onboarding-skill",
           "generated/source-docs/as215932/engineering-loop/docs-agent-loops-acceptance-gates",
@@ -1263,7 +1288,7 @@
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1276,20 +1301,20 @@
         "required_claim_match": true,
         "retrieved_refs": [
           "generated/projects/network-operations",
-          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-dns-yml",
-          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-loop-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-ci-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-xoa-yml",
-          "generated/source-docs/as215932/network-operations/claude",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-vpn-yml",
           "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-mail-yml",
+          "generated/source-docs/as215932/network-operations/claude",
           "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-infra-vms-yml",
-          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-public-facing-yml"
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-public-facing-yml",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-proxy-yml",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-nameservers-yml"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     },
@@ -1301,21 +1326,47 @@
         "recall_at_5": true,
         "required_claim_match": true,
         "retrieved_refs": [
-          "generated/source-docs/as215932/hyrule-cloud/readme",
           "generated/projects/network-operations",
-          "generated/source-docs/as215932/engineering-loop/skills-readme",
-          "generated/source-docs/as215932/network-operations/skills-readme",
-          "generated/source-docs/as215932/network-operations/docs-ci-security-model",
-          "generated/source-docs/as215932/engineering-loop/docs-engineering-loop-v2-roadmap",
-          "generated/source-docs/as215932/network-operations/docs-engineering-loop-v2-roadmap",
-          "generated/source-docs/as215932/network-operations/docs-netops-testing-strategy",
-          "generated/source-docs/as215932/network-operations/readme",
-          "generated/schemas/hyrule-cloud/DNSPropagationRequest"
+          "curated/architecture/as215932-system-map",
+          "generated/source-docs/as215932/network-operations/configs-rtr-jool-nat64-vrf-leak-service",
+          "generated/source-docs/as215932/network-operations/agents",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-all-yml",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-freebsd-yml",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-infra-vms-yml",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-linux-yml",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-nameservers-yml",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-group-vars-openbsd-yml"
         ],
         "vector_scores_null": true
       },
       "passed": true,
-      "run_id": "evalrun_99cfa05c24f833fff2b1124324b728c4",
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
+      "score": 1.0,
+      "suite": "retrieval"
+    },
+    {
+      "case_id": "retrieval-016-openrouter-key-ownership",
+      "failure_reasons": [],
+      "metrics": {
+        "candidate_count": 10,
+        "recall_at_5": true,
+        "required_claim_match": true,
+        "retrieved_refs": [
+          "curated/policies/openrouter-key-ownership",
+          "generated/source-docs/as215932/engineering-loop/skills-readme",
+          "generated/source-docs/as215932/network-operations/ansible-inventory-host-vars-loop-yml",
+          "generated/source-docs/as215932/network-operations/integrations-pi-extensions-hyrule-loop-readme",
+          "generated/source-docs/as215932/engineering-loop/integrations-pi-extensions-hyrule-loop-readme",
+          "generated/workflows/as215932-net/github-workflows-pr-agent-yml",
+          "generated/workflows/hyrule-cloud/github-workflows-pr-agent-yml",
+          "generated/workflows/hyrule-mcp/github-workflows-pr-agent-yml",
+          "generated/workflows/hyrule-web/github-workflows-pr-agent-yml",
+          "generated/workflows/network-operations/github-workflows-pr-agent-yml"
+        ],
+        "vector_scores_null": true
+      },
+      "passed": true,
+      "run_id": "evalrun_5ac2ae6dd17b6cbb8310c3fef2e9eccb",
       "score": 1.0,
       "suite": "retrieval"
     }
@@ -1329,8 +1380,8 @@
       },
       "grounding": {
         "failed": 0,
-        "passed": 9,
-        "total": 9
+        "passed": 10,
+        "total": 10
       },
       "learning_lifecycle": {
         "failed": 0,
@@ -1354,12 +1405,12 @@
       },
       "retrieval": {
         "failed": 0,
-        "passed": 15,
-        "total": 15
+        "passed": 16,
+        "total": 16
       }
     },
     "failed": 0,
-    "passed": 49,
-    "total": 49
+    "passed": 51,
+    "total": 51
   }
 }

@@ -3,26 +3,26 @@ type: Infrastructure Host
 title: loop
 description: Infrastructure Host `loop` with address `2a0c:b641:b50:2::f0` and groups
   `infra_vms, linux`.
-resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml
+resource: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml
 tags:
 - host
 - infra_vms
 - infrastructure
 - linux
 - vm
-timestamp: '2026-06-17T08:13:24Z'
+timestamp: '2026-06-23T09:21:09Z'
 truth_owner: repo
 authority: canonical
 source_refs:
 - repo: AS215932/network-operations
   path: ansible/inventory/hosts.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml
 - repo: AS215932/network-operations
   path: ansible/inventory/host_vars/loop.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/loop.yml
-last_verified_at: '2026-06-17T10:33:31Z'
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/host_vars/loop.yml
+last_verified_at: '2026-06-23T10:06:29Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -47,7 +47,8 @@ groups:
 
 # Deployed version pins
 
-* `engineering_loop_version` = `768cde6c996e42f3f91d395347ba9809e2e020e5`
+* `engineering_loop_version` = `eb37b1c4d1d7c3f349c8c6cdb3bd890f168c2755`
+* `knowledge_mcp_version` = `5a6666cbb9d290868db3fb854ffed39099515b91`
 
 # Inbound firewall rules
 
@@ -55,7 +56,9 @@ groups:
 
 # Monitoring services
 
+* `engineering-loop` (dummy) — Passive run-status check submitted by the Engineering Loop daemon after every cycle
 * `engineering-loop-timer` (prom_systemd_unit) — Engineering Loop hourly timer is active on the dedicated loop VM
+* `knowledge-mcp-service` (prom_systemd_unit) — Knowledge MCP container service is active on loopback for Engineering Loop context
 
 # Peer registry values
 
@@ -68,8 +71,20 @@ groups:
 | Key | Value |
 | --- | --- |
 | `engineering_loop_allowed_paths` | `{"hyrule-cloud": ["hyrule_cloud", "tests", "scripts", "docs"], "hyrule-web": ["frontend", "hyrule_web", "tests"]}` |
+| `engineering_loop_lhp_callback_enabled` | `True` |
+| `engineering_loop_noc_lhp_base_url` | `http://[{{ peers.noc.ipv6 }}]:8000` |
 | `engineering_loop_timer_enabled` | `True` |
-| `engineering_loop_version` | `768cde6c996e42f3f91d395347ba9809e2e020e5` |
+| `engineering_loop_version` | `eb37b1c4d1d7c3f349c8c6cdb3bd890f168c2755` |
+| `firewall_forward_extra_raw_nft` | `iifname docker0 ip6 saddr {{ loop_docker_subnet }} counter accept comment "loop Docker IPv6 egress"
+` |
+| `knowledge_mcp_docker_dns` | `["{{ peers.rtr.ipv6 }}"]` |
+| `knowledge_mcp_docker_fixed_cidr_v6` | `{{ loop_docker_subnet }}` |
+| `knowledge_mcp_docker_ipv6_enabled` | `True` |
+| `knowledge_mcp_enabled` | `True` |
+| `knowledge_mcp_host` | `127.0.0.1` |
+| `knowledge_mcp_port` | `8767` |
+| `knowledge_mcp_transport` | `streamable-http` |
+| `knowledge_mcp_version` | `5a6666cbb9d290868db3fb854ffed39099515b91` |
 | `logs_register` | `True` |
 | `logs_role` | `loop` |
 | `monitoring_check_vars` | `{"engineering_loop": true}` |
@@ -79,5 +94,5 @@ groups:
 
 # Citations
 
-[1] [Ansible inventory](https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/hosts.yml)
-[2] [ansible/inventory/host_vars/loop.yml](https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/ansible/inventory/host_vars/loop.yml)
+[1] [Ansible inventory](https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/hosts.yml)
+[2] [ansible/inventory/host_vars/loop.yml](https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/ansible/inventory/host_vars/loop.yml)

@@ -1,0 +1,22 @@
+id: grounding-010-infrastructure-enrichment
+suite: grounding
+task: Ground proposed infrastructure enrichment
+role: engineering_loop
+inputs:
+  query: Explain the AS215932 infrastructure overview for Engineering Loop, including Knowledge MCP Docker IPv6 and monitoring topology
+  authority_min: A4
+  context_pack: true
+  risk_level: low
+expected:
+  policy_result: allow
+  refs_any:
+  - generated/enriched/infrastructure
+  sections:
+  - advisory_synthesis
+  - target_repo_source_truth
+  - forbidden_actions
+forbidden: {}
+must_pass: true
+metrics:
+  citations_required: true
+  vector_scores_null: true

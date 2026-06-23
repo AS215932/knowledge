@@ -68,6 +68,13 @@ class RepoBuildContext:
         return f"generated/{concept_dir}/{self.source.concept_slug}"
 
 
+@dataclass(frozen=True)
+class StaticDeploymentTarget:
+    service_slug: str
+    service_title: str
+    service_repo: str
+
+
 def source_ref(snapshot: RepoSnapshot, rel_path: str | None = None, lines: str | None = None) -> SourceRef:
     url = snapshot.url
     if rel_path:
@@ -872,6 +879,64 @@ This concept represents intended deployment state from `network-operations`: the
     )
 
 
+def build_static_deployment_concept(
+    snapshot: RepoSnapshot,
+    host: HostInfo,
+    pin_name: str,
+    pin_value: str,
+    target: StaticDeploymentTarget,
+    verified_at: str,
+) -> Concept:
+    host_var_path = f"ansible/inventory/host_vars/{host.name}.yml"
+    host_id = _host_concept_id(host.name)
+    refs = [source_ref(snapshot, "ansible/inventory/hosts.yml")]
+    if (snapshot.path / host_var_path).exists():
+        refs.append(source_ref(snapshot, host_var_path))
+    body = f"""# Deployment pin
+
+| Field | Value |
+| --- | --- |
+| Service | `{target.service_title}` |
+| Host | {_link(host_id, host.name)} |
+| Pin variable | `{pin_name}` |
+| Pinned version | `{pin_value}` |
+| Source host vars | `{host_var_path}` |
+
+# Interpretation
+
+This concept represents intended deployment state from `network-operations`: the named AS215932/knowledge component is pinned to the recorded source revision/version on the target host. Runtime state still needs observed evidence from `okf/observed/` before claiming that the host is actually running this version.
+
+# Citations
+
+[1] [Ansible inventory]({source_url(snapshot.url, snapshot.commit, 'ansible/inventory/hosts.yml')})
+"""
+    if (snapshot.path / host_var_path).exists():
+        body += f"[2] [{host_var_path}]({source_url(snapshot.url, snapshot.commit, host_var_path)})\n"
+    return Concept(
+        concept_id=f"generated/deployments/{target.service_slug}-on-{slugify(host.name)}",
+        concept_type="Deployment",
+        title=f"{target.service_title} on {host.name}",
+        description=f"Intended deployment pin `{pin_name}` for {target.service_title} on `{host.name}`.",
+        resource=source_url(snapshot.url, snapshot.commit, host_var_path if (snapshot.path / host_var_path).exists() else "ansible/inventory/hosts.yml"),
+        tags=["deployment", "pin", "knowledge", host.name],
+        timestamp=snapshot.updated_at,
+        truth_owner="repo",
+        authority="canonical",
+        source_refs=refs,
+        last_verified_at=verified_at,
+        confidence="high",
+        dispute_policy="repo_wins",
+        extra={
+            "repo": snapshot.repo,
+            "service_repo": target.service_repo,
+            "host": host.name,
+            "pin_name": pin_name,
+            "pin_value": pin_value,
+        },
+        body=body,
+    )
+
+
 def build_host_concept(snapshot: RepoSnapshot, host: HostInfo, verified_at: str) -> Concept:
     concept_id = _host_concept_id(host.name)
     firewall = [
@@ -1045,7 +1110,9 @@ This workflow summary is statically parsed from GitHub Actions YAML. It intentio
 def build_monitoring_concept(snapshot: RepoSnapshot, paths: list[str], checks: list[str], verified_at: str) -> Concept | None:
     if not paths:
         return None
-    refs = [source_ref(snapshot, path) for path in paths[:12]]
+    priority_paths = ["configs/mon/icinga2/scripts/check_noc_agent_model_health.sh"]
+    ref_paths = list(dict.fromkeys([*paths[:12], *[path for path in priority_paths if path in paths]]))
+    refs = [source_ref(snapshot, path) for path in ref_paths]
     body = f"""# Monitoring configuration
 
 This concept summarizes tracked monitoring source files under `configs/mon/`.
@@ -1322,6 +1389,12 @@ def build_all(
                         result.edge(deployment_concept.concept_id, service_context.top_concept_id, "deploys-service")
                         if project_concept:
                             result.edge(project_concept.concept_id, deployment_concept.concept_id, "owns-deployment-pin")
+                    elif static_target := _static_deployment_target_for_pin(pin):
+                        deployment_concept = build_static_deployment_concept(snapshot, host, pin, value, static_target, verified_at)
+                        result.add(deployment_concept)
+                        result.edge(deployment_concept.concept_id, host_concept.concept_id, "targets-host")
+                        if project_concept:
+                            result.edge(project_concept.concept_id, deployment_concept.concept_id, "owns-deployment-pin")
             for zone in context.zones:
                 zone_concept = build_dns_zone_concept(snapshot, zone, verified_at)
                 result.add(zone_concept)
@@ -1378,6 +1451,24 @@ def _repo_for_pin(pin: str) -> str | None:
         "hyrule_mcp_version": "AS215932/hyrule-mcp",
         "hyrule_network_proxy_version": "AS215932/hyrule-network-proxy",
         "engineering_loop_version": "AS215932/engineering-loop",
+        "knowledge_mcp_version": "AS215932/knowledge",
+        "noc_knowledge_version": "AS215932/knowledge",
+    }
+    return mapping.get(pin)
+
+
+def _static_deployment_target_for_pin(pin: str) -> StaticDeploymentTarget | None:
+    mapping = {
+        "knowledge_mcp_version": StaticDeploymentTarget(
+            service_slug="knowledge-mcp",
+            service_title="AS215932 Knowledge MCP",
+            service_repo="AS215932/knowledge",
+        ),
+        "noc_knowledge_version": StaticDeploymentTarget(
+            service_slug="noc-knowledge",
+            service_title="AS215932 NOC Knowledge Bundle",
+            service_repo="AS215932/knowledge",
+        ),
     }
     return mapping.get(pin)
 

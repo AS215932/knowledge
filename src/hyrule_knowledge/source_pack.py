@@ -69,5 +69,10 @@ def _select_concepts(concepts: list[dict[str, Any]], target: str) -> list[dict[s
     if target == "api":
         return [c for c in concepts if c["type"] in {"API Endpoint", "API Schema", "Service"}]
     if target == "infrastructure":
-        return [c for c in concepts if c["type"] in {"Infrastructure Host", "Router", "DNS Zone", "Network Prefix", "Monitoring Inventory", "Workflow"}]
+        return [
+            c
+            for c in concepts
+            if c["type"]
+            in {"Infrastructure Host", "Router", "DNS Zone", "Network Prefix", "Monitoring Inventory", "Workflow", "Deployment"}
+        ]
     return [c for c in concepts if target in c["id"] or target.lower() in c["title"].lower()]

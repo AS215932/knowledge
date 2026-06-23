@@ -2,21 +2,21 @@
 type: Workflow
 title: iac-tests
 description: GitHub Actions workflow `iac-tests` from AS215932/network-operations.
-resource: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/iac-tests.yml
+resource: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/.github/workflows/iac-tests.yml
 tags:
 - ci
 - github-actions
 - network-operations
 - workflow
-timestamp: '2026-06-17T08:13:24Z'
+timestamp: '2026-06-23T09:21:09Z'
 truth_owner: repo
 authority: canonical
 source_refs:
 - repo: AS215932/network-operations
   path: .github/workflows/iac-tests.yml
-  commit: 67061d325834a7145252cdf851da1df6a4a38b9e
-  url: https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/iac-tests.yml
-last_verified_at: '2026-06-17T10:33:31Z'
+  commit: fe46c3c3580ff79e8009ca839ab579f0691b55b8
+  url: https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/.github/workflows/iac-tests.yml
+last_verified_at: '2026-06-23T10:06:29Z'
 confidence: high
 dispute_policy: repo_wins
 repo: AS215932/network-operations
@@ -58,4 +58,4 @@ This workflow summary is statically parsed from GitHub Actions YAML. It intentio
 
 # Citations
 
-[1] [.github/workflows/iac-tests.yml](https://github.com/AS215932/network-operations/blob/67061d325834a7145252cdf851da1df6a4a38b9e/.github/workflows/iac-tests.yml)
+[1] [.github/workflows/iac-tests.yml](https://github.com/AS215932/network-operations/blob/fe46c3c3580ff79e8009ca839ab579f0691b55b8/.github/workflows/iac-tests.yml)
