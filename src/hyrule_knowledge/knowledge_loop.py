@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -23,6 +24,20 @@ from typing import Any, Literal
 from .learning_ledger import load_learning_events
 
 DEFAULT_LOCK_MAX_AGE_SECONDS = 2 * 60 * 60
+
+# Generated/exported paths the loop is allowed to refresh and republish.
+_MANAGED_DIRTY_PREFIXES = ("okf", "exports", "reports", "evals", "ledger", "schema")
+# Binary artifacts that bake in wall-clock state (SQLite `datetime('now')`) and are
+# excluded from byte comparison everywhere, so they are always treated as volatile.
+_VOLATILE_BINARY_PATHS = frozenset({"exports/knowledge.sqlite"})
+# ISO-8601 timestamps stamped by `utc_now()`/`utc_now_iso()` (last_verified_at,
+# generated_at, extracted_at, requested_at, created_at, ...).
+_ISO_TIMESTAMP_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})")
+# `run_id` values: the loop wall-clock `local-YYYYMMDDHHMMSS` seed plus any value
+# derived from it (e.g. the eval run-id hash that seeds off the manifest run id).
+_RUN_ID_VALUE_RE = re.compile(r'("run_id"\s*:\s*)"[^"]*"')
+_LOCAL_RUN_ID_RE = re.compile(r"local-\d{14}")
+
 LoopOutcome = Literal[
     "published",
     "changes_detected",
@@ -260,7 +275,8 @@ def run_once(
             report.ledger = ledger
             return report
 
-        learning_event_count = _learning_event_count(config.learning_event_paths)
+        learning_event_paths = _resolve_learning_event_paths(config, repo)
+        learning_event_count = _learning_event_count(learning_event_paths)
         report.learning_events_seen = learning_event_count
         openrouter_requested = len(config.enrich_targets) if config.enrich_live else 0
         report.openrouter_calls_requested = openrouter_requested
@@ -274,7 +290,7 @@ def run_once(
         _prepare_base_checkout(repo, config, active_runner, report)
         _run_phase1_refresh(repo, config, active_runner, report)
         phase2_learning_events_to_charge = learning_event_count
-        imported_count = _run_phase2_imports(repo, config, active_runner, report)
+        imported_count = _run_phase2_imports(repo, config, learning_event_paths, active_runner, report)
         if imported_count:
             report.ledger = update_ledger(state_dir, learning_events_imported=imported_count)
             phase2_learning_charged = True
@@ -289,6 +305,7 @@ def run_once(
         if config.run_validation:
             _run_validation(repo, config, active_runner, report)
 
+        _drop_volatile_only_changes(repo, state_dir, active_runner, report)
         report.changed = _git_dirty(repo, state_dir, active_runner, report)
         if not report.changed:
             report.outcome = "idle"
@@ -381,6 +398,23 @@ def _learning_event_count(paths: tuple[Path, ...]) -> int:
     return len(load_learning_events(list(paths)))
 
 
+def _resolve_learning_event_paths(config: KnowledgeLoopConfig, repo: Path) -> tuple[Path, ...]:
+    """Resolve relative learning-event inputs against the repo checkout.
+
+    The budget preflight counts events in this supervisor process while the actual
+    `ledger import` runs as a subprocess with ``cwd=repo``. Resolving relative paths
+    against ``repo`` keeps both sides pointed at the same files when the loop is
+    invoked from outside the checkout.
+    """
+    resolved: list[Path] = []
+    for path in config.learning_event_paths:
+        candidate = path.expanduser()
+        if not candidate.is_absolute():
+            candidate = repo / candidate
+        resolved.append(candidate)
+    return tuple(resolved)
+
+
 def _prepare_base_checkout(
     repo: Path,
     config: KnowledgeLoopConfig,
@@ -408,12 +442,13 @@ def _run_phase1_refresh(
 def _run_phase2_imports(
     repo: Path,
     config: KnowledgeLoopConfig,
+    learning_event_paths: tuple[Path, ...],
     runner: CommandRunner,
     report: KnowledgeLoopReport,
 ) -> int:
-    if not config.learning_event_paths:
+    if not learning_event_paths:
         return 0
-    argv = [*_knowledge_cmd(config, "ledger", "import"), *(path.as_posix() for path in config.learning_event_paths)]
+    argv = [*_knowledge_cmd(config, "ledger", "import"), *(path.as_posix() for path in learning_event_paths)]
     if config.replace_learning_events:
         argv.append("--replace")
     _run_checked(argv, repo, runner, report)
@@ -636,6 +671,78 @@ def _git_dirty(repo: Path, state_dir: Path, runner: CommandRunner, report: Knowl
         if path:
             return True
     return False
+
+
+def _drop_volatile_only_changes(
+    repo: Path,
+    state_dir: Path,
+    runner: CommandRunner,
+    report: KnowledgeLoopReport,
+) -> None:
+    """Discard timestamp/run-id-only regeneration churn so idle cycles stay idle.
+
+    Every ``ingest``/``export``/``eval`` rewrites ``last_verified_at``/``run_id``
+    metadata and rebuilds ``exports/knowledge.sqlite`` (which bakes in
+    ``datetime('now')``). Without this, an unchanged source snapshot still leaves a
+    dirty worktree and ``--create-pr`` would open timestamp-only refresh PRs. We
+    revert the churn only when *every* managed change is volatile, so genuine
+    knowledge changes still publish (carrying their fresh timestamps).
+    """
+    status = _run_checked(["git", "status", "--porcelain"], repo, runner, report)
+    ignored_prefix = _state_dir_status_prefix(repo, state_dir)
+    revertable: list[str] = []
+    for line in status.stdout.splitlines():
+        path = _porcelain_path(line)
+        if not path:
+            continue
+        if ignored_prefix and (path == ignored_prefix or path.startswith(f"{ignored_prefix}/")):
+            continue
+        if not _is_managed_dirty_path(path):
+            return  # unmanaged change present; treat the cycle as a real change
+        if line[:2].strip() != "M":
+            return  # add/delete/rename/untracked under managed paths is semantic
+        if path in _VOLATILE_BINARY_PATHS:
+            revertable.append(path)
+            continue
+        diff = _run_checked(["git", "diff", "--no-color", "-U0", "--", path], repo, runner, report)
+        if not _diff_is_volatile_only(diff.stdout):
+            return  # at least one semantic change; keep the whole worktree
+        revertable.append(path)
+    if revertable:
+        _run_checked(["git", "checkout", "--", *revertable], repo, runner, report)
+
+
+def _is_managed_dirty_path(path: str) -> bool:
+    return any(path == prefix or path.startswith(f"{prefix}/") for prefix in _MANAGED_DIRTY_PREFIXES)
+
+
+def _normalize_volatile(line: str) -> str:
+    line = _ISO_TIMESTAMP_RE.sub("<ts>", line)
+    line = _RUN_ID_VALUE_RE.sub(r'\1"<run-id>"', line)
+    line = _LOCAL_RUN_ID_RE.sub("<run-id>", line)
+    return line
+
+
+def _diff_is_volatile_only(diff: str) -> bool:
+    """Return True when a ``git diff -U0`` only rewrites timestamps/run ids in place."""
+    removed: list[str] = []
+    added: list[str] = []
+    in_hunk = False
+    for line in diff.splitlines():
+        if line.startswith("@@"):
+            in_hunk = True
+            continue
+        if not in_hunk:
+            continue
+        if line.startswith("-"):
+            removed.append(line[1:])
+        elif line.startswith("+"):
+            added.append(line[1:])
+    if not removed and not added:
+        return False
+    if len(removed) != len(added):
+        return False
+    return all(_normalize_volatile(old) == _normalize_volatile(new) for old, new in zip(removed, added))
 
 
 def _state_dir_status_prefix(repo: Path, state_dir: Path) -> str | None:

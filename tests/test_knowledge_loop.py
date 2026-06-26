@@ -70,6 +70,61 @@ class FailingImportRunner(FakeRunner):
         return super().__call__(argv, cwd, env)
 
 
+class VolatileRefreshRunner(FakeRunner):
+    """Models ingest/export churn that only rewrites timestamps, run ids, and the
+    SQLite artifact, then reports a clean worktree once the loop reverts it."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.reverted = False
+
+    def __call__(self, argv: Sequence[str], cwd: Path, env: Mapping[str, str] | None) -> CommandResult:
+        call = tuple(str(part) for part in argv)
+        if call[:3] == ("git", "checkout", "--"):
+            self.reverted = True
+            self.calls.append(call)
+            self.envs.append(env)
+            return CommandResult(call, 0, "")
+        if call[:3] == ("git", "status", "--porcelain"):
+            self.calls.append(call)
+            self.envs.append(env)
+            stdout = "" if self.reverted else " M exports/manifest.json\n M exports/knowledge.sqlite\n"
+            return CommandResult(call, 0, stdout)
+        if call[:3] == ("git", "diff", "--no-color"):
+            self.calls.append(call)
+            self.envs.append(env)
+            diff = (
+                f"diff --git a/{call[-1]} b/{call[-1]}\n"
+                "@@ -1 +1 @@\n"
+                '-{"run_id":"local-20260101000000","generated_at":"2026-01-01T00:00:00Z"}\n'
+                '+{"run_id":"local-20260102000000","generated_at":"2026-01-02T00:00:00Z"}\n'
+            )
+            return CommandResult(call, 0, diff)
+        return super().__call__(argv, cwd, env)
+
+
+class SemanticRefreshRunner(FakeRunner):
+    """Models a genuine knowledge change whose diff is not timestamp-only."""
+
+    def __call__(self, argv: Sequence[str], cwd: Path, env: Mapping[str, str] | None) -> CommandResult:
+        call = tuple(str(part) for part in argv)
+        if call[:3] == ("git", "status", "--porcelain"):
+            self.calls.append(call)
+            self.envs.append(env)
+            return CommandResult(call, 0, " M okf/generated/services/example.md\n")
+        if call[:3] == ("git", "diff", "--no-color"):
+            self.calls.append(call)
+            self.envs.append(env)
+            diff = (
+                f"diff --git a/{call[-1]} b/{call[-1]}\n"
+                "@@ -1 +1 @@\n"
+                "-old description of the service\n"
+                "+new description of the service\n"
+            )
+            return CommandResult(call, 0, diff)
+        return super().__call__(argv, cwd, env)
+
+
 def _repo(tmp_path: Path) -> Path:
     repo = tmp_path / "knowledge"
     repo.mkdir()
@@ -157,6 +212,51 @@ def test_knowledge_loop_dirty_dry_run_does_not_publish(tmp_path: Path) -> None:
     assert report.outcome == "changes_detected"
     assert report.pr_url is None
     assert not any(call[:3] == ("gh", "pr", "create") for call in runner.calls)
+
+
+def test_knowledge_loop_reverts_timestamp_only_refresh_and_reports_idle(tmp_path: Path) -> None:
+    runner = VolatileRefreshRunner()
+
+    report = run_once(
+        KnowledgeLoopConfig(
+            repo_path=_repo(tmp_path),
+            state_dir=tmp_path / "state",
+            run_id="idle-volatile",
+            create_pr=True,
+            run_validation=False,
+        ),
+        runner=runner,
+    )
+
+    assert report.outcome == "idle"
+    assert report.changed is False
+    # the timestamp/run-id/sqlite churn is reverted instead of published
+    checkout_calls = [call for call in runner.calls if call[:3] == ("git", "checkout", "--")]
+    assert checkout_calls
+    assert any("exports/knowledge.sqlite" in call for call in checkout_calls)
+    assert any("exports/manifest.json" in call for call in checkout_calls)
+    assert not any(call[:3] == ("gh", "pr", "create") for call in runner.calls)
+    assert report.ledger["cycles"] == 1
+
+
+def test_knowledge_loop_publishes_pr_when_change_is_semantic(tmp_path: Path) -> None:
+    runner = SemanticRefreshRunner(dirty=True)
+
+    report = run_once(
+        KnowledgeLoopConfig(
+            repo_path=_repo(tmp_path),
+            state_dir=tmp_path / "state",
+            run_id="semantic-1",
+            create_pr=True,
+            run_validation=False,
+        ),
+        runner=runner,
+    )
+
+    assert report.outcome == "published"
+    # a real content change must not be reverted as volatile churn
+    assert not any(call[:3] == ("git", "checkout", "--") for call in runner.calls)
+    assert any(call[:3] == ("gh", "pr", "create") for call in runner.calls)
 
 
 def test_knowledge_loop_ignores_default_repo_local_state_dir_in_dirty_check(tmp_path: Path) -> None:
@@ -458,6 +558,35 @@ def test_phase2_learning_import_runs_when_budget_allows(tmp_path: Path) -> None:
     assert report.outcome == "idle"
     assert report.learning_events_seen == 1
     assert any("ledger" in call and "import" in call and events.as_posix() in call for call in runner.calls)
+    assert report.ledger["learning_events_imported"] == 1
+
+
+def test_phase2_learning_import_resolves_relative_event_path_against_repo(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    intake = repo / "intake"
+    intake.mkdir()
+    (intake / "one.json").write_text(
+        '{"ledger_version":"learning_ledger_v1","event_type":"run_summary","producer":"test","subject":"one","summary":"one"}\n',
+        encoding="utf-8",
+    )
+    runner = FakeRunner(dirty=False)
+
+    report = run_once(
+        KnowledgeLoopConfig(
+            repo_path=repo,
+            state_dir=tmp_path / "state",
+            learning_event_paths=(Path("intake"),),
+            max_learning_events_per_day=1,
+            run_validation=False,
+        ),
+        runner=runner,
+    )
+
+    # counted against the repo checkout, not the supervisor cwd
+    assert report.outcome == "idle"
+    assert report.learning_events_seen == 1
+    expected = (repo.resolve() / "intake").as_posix()
+    assert any("import" in call and expected in call for call in runner.calls)
     assert report.ledger["learning_events_imported"] == 1
 
 
