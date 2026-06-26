@@ -30,9 +30,22 @@ _MANAGED_DIRTY_PREFIXES = ("okf", "exports", "reports", "evals", "ledger", "sche
 # Binary artifacts that bake in wall-clock state (SQLite `datetime('now')`) and are
 # excluded from byte comparison everywhere, so they are always treated as volatile.
 _VOLATILE_BINARY_PATHS = frozenset({"exports/knowledge.sqlite"})
-# ISO-8601 timestamps stamped by `utc_now()`/`utc_now_iso()` (last_verified_at,
-# generated_at, extracted_at, requested_at, created_at, ...).
-_ISO_TIMESTAMP_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})")
+# Generation-metadata timestamp fields stamped by `utc_now()`/`utc_now_iso()` at
+# write time. Scoped by key (not a blanket ISO match) so a corrected source field
+# such as a learning event's `event_time` under `--replace-learning-events` is
+# never mistaken for timestamp churn and silently discarded.
+_VOLATILE_TS_KEYS = (
+    "last_verified_at",
+    "generated_at",
+    "extracted_at",
+    "claim_extracted_at",
+    "requested_at",
+    "created_at",
+)
+_VOLATILE_TS_RE = re.compile(
+    r'("?(?:' + "|".join(_VOLATILE_TS_KEYS) + r')"?\s*[:=]\s*["\']?)'
+    r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})"
+)
 # `run_id` values: the loop wall-clock `local-YYYYMMDDHHMMSS` seed plus any value
 # derived from it (e.g. the eval run-id hash that seeds off the manifest run id).
 _RUN_ID_VALUE_RE = re.compile(r'("run_id"\s*:\s*)"[^"]*"')
@@ -525,7 +538,7 @@ def _publish_pr(
         return branch, None
     _run_checked(["git", "fetch", "origin", config.base_branch], repo, runner, report)
     _run_checked(["git", "checkout", "-B", branch, f"origin/{config.base_branch}"], repo, runner, report)
-    _run_checked(["git", "add", "okf", "exports", "reports", "evals", "ledger"], repo, runner, report)
+    _run_checked(["git", "add", *_MANAGED_DIRTY_PREFIXES], repo, runner, report)
     staged = _run_checked(["git", "diff", "--cached", "--quiet"], repo, runner, report, allow_exit_codes={0, 1})
     if staged.returncode == 0:
         return branch, None
@@ -724,7 +737,7 @@ def _is_managed_dirty_path(path: str) -> bool:
 
 
 def _normalize_volatile(line: str) -> str:
-    line = _ISO_TIMESTAMP_RE.sub("<ts>", line)
+    line = _VOLATILE_TS_RE.sub(r"\1<ts>", line)
     line = _RUN_ID_VALUE_RE.sub(r'\1"<run-id>"', line)
     line = _LOCAL_RUN_ID_RE.sub("<run-id>", line)
     return line

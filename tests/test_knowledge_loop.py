@@ -239,6 +239,45 @@ def test_knowledge_loop_reverts_timestamp_only_refresh_and_reports_idle(tmp_path
     assert report.ledger["cycles"] == 1
 
 
+def test_diff_classifier_keeps_corrected_event_time(tmp_path: Path) -> None:
+    from hyrule_knowledge.knowledge_loop import _diff_is_volatile_only
+
+    generated_metadata = (
+        "@@ -1 +1 @@\n"
+        '-{"run_id":"local-20260101000000","generated_at":"2026-01-01T00:00:00Z","extracted_at":"2026-01-01T00:00:00Z"}\n'
+        '+{"run_id":"local-20260102000000","generated_at":"2026-01-02T00:00:00Z","extracted_at":"2026-01-02T00:00:00Z"}\n'
+    )
+    assert _diff_is_volatile_only(generated_metadata) is True
+
+    # a corrected learning-event `event_time` (stable id unchanged) is real data, not churn
+    corrected_event_time = (
+        "@@ -1 +1 @@\n"
+        '-{"id":"evt_1","event_time":"2026-01-01T00:00:00Z","summary":"x"}\n'
+        '+{"id":"evt_1","event_time":"2026-02-02T00:00:00Z","summary":"x"}\n'
+    )
+    assert _diff_is_volatile_only(corrected_event_time) is False
+
+
+def test_knowledge_loop_publish_stages_schema(tmp_path: Path) -> None:
+    runner = FakeRunner(dirty=True)
+
+    run_once(
+        KnowledgeLoopConfig(
+            repo_path=_repo(tmp_path),
+            state_dir=tmp_path / "state",
+            run_id="schema-stage",
+            create_pr=True,
+            run_validation=False,
+        ),
+        runner=runner,
+    )
+
+    add_calls = [call for call in runner.calls if call[:2] == ("git", "add")]
+    assert add_calls
+    # schema is a managed dirty prefix, so a schema-only change must be staged and published
+    assert any("schema" in call for call in add_calls)
+
+
 def test_knowledge_loop_publishes_pr_when_change_is_semantic(tmp_path: Path) -> None:
     runner = SemanticRefreshRunner(dirty=True)
 
