@@ -590,6 +590,25 @@ def test_phase2_learning_import_resolves_relative_event_path_against_repo(tmp_pa
     assert report.ledger["learning_events_imported"] == 1
 
 
+def test_pr_body_reflects_whether_validation_ran(tmp_path: Path) -> None:
+    from hyrule_knowledge.knowledge_loop import _write_pr_body
+
+    repo = _repo(tmp_path)
+    ran = _write_pr_body(
+        KnowledgeLoopConfig(repo_path=repo, state_dir=tmp_path / "state-ran", run_validation=True),
+        run_id="ran",
+    ).read_text(encoding="utf-8")
+    skipped = _write_pr_body(
+        KnowledgeLoopConfig(repo_path=repo, state_dir=tmp_path / "state-skip", run_validation=False),
+        run_id="skip",
+    ).read_text(encoding="utf-8")
+
+    assert "ran the configured validation suite" in ran
+    assert "ran the configured validation suite" not in skipped
+    assert "skipped" in skipped.lower()
+    assert "must be run before merge" in skipped
+
+
 def test_notify_icinga_posts_sanitized_passive_check(monkeypatch) -> None:
     monkeypatch.setenv("HYRULE_KNOWLEDGE_LOOP_ICINGA_URL", "https://icinga.example")
     monkeypatch.setenv("HYRULE_KNOWLEDGE_LOOP_ICINGA_USER", "user")

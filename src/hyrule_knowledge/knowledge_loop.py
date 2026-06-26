@@ -580,6 +580,13 @@ def _write_pr_body(config: KnowledgeLoopConfig, *, run_id: str) -> Path:
         mode = "live OpenRouter" if config.enrich_live else "dry-run"
         phase2_bits.append(f"{mode} enrichment")
     phase2 = ", ".join(phase2_bits) if phase2_bits else "none"
+    if config.run_validation:
+        validation = "The Knowledge Loop ran the configured validation suite before opening this PR.\n"
+    else:
+        validation = (
+            "Validation was skipped for this run (`--skip-validation`); the standard gates did "
+            "not execute and must be run before merge.\n"
+        )
     path.write_text(
         "## Summary\n"
         "- automated Knowledge Loop refresh\n"
@@ -590,7 +597,7 @@ def _write_pr_body(config: KnowledgeLoopConfig, *, run_id: str) -> Path:
         "- generated enrichment remains advisory unless separately reviewed\n"
         "- source repositories continue to win conflicts\n\n"
         "## Validation\n"
-        "The Knowledge Loop ran the configured validation suite before opening this PR.\n",
+        f"{validation}",
         encoding="utf-8",
     )
     return path
