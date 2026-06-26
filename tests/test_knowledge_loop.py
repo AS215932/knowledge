@@ -70,6 +70,16 @@ class FailingImportRunner(FakeRunner):
         return super().__call__(argv, cwd, env)
 
 
+class FailingIngestRunner(FakeRunner):
+    def __call__(self, argv: Sequence[str], cwd: Path, env: Mapping[str, str] | None) -> CommandResult:
+        call = tuple(str(part) for part in argv)
+        if "ingest" in call:
+            self.calls.append(call)
+            self.envs.append(env)
+            return CommandResult(call, 1, "", "ingest failed\n")
+        return super().__call__(argv, cwd, env)
+
+
 class VolatileRefreshRunner(FakeRunner):
     """Models ingest/export churn that only rewrites timestamps, run ids, and the
     SQLite artifact, then reports a clean worktree once the loop reverts it."""
@@ -394,6 +404,38 @@ def test_knowledge_loop_pr_budget_blocks_only_publish_step(tmp_path: Path) -> No
     assert report.outcome == "over_budget"
     assert "daily PR budget" in report.detail
     assert report.ledger["cycles"] == 1
+
+
+def test_knowledge_loop_failed_cycle_counts_against_daily_budget(tmp_path: Path) -> None:
+    report = run_once(
+        KnowledgeLoopConfig(
+            repo_path=_repo(tmp_path),
+            state_dir=tmp_path / "state",
+            run_validation=False,
+        ),
+        runner=FailingIngestRunner(),
+    )
+
+    # a failing cycle must be counted so the timer is throttled by the daily budget
+    assert report.outcome == "error"
+    assert report.ledger["cycles"] == 1
+
+
+def test_cmd_loop_blank_state_dir_env_falls_back_to_cache(monkeypatch, tmp_path: Path) -> None:
+    from hyrule_knowledge import cli
+
+    captured: dict[str, KnowledgeLoopConfig] = {}
+
+    def fake_run(config: KnowledgeLoopConfig) -> KnowledgeLoopReport:
+        captured["config"] = config
+        return KnowledgeLoopReport(outcome="idle", run_id="x")
+
+    monkeypatch.setattr(cli, "run_knowledge_loop_once", fake_run)
+    monkeypatch.setenv("HYRULE_KNOWLEDGE_LOOP_STATE_DIR", "   ")
+
+    args = cli.build_parser().parse_args(["loop", "--once", "--repo-path", str(tmp_path)])
+    assert cli.cmd_loop(args) == 0
+    assert captured["config"].state_dir == Path(".cache/hyrule-knowledge/loop-state")
 
 
 def test_knowledge_loop_daily_cycle_budget_blocks_work(tmp_path: Path) -> None:

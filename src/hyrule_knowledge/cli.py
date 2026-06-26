@@ -797,6 +797,11 @@ def _env_int(name: str, default: int) -> int:
         return default
 
 
+def _env_str(name: str, default: str) -> str:
+    value = os.environ.get(name, "").strip()
+    return value or default
+
+
 def cmd_loop(args: argparse.Namespace) -> int:
     if not args.once:
         print("knowledge loop currently requires --once", file=sys.stderr)
@@ -804,7 +809,7 @@ def cmd_loop(args: argparse.Namespace) -> int:
     config = KnowledgeLoopConfig(
         repo_path=Path(args.repo_path),
         config_path=Path(args.config),
-        state_dir=Path(args.state_dir or os.environ.get("HYRULE_KNOWLEDGE_LOOP_STATE_DIR", ".cache/hyrule-knowledge/loop-state")),
+        state_dir=Path((args.state_dir or "").strip() or _env_str("HYRULE_KNOWLEDGE_LOOP_STATE_DIR", ".cache/hyrule-knowledge/loop-state")),
         branch_prefix=args.branch_prefix,
         base_branch=args.base_branch,
         create_pr=bool(args.create_pr or _truthy(os.environ.get("HYRULE_KNOWLEDGE_LOOP_CREATE_PR"))),

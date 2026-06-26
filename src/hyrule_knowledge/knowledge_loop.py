@@ -359,12 +359,14 @@ def run_once(
         return report
     except Exception as exc:
         if phase2_learning_events_to_charge and not phase2_learning_charged:
-            report.ledger = update_ledger(state_dir, learning_events_imported=phase2_learning_events_to_charge)
+            update_ledger(state_dir, learning_events_imported=phase2_learning_events_to_charge)
         if report.openrouter_calls_run and not phase2_openrouter_charged:
-            report.ledger = update_ledger(state_dir, openrouter_calls=report.openrouter_calls_run)
+            update_ledger(state_dir, openrouter_calls=report.openrouter_calls_run)
         report.outcome = "error"
         report.detail = str(exc)[:800]
-        report.ledger = load_ledger(state_dir)
+        # Count the failed cycle so a broken ingest/validation run is throttled by the
+        # daily cycle budget instead of being retried by the timer all day.
+        report.ledger = update_ledger(state_dir, cycles=1)
         return report
     finally:
         release_lock(lock)
