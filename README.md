@@ -82,6 +82,31 @@ uv run hyrule-knowledge observe --profile safe-health
 
 `.github/workflows/ingest.yml` runs nightly and on manual dispatch. When source knowledge changes, it opens a refresh PR. The PR must be reviewed before merge; generated knowledge is never auto-merged.
 
+## Knowledge Loop agent
+
+`hyrule-knowledge loop --once` is the governed producer loop for the knowledge repo. It is separate from the read-only Knowledge MCP server: the MCP serves context; the loop refreshes, validates, enriches/imports when explicitly enabled, and opens reviewable PRs.
+
+Phase 1 is deterministic by default:
+
+```bash
+uv run hyrule-knowledge loop --once --dry-run
+```
+
+It acquires a singleton lock, updates a per-day ledger, runs ingest plus the standard validation/export/eval/ledger/secret-scan gates, and reports JSON. Set `--create-pr` or `HYRULE_KNOWLEDGE_LOOP_CREATE_PR=1` to push a branch and open a PR when changes exist.
+
+Phase 2 is opt-in producer work:
+
+```bash
+uv run hyrule-knowledge loop --once \
+  --create-pr \
+  --enrich-target infrastructure \
+  --enrich-live \
+  --max-openrouter-calls-per-day 1 \
+  --learning-event /var/lib/engineering-loop/learning-events
+```
+
+Live enrichment requires the Knowledge Loop credential scope (`OPENROUTER_API_KEY` rendered from `kv/knowledge-loop`) and an explicit daily OpenRouter call budget. Learning-event inputs may be files, directories, or globs; imported artifacts remain review-gated ledger proposals.
+
 ## Governed agent consumption
 
 Humans can browse `okf/index.md`. Agents should first read `okf/index.md`, then directory indexes, then individual concepts. Machine consumers should prefer `exports/knowledge.sqlite` and the JSONL exports:

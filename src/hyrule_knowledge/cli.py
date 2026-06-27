@@ -26,6 +26,8 @@ from .enrich import enrich_target
 from .evals import eval_check, load_eval_cases, write_eval_reports
 from .exporter import exports_match, write_exports
 from .github_source import collect_snapshot
+from .knowledge_loop import KnowledgeLoopConfig
+from .knowledge_loop import run_once as run_knowledge_loop_once
 from .learning_ledger import (
     LearningLedgerError,
     import_learning_events,
@@ -767,6 +769,69 @@ def cmd_eval(args: argparse.Namespace) -> int:
     return 0
 
 
+def _truthy(value: str | None) -> bool:
+    return value is not None and value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_paths(name: str) -> list[Path]:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        return []
+    return [Path(item) for item in value.split(os.pathsep) if item]
+
+
+def _env_csv(name: str) -> list[str]:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        return []
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def _env_int(name: str, default: int) -> int:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        return default
+    try:
+        return int(value)
+    except ValueError:
+        return default
+
+
+def _env_str(name: str, default: str) -> str:
+    value = os.environ.get(name, "").strip()
+    return value or default
+
+
+def cmd_loop(args: argparse.Namespace) -> int:
+    if not args.once:
+        print("knowledge loop currently requires --once", file=sys.stderr)
+        return 1
+    config = KnowledgeLoopConfig(
+        repo_path=Path(args.repo_path),
+        config_path=Path(args.config),
+        state_dir=Path((args.state_dir or "").strip() or _env_str("HYRULE_KNOWLEDGE_LOOP_STATE_DIR", ".cache/hyrule-knowledge/loop-state")),
+        branch_prefix=args.branch_prefix,
+        base_branch=args.base_branch,
+        create_pr=bool(args.create_pr or _truthy(os.environ.get("HYRULE_KNOWLEDGE_LOOP_CREATE_PR"))),
+        dry_run=bool(args.dry_run),
+        git_user_name=args.git_user_name,
+        git_user_email=args.git_user_email,
+        max_cycles_per_day=args.max_cycles_per_day,
+        max_prs_per_day=args.max_prs_per_day,
+        max_openrouter_calls_per_day=args.max_openrouter_calls_per_day,
+        max_learning_events_per_day=args.max_learning_events_per_day,
+        enrich_targets=tuple(args.enrich_target or _env_csv("HYRULE_KNOWLEDGE_LOOP_ENRICH_TARGETS")),
+        enrich_live=bool(args.enrich_live or _truthy(os.environ.get("HYRULE_KNOWLEDGE_LOOP_ENRICH_LIVE"))),
+        dry_run_enrich_targets=tuple(args.dry_run_enrich_target or _env_csv("HYRULE_KNOWLEDGE_LOOP_DRY_RUN_ENRICH_TARGETS")),
+        learning_event_paths=tuple([*(Path(path) for path in (args.learning_event or [])), *_env_paths("HYRULE_KNOWLEDGE_LOOP_LEARNING_EVENTS")]),
+        replace_learning_events=bool(args.replace_learning_events),
+        run_validation=not args.skip_validation,
+    )
+    report = run_knowledge_loop_once(config)
+    print_json(report.as_json())
+    return 0 if report.outcome in {"published", "changes_detected", "idle", "locked"} else 1
+
+
 def cmd_mcp(args: argparse.Namespace) -> int:
     from .mcp_server import main as mcp_main
 
@@ -928,6 +993,28 @@ def build_parser() -> argparse.ArgumentParser:
     ledger.add_argument("--dry-run", action="store_true")
     ledger.add_argument("--replace", action="store_true", help="replace existing proposed event on ledger import")
     ledger.set_defaults(func=cmd_ledger)
+
+    loop = subparsers.add_parser("loop")
+    loop.add_argument("--once", action="store_true", help="run exactly one Knowledge Loop cycle")
+    loop.add_argument("--repo-path", default=".")
+    loop.add_argument("--state-dir")
+    loop.add_argument("--branch-prefix", default="bot/knowledge-loop")
+    loop.add_argument("--base-branch", default="main")
+    loop.add_argument("--create-pr", action="store_true", help="push a branch and open a PR when changes are detected")
+    loop.add_argument("--dry-run", action="store_true", help="run the cycle but do not commit/push/open PR")
+    loop.add_argument("--skip-validation", action="store_true")
+    loop.add_argument("--git-user-name", default=os.environ.get("HYRULE_KNOWLEDGE_LOOP_GIT_USER_NAME", "hyrule-knowledge-loop[bot]"))
+    loop.add_argument("--git-user-email", default=os.environ.get("HYRULE_KNOWLEDGE_LOOP_GIT_USER_EMAIL", "knowledge-loop@as215932.net"))
+    loop.add_argument("--max-cycles-per-day", type=int, default=_env_int("HYRULE_KNOWLEDGE_LOOP_MAX_CYCLES_PER_DAY", 1))
+    loop.add_argument("--max-prs-per-day", type=int, default=_env_int("HYRULE_KNOWLEDGE_LOOP_MAX_PRS_PER_DAY", 1))
+    loop.add_argument("--dry-run-enrich-target", action="append", help="phase-1 enrichment plumbing target; never calls a provider")
+    loop.add_argument("--enrich-target", action="append", help="phase-2 enrichment target; dry-run unless --enrich-live is set")
+    loop.add_argument("--enrich-live", action="store_true", help="allow live OpenRouter enrichment for --enrich-target")
+    loop.add_argument("--max-openrouter-calls-per-day", type=int, default=_env_int("HYRULE_KNOWLEDGE_LOOP_MAX_OPENROUTER_CALLS_PER_DAY", 0))
+    loop.add_argument("--learning-event", action="append", help="phase-2 learning-event file, directory, or glob to import")
+    loop.add_argument("--replace-learning-events", action="store_true")
+    loop.add_argument("--max-learning-events-per-day", type=int, default=_env_int("HYRULE_KNOWLEDGE_LOOP_MAX_LEARNING_EVENTS_PER_DAY", 100))
+    loop.set_defaults(func=cmd_loop)
 
     mcp = subparsers.add_parser("mcp")
     mcp.add_argument("--transport", default="stdio", choices=["stdio", "sse", "streamable-http", "http"])
