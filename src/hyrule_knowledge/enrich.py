@@ -5,9 +5,11 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import yaml
 
+from .agent_core_trace import emit_enrich_cost
 from .llm import LLMConfig, LLMError, call_openrouter
 from .models import Concept, EnrichmentMetadata, SourceRef
 from .okf_writer import dump_concept, slugify
@@ -25,12 +27,15 @@ def enrich_target(
 ) -> Path:
     source_pack = build_source_pack(bundle_root, target, max_input_chars)
     generated_at = datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    usage: dict[str, Any] | None = None
     if dry_run:
         output = _dry_run_output(source_pack)
     else:
         if provider != "openrouter":
             raise LLMError(f"unsupported provider for this tranche: {provider}")
-        output = call_openrouter(source_pack, LLMConfig(provider=provider, model=model, temperature=temperature))
+        output, usage = call_openrouter(
+            source_pack, LLMConfig(provider=provider, model=model, temperature=temperature)
+        )
     body = _body_from_output(output)
     output_hash = sha256_text(json.dumps(output, sort_keys=True, ensure_ascii=False))
     source_refs = _source_refs_from_pack(source_pack)
@@ -60,6 +65,8 @@ def enrich_target(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(dump_concept(concept), encoding="utf-8")
     _write_run_record(bundle_root.parent / "exports/enrichment-runs.jsonl", concept, source_pack, output)
+    if not dry_run:
+        emit_enrich_cost(provider, model, target, usage=usage)
     return path
 
 

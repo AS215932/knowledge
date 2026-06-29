@@ -57,18 +57,29 @@ def emit_context_pack(pack_json: dict[str, Any], *, run_id: str | None = None) -
 
 
 def emit_enrich_cost(
-    provider: str, model: str, target: str, *, run_id: str | None = None
+    provider: str,
+    model: str,
+    target: str,
+    *,
+    usage: dict[str, Any] | None = None,
+    run_id: str | None = None,
 ) -> dict[str, Any] | None:
-    """Emit a model_call TraceEvent carrying CostUsage(provider, model) for an enrichment.
+    """Emit a model_call TraceEvent carrying CostUsage for an enrichment.
 
-    Token/USD fidelity is a follow-up: the enrichment path does not yet surface usage.
+    OpenRouter ``usage`` (when present) maps prompt/completion/total tokens and ``cost`` -> usd.
     """
     if not enabled():
         return None
     try:
         models_mod = importlib.import_module("agent_core.contracts.models")
         tracing_mod = importlib.import_module("agent_core.contracts.tracing")
-        cost = models_mod.CostUsage(provider=provider, model=model)
+        cost_fields: dict[str, Any] = {"provider": provider, "model": model}
+        if usage:
+            cost_fields["input_tokens"] = usage.get("prompt_tokens")
+            cost_fields["output_tokens"] = usage.get("completion_tokens")
+            cost_fields["total_tokens"] = usage.get("total_tokens")
+            cost_fields["usd"] = usage.get("cost")
+        cost = models_mod.CostUsage(**cost_fields)
         event = tracing_mod.TraceEvent(
             event_type="model_call",
             node_id="enrich",

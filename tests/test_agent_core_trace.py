@@ -41,7 +41,15 @@ def test_enrich_cost_emits_when_enabled(monkeypatch, tmp_path):
     sink = tmp_path / "t.jsonl"
     monkeypatch.setenv("HYRULE_KNOWLEDGE_AGENT_CORE_TRACE", "1")
     monkeypatch.setenv("HYRULE_KNOWLEDGE_AGENT_CORE_TRACE_PATH", str(sink))
-    record = agent_core_trace.emit_enrich_cost("openrouter", "anthropic/claude-sonnet-4.6", "ansible")
+    record = agent_core_trace.emit_enrich_cost(
+        "openrouter",
+        "anthropic/claude-sonnet-4.6",
+        "ansible",
+        usage={"prompt_tokens": 1500, "completion_tokens": 300, "total_tokens": 1800, "cost": 0.012},
+    )
     assert record is not None
     assert record["event_type"] == "model_call"
     assert record["cost"]["provider"] == "openrouter"
+    assert record["cost"]["input_tokens"] == 1500
+    assert record["cost"]["output_tokens"] == 300
+    assert record["cost"]["usd"] == 0.012
