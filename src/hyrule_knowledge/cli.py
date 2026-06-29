@@ -9,6 +9,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from .agent_core_trace import emit_context_pack, emit_enrich_cost
 from .authority import AuthorityTier
 from .builder import build_all, source_ref
 from .config import SourceConfig, load_config
@@ -405,6 +406,8 @@ def cmd_enrich(args: argparse.Namespace) -> int:
         print(f"enrichment failed: {exc}", file=sys.stderr)
         return 1
     print(f"wrote enrichment concept: {path}")
+    if not args.dry_run:
+        emit_enrich_cost(args.provider, args.model, args.target)
     return 0
 
 
@@ -531,6 +534,7 @@ def cmd_context_pack(args: argparse.Namespace) -> int:
         print(str(exc), file=sys.stderr)
         return 1
     data = pack.as_json()
+    emit_context_pack(data)
     if args.write:
         out = Path(args.write)
         out.parent.mkdir(parents=True, exist_ok=True)
