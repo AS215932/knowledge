@@ -16,6 +16,7 @@ import sys
 from importlib import import_module
 from typing import Any
 
+from .agent_core_trace import emit_context_pack
 from .authority import AuthorityTier
 from .context_pack import (
     build_context_pack,
@@ -101,7 +102,9 @@ def build_mcp(
         """Build a policy-aware context pack."""
         store, _ = _service(db_path)
         try:
-            return build_context_pack(task=task, role=role, risk_level=risk_level, token_budget=budget_tokens, store=store).as_json()
+            data = build_context_pack(task=task, role=role, risk_level=risk_level, token_budget=budget_tokens, store=store).as_json()
+            emit_context_pack(data)
+            return data
         finally:
             store.close()
 
