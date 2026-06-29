@@ -42,9 +42,17 @@ def _collector() -> Iterator[tuple[str, list[dict[str, Any]]]]:
 
 _PACK = {
     "id": "ctx_0123456789abcdef0123456789abcdef",
+    "task_id": "know_traceback",
+    "case_id": "case_1",
+    "handoff_id": "handoff_1",
+    "objective_id": "objective_1",
+    "role": "engineering_loop",
     "retrieval_version": "r3",
     "policy_version": "p2",
-    "included_refs": [{"ref": "okf:x", "authority": "A1"}],
+    "included_refs": [
+        {"ref": "okf:x", "authority": "A1"},
+        {"ref": "network-operations:ansible/site.yml", "authority": "A0", "commit_sha": "deadbeef"},
+    ],
     "policy_decision": {"decision": "allow"},
     "unresolved_questions": [],
 }
@@ -64,6 +72,13 @@ def test_context_pack_emits_when_enabled(monkeypatch, tmp_path):
     record = agent_core_trace.emit_context_pack(dict(_PACK))
     assert record is not None
     assert record["event_type"] == "knowledge_context_pack"
+    assert record["case_id"] == "case_1"
+    assert record["handoff_id"] == "handoff_1"
+    assert record["objective_id"] == "objective_1"
+    assert record["change_id"] == "know_traceback"
+    assert record["repository"] == "network-operations"
+    assert record["commit_sha"] == "deadbeef"
+    assert record["links"]
     lines = sink.read_text(encoding="utf-8").strip().splitlines()
     assert len(lines) == 1
     assert json.loads(lines[0])["event_type"] == "knowledge_context_pack"
