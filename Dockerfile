@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED=1 \
     HYRULE_KNOWLEDGE_MCP_PATH=/mcp
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates curl \
+    && apt-get install -y --no-install-recommends ca-certificates curl git \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:0.9.17 /uv /uvx /usr/local/bin/
