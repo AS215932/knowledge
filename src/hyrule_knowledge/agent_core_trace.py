@@ -1,45 +1,53 @@
 """Optional, flag-gated emission of agent-core TraceEvent / CostUsage.
 
-Phase 2 groundwork for the Agent Runtime Framework: emit standard observability
-records *alongside* existing behavior. This is intentionally best-effort and additive:
+Best-effort and additive: a no-op unless ``HYRULE_KNOWLEDGE_AGENT_CORE_TRACE`` is
+truthy and ``agent-core`` is importable. Delivery uses ``agent_core.tracing.sink_from_env``
+so operators can configure an HTTP collector URL, a JSONL path, or both.
 
-- It is a no-op unless ``HYRULE_KNOWLEDGE_AGENT_CORE_TRACE`` is truthy AND the optional
-  ``agent-core`` package is importable. (agent-core is NOT a declared dependency of this
-  repo, so CI without it simply skips emission.)
-- ``agent_core`` is imported dynamically via ``importlib`` so static analysis here never
-  depends on it.
-- Any failure is swallowed; emission must never affect the calling command's output.
-
-Records are appended as JSON lines to ``HYRULE_KNOWLEDGE_AGENT_CORE_TRACE_PATH``
-(default ``reports/agent-core-trace.jsonl``).
+The historical JSONL fallback is preserved for local CLI use: when tracing is enabled
+without an explicit ``*_PATH`` or ``*_COLLECTOR_URL``, events are appended to
+``reports/agent-core-trace.jsonl``. Any failure is swallowed so emission never affects
+the calling command's output.
 """
 
 from __future__ import annotations
 
 import importlib
-import json
 import os
-from pathlib import Path
 from typing import Any
 
 FLAG_ENV = "HYRULE_KNOWLEDGE_AGENT_CORE_TRACE"
 PATH_ENV = "HYRULE_KNOWLEDGE_AGENT_CORE_TRACE_PATH"
+COLLECTOR_URL_ENV = f"{FLAG_ENV}_COLLECTOR_URL"
 _DEFAULT_PATH = "reports/agent-core-trace.jsonl"
+_TRUTHY = {"1", "true", "yes", "on"}
 
 
 def enabled() -> bool:
-    return os.environ.get(FLAG_ENV, "").strip().lower() in {"1", "true", "yes", "on"}
+    return os.environ.get(FLAG_ENV, "").strip().lower() in _TRUTHY
 
 
-def _sink_path() -> Path:
-    return Path(os.environ.get(PATH_ENV) or _DEFAULT_PATH)
+def _sink_from_env() -> Any:
+    sink_mod = importlib.import_module("agent_core.tracing.sink")
+    path_configured = bool(os.environ.get(PATH_ENV, "").strip())
+    collector_configured = bool(os.environ.get(COLLECTOR_URL_ENV, "").strip())
+    if path_configured or collector_configured:
+        return sink_mod.sink_from_env(FLAG_ENV)
+
+    original_path = os.environ.get(PATH_ENV)
+    os.environ[PATH_ENV] = _DEFAULT_PATH
+    try:
+        return sink_mod.sink_from_env(FLAG_ENV)
+    finally:
+        if original_path is None:
+            os.environ.pop(PATH_ENV, None)
+        else:
+            os.environ[PATH_ENV] = original_path
 
 
-def _append(record: dict[str, Any]) -> None:
-    path = _sink_path()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(record, sort_keys=True) + "\n")
+def _emit_event(event: Any) -> dict[str, Any] | None:
+    record: dict[str, Any] = event.model_dump(mode="json")
+    return record if _sink_from_env().emit(event) else None
 
 
 def emit_context_pack(pack_json: dict[str, Any], *, run_id: str | None = None) -> dict[str, Any] | None:
@@ -49,9 +57,7 @@ def emit_context_pack(pack_json: dict[str, Any], *, run_id: str | None = None) -
     try:
         adapter = importlib.import_module("agent_core.adapters.knowledge")
         event = adapter.trace_event_from_context_pack(pack_json, run_id=run_id)
-        record: dict[str, Any] = event.model_dump(mode="json")
-        _append(record)
-        return record
+        return _emit_event(event)
     except Exception:  # best-effort: emission must never break the command
         return None
 
@@ -89,8 +95,6 @@ def emit_enrich_cost(
             cost=cost,
             run_id=run_id,
         )
-        record: dict[str, Any] = event.model_dump(mode="json")
-        _append(record)
-        return record
+        return _emit_event(event)
     except Exception:  # best-effort: emission must never break the command
         return None
