@@ -47,7 +47,9 @@ def build_user_prompt(source_pack: dict[str, Any]) -> str:
     )
 
 
-def call_openrouter(source_pack: dict[str, Any], config: LLMConfig) -> dict[str, Any]:
+def call_openrouter(
+    source_pack: dict[str, Any], config: LLMConfig
+) -> tuple[dict[str, Any], dict[str, Any] | None]:
     api_key = os.environ.get(config.api_key_env)
     if not api_key:
         raise LLMError(f"missing {config.api_key_env}; LLM enrichment is manual/opt-in")
@@ -59,6 +61,7 @@ def call_openrouter(source_pack: dict[str, Any], config: LLMConfig) -> dict[str,
             {"role": "user", "content": build_user_prompt(source_pack)},
         ],
         "response_format": {"type": "json_object"},
+        "usage": {"include": True},
     }
     request = urllib.request.Request(
         "https://openrouter.ai/api/v1/chat/completions",
@@ -83,7 +86,8 @@ def call_openrouter(source_pack: dict[str, Any], config: LLMConfig) -> dict[str,
     content = data["choices"][0]["message"]["content"]
     result = parse_json_object_response(content)
     validate_enrichment_json(result, _allowed_citations(source_pack))
-    return result
+    usage: dict[str, Any] | None = data.get("usage") if isinstance(data, dict) else None
+    return result, usage
 
 
 def parse_json_object_response(content: Any) -> dict[str, Any]:
