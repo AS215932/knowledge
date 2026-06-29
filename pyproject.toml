@@ -9,6 +9,7 @@ description = "OKF knowledge catalog, enrichment, quality, and observation tooli
 requires-python = ">=3.12"
 dependencies = [
     "PyYAML>=6.0.2",
+    "agent-core",
 ]
 
 [project.optional-dependencies]
@@ -44,3 +45,6 @@ strict = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.uv.sources]
+agent-core = { git = "https://github.com/AS215932/agent-core", tag = "v0.1.0" }
