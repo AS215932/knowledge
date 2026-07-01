@@ -1,11 +1,11 @@
 # Knowledge coverage report
 
-* Concepts: **874**
+* Concepts: **875**
 * Edges: **1899**
 * Critical findings: **0**
-* Warnings: **41**
+* Warnings: **42**
 * Source repos indexed: **11**
-* Source files with refs: **251**
+* Source files with refs: **252**
 * API endpoints: **306**
 * API schemas: **219**
 * Infrastructure hosts/routers: **23**
@@ -57,6 +57,7 @@ Source files skipped: Not enumerated in quality report; see knowledge.config.yml
 * `Observation`: 2
 * `Organization`: 1
 * `Policy`: 3
+* `Postmortem`: 1
 * `Project`: 2
 * `Reference`: 2
 * `Repository`: 10
@@ -75,5 +76,5 @@ No critical findings.
 
 # Warning summary
 
-* `no_inbound_links`: 15
+* `no_inbound_links`: 16
 * `shallow_source_doc`: 26
