@@ -7,6 +7,7 @@
 {"code":"no_inbound_links","concept_id":"curated/policies/domain-policy","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"curated/policies/openrouter-key-ownership","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"curated/policies/source-of-truth-and-canonicality","message":"Concept has no inbound graph edges.","severity":"warning"}
+{"code":"no_inbound_links","concept_id":"curated/postmortems/noc-bgp-snapshot-root-filesystem-2026-06-30","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"curated/strategy/hyrule-cloud-business-context","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"curated/summaries/engineering-loop-knowledge-mcp-rollout-2026-06-21","message":"Concept has no inbound graph edges.","severity":"warning"}
 {"code":"no_inbound_links","concept_id":"generated/enriched/infrastructure","message":"Concept has no inbound graph edges.","severity":"warning"}

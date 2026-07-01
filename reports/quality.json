@@ -56,6 +56,12 @@
     },
     {
       "code": "no_inbound_links",
+      "concept_id": "curated/postmortems/noc-bgp-snapshot-root-filesystem-2026-06-30",
+      "message": "Concept has no inbound graph edges.",
+      "severity": "warning"
+    },
+    {
+      "code": "no_inbound_links",
       "concept_id": "curated/strategy/hyrule-cloud-business-context",
       "message": "Concept has no inbound graph edges.",
       "severity": "warning"
@@ -248,17 +254,17 @@
     }
   ],
   "summary": {
-    "concept_count": 874,
+    "concept_count": 875,
     "concepts_by_authority": {
       "advisory": 14,
-      "canonical": 763,
+      "canonical": 764,
       "evidence": 97
     },
     "concepts_by_truth_owner": {
       "derived": 3,
       "external": 95,
       "observed": 2,
-      "okf": 11,
+      "okf": 12,
       "repo": 763
     },
     "concepts_by_type": {
@@ -278,6 +284,7 @@
       "Observation": 2,
       "Organization": 1,
       "Policy": 3,
+      "Postmortem": 1,
       "Project": 2,
       "Reference": 2,
       "Repository": 10,
@@ -299,7 +306,7 @@
     "llm_enrichment_run_status": "proposed_output_present",
     "observed_count": 2,
     "schema_count": 219,
-    "source_file_ref_count": 251,
+    "source_file_ref_count": 252,
     "source_files_skipped": "Not enumerated in quality report; see knowledge.config.yml include/exclude patterns and ingestion logs.",
     "source_repo_count": 11,
     "source_repos": [
@@ -324,6 +331,6 @@
       "noc_agent": "ok",
       "prometheus": "ok"
     },
-    "warning_count": 41
+    "warning_count": 42
   }
 }

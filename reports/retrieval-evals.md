@@ -1,7 +1,7 @@
 # Retrieval evals
 
-* Cases: **16**
-* Passed: **16**
+* Cases: **17**
+* Passed: **17**
 
 * `retrieval-001-vm-create-endpoint`: pass
 * `retrieval-002-vm-create-schema`: pass
@@ -19,3 +19,4 @@
 * `retrieval-014-network-operations-project`: pass
 * `retrieval-015-system-map`: pass
 * `retrieval-016-openrouter-key-ownership`: pass
+* `retrieval-017-noc-bgp-snapshot-retention`: pass

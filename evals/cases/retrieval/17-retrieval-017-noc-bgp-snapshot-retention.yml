@@ -1,0 +1,17 @@
+id: retrieval-017-noc-bgp-snapshot-retention
+suite: retrieval
+task: Find NOC BGP snapshot retention context for low root filesystem handoff
+role: engineering_loop
+inputs:
+  query: resolve low root filesystem condition noc bgp-router-snapshot retention /var/lib/hyrule-mcp/bgp-snapshots
+  authority_min: A4
+  limit: 10
+expected:
+  refs_any:
+  - curated/postmortems/noc-bgp-snapshot-root-filesystem-2026-06-30
+forbidden:
+  authority_tiers: []
+must_pass: true
+metrics:
+  recall_at_5: true
+  vector_scores_null: true

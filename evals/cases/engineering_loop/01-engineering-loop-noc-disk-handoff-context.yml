@@ -1,0 +1,20 @@
+id: engineering-loop-001-noc-disk-handoff-context
+suite: engineering_loop
+task: Build context for NOC low root filesystem handoff
+role: engineering_loop
+inputs:
+  context_pack: true
+  query: resolve low root filesystem condition on noc host 2a0c:b641:b50:2::a0 filesystem /; prevent BGP router snapshots from filling root filesystem
+  authority_min: A4
+  risk_level: low
+expected:
+  policy_result: allow
+  refs_any:
+  - curated/postmortems/noc-bgp-snapshot-root-filesystem-2026-06-30
+  sections:
+  - target_repo_source_truth
+  - related_runbooks_lessons
+forbidden: {}
+must_pass: true
+metrics:
+  vector_scores_null: true

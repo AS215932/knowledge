@@ -28,7 +28,10 @@ DEFAULT_CONTEXT_EDGE_TYPES = {
 _HTTP_METHOD_RE = re.compile(r"\b(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\b", re.I)
 _ROUTE_RE = re.compile(r"/v[0-9][A-Za-z0-9_/{}/.-]*")
 _CONCEPT_RE = re.compile(r"\b(?:generated|curated|observed)/[A-Za-z0-9_./-]+")
-_HOST_RE = re.compile(r"\b(api|web|noc|rtr|proxy|netproxy|mon|dns|vault|loop|ci|ci-pr|log|mail|vpn|xoa|irc|ns2|dom0|extmon|cr1-[a-z0-9-]+)\b", re.I)
+_HOST_RE = re.compile(
+    r"\b(api|web|noc|rtr|proxy|netproxy|mon|dns|vault|loop|ci|ci-pr|log|mail|vpn|xoa|irc|ns2|dom0|extmon|cr1-[a-z0-9-]+)\b",
+    re.I,
+)
 
 
 @dataclass(frozen=True)
@@ -81,7 +84,11 @@ def parse_task(query: str) -> ParsedTask:
     endpoints = list(dict.fromkeys(_ROUTE_RE.findall(query)))
     concept_ids = [match.group(0).removesuffix(".md") for match in _CONCEPT_RE.finditer(query)]
     hosts = _hosts_from_query(query)
-    policies = [word for word in ["policy", "canonicality", "domain", "deployment", "source-of-truth", "safety"] if word in lower]
+    policies = [
+        word
+        for word in ["policy", "canonicality", "domain", "deployment", "source-of-truth", "safety"]
+        if word in lower
+    ]
     return ParsedTask(
         query=query,
         services=list(dict.fromkeys(services)),
@@ -107,7 +114,11 @@ def _hosts_from_query(query: str) -> list[str]:
             continue
         if host == "noc" and after.startswith((" knowledge", "-knowledge")):
             continue
-        if host == "loop" and before.endswith(("knowledge ", "engineering ")) and not after.startswith((" host", " vm")):
+        if (
+            host == "loop"
+            and before.endswith(("knowledge ", "engineering "))
+            and not after.startswith((" host", " vm"))
+        ):
             continue
         hosts.append(host)
     return list(dict.fromkeys(hosts))
@@ -117,11 +128,15 @@ class KnowledgeRetriever:
     def __init__(self, store: KnowledgeStore) -> None:
         self.store = store
 
-    def resolve(self, reference: str, *, authority_min: AuthorityTier = AuthorityTier.A5) -> dict[str, Any]:
+    def resolve(
+        self, reference: str, *, authority_min: AuthorityTier = AuthorityTier.A5
+    ) -> dict[str, Any]:
         candidates = self.query(reference, authority_min=authority_min, limit=10, graph_depth=0)
         claim_matches = self.store.claims(subject=reference, authority_min=authority_min, limit=50)
         if not claim_matches:
-            claim_matches = self.store.claims(object_value=reference, authority_min=authority_min, limit=50)
+            claim_matches = self.store.claims(
+                object_value=reference, authority_min=authority_min, limit=50
+            )
         concept = self.store.concept(reference)
         return {
             "reference": reference,
@@ -151,20 +166,39 @@ class KnowledgeRetriever:
 
         if graph_depth > 0:
             for concept_id in list(scored)[:20]:
-                for neighbor in self.store.neighbors(concept_id, depth=graph_depth, edge_types=edge_types, max_neighbors=40):
+                for neighbor in self.store.neighbors(
+                    concept_id, depth=graph_depth, edge_types=edge_types, max_neighbors=40
+                ):
                     graph_score = max(0.2, 1.0 / (1 + int(neighbor.get("depth", 1))))
-                    self._merge(scored, str(neighbor["neighbor"]), reason=f"graph:{neighbor['edge_type']}", graph=graph_score)
+                    self._merge(
+                        scored,
+                        str(neighbor["neighbor"]),
+                        reason=f"graph:{neighbor['edge_type']}",
+                        graph=graph_score,
+                    )
 
         for concept_id, score in self.store.fts_candidates(query, limit=max(limit * 3, 30)):
             self._merge(scored, concept_id, reason="fts", fts=score)
 
-        candidates = [candidate for candidate in scored.values() if tier_allows(candidate.authority_tier, authority_min)]
+        candidates = [
+            candidate
+            for candidate in scored.values()
+            if tier_allows(candidate.authority_tier, authority_min)
+        ]
         if freshness == "current":
-            candidates = [candidate for candidate in candidates if candidate.metadata.get("freshness_status") != "expired"]
+            candidates = [
+                candidate
+                for candidate in candidates
+                if candidate.metadata.get("freshness_status") != "expired"
+            ]
         if concept_type:
-            candidates = [candidate for candidate in candidates if candidate.concept_type == concept_type]
+            candidates = [
+                candidate for candidate in candidates if candidate.concept_type == concept_type
+            ]
         if repo:
-            candidates = [candidate for candidate in candidates if _candidate_repo(candidate) == repo]
+            candidates = [
+                candidate for candidate in candidates if _candidate_repo(candidate) == repo
+            ]
         candidates.sort(
             key=lambda item: (
                 0 if item.scores.exact is not None else 1,
@@ -202,8 +236,12 @@ class KnowledgeRetriever:
         if "system map" in lower_query or "architecture map" in lower_query:
             ids.append("curated/architecture/as215932-system-map")
             ids.append("generated/projects/network-operations")
-        if "openrouter" in lower_query and any(term in lower_query for term in {"key", "credential", "secret"}):
+        if "openrouter" in lower_query and any(
+            term in lower_query for term in {"key", "credential", "secret"}
+        ):
             ids.append("curated/policies/openrouter-key-ownership")
+        if _is_noc_bgp_snapshot_disk_query(lower_query):
+            ids.append("curated/postmortems/noc-bgp-snapshot-root-filesystem-2026-06-30")
         if "knowledge-mcp" in lower_query or "knowledge mcp" in lower_query:
             ids.append("generated/deployments/knowledge-mcp-on-loop")
         if "noc-knowledge" in lower_query or "noc knowledge" in lower_query:
@@ -224,8 +262,12 @@ class KnowledgeRetriever:
             ids.append(f"generated/infrastructure/hosts/{'host-log' if host == 'log' else host}")
         if parsed.endpoints:
             for method in parsed.methods or [""]:
-                subject = f"endpoint:{method}:{parsed.endpoints[0]}" if method else parsed.endpoints[0]
-                for claim in self.store.claims(subject=subject, authority_min=AuthorityTier.A5, limit=20):
+                subject = (
+                    f"endpoint:{method}:{parsed.endpoints[0]}" if method else parsed.endpoints[0]
+                )
+                for claim in self.store.claims(
+                    subject=subject, authority_min=AuthorityTier.A5, limit=20
+                ):
                     ids.append(str(claim["concept_id"]))
         ids.extend(self.store.exact_candidates(query, limit=limit))
         return list(dict.fromkeys(ids))[:limit]
@@ -250,7 +292,9 @@ class KnowledgeRetriever:
                 title=existing.title,
                 concept_type=existing.concept_type,
                 authority_tier=existing.authority_tier,
-                reason=existing.reason if reason in existing.reason else f"{existing.reason},{reason}",
+                reason=existing.reason
+                if reason in existing.reason
+                else f"{existing.reason},{reason}",
                 scores=RetrievalScores(
                     exact=max_or(existing.scores.exact, exact),
                     graph=max_or(existing.scores.graph, graph),
@@ -266,7 +310,9 @@ class KnowledgeRetriever:
         claims = self.store.claims(concept_id=concept_id, authority_min=AuthorityTier.A5, limit=5)
         metadata = {
             "claim_count": len(claims),
-            "freshness_status": "expired" if any(claim.get("freshness_status") == "expired" for claim in claims) else "current",
+            "freshness_status": "expired"
+            if any(claim.get("freshness_status") == "expired" for claim in claims)
+            else "current",
         }
         candidates[concept_id] = RetrievalCandidate(
             concept_id=concept_id,
@@ -282,9 +328,33 @@ class KnowledgeRetriever:
 
 
 def _exact_match_priority(candidate: RetrievalCandidate) -> int:
-    if candidate.scores.exact is not None and candidate.concept_id == "curated/policies/openrouter-key-ownership":
+    if (
+        candidate.scores.exact is not None
+        and candidate.concept_id == "curated/policies/openrouter-key-ownership"
+    ):
+        return 0
+    if (
+        candidate.scores.exact is not None
+        and candidate.concept_id
+        == "curated/postmortems/noc-bgp-snapshot-root-filesystem-2026-06-30"
+    ):
         return 0
     return 1
+
+
+def _is_noc_bgp_snapshot_disk_query(lower_query: str) -> bool:
+    disk_condition = (
+        "low root filesystem" in lower_query
+        or "root filesystem condition" in lower_query
+        or ("filesystem" in lower_query and "disk" in lower_query)
+    )
+    snapshot_condition = (
+        "bgp-router-snapshot" in lower_query
+        or "bgp router snapshot" in lower_query
+        or "bgp snapshots" in lower_query
+        or "bgp-snapshots" in lower_query
+    )
+    return disk_condition and ("noc" in lower_query or snapshot_condition)
 
 
 def max_or(left: float | None, right: float | None) -> float | None:
@@ -296,7 +366,9 @@ def max_or(left: float | None, right: float | None) -> float | None:
 
 
 def _excerpt(body: str, limit: int = 800) -> str:
-    text = " ".join(line.strip() for line in body.splitlines() if line.strip() and not line.startswith("---"))
+    text = " ".join(
+        line.strip() for line in body.splitlines() if line.strip() and not line.startswith("---")
+    )
     if len(text) <= limit:
         return text
     return text[: limit - 3].rstrip() + "..."
